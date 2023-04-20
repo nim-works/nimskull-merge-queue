@@ -1,0 +1,10 @@
+VmGenResult	vm/vmgen.html#VmGenResult	vmgen: VmGenResult	
+gatherDependencies	vm/vmgen.html#gatherDependencies,TCtx,PNode	vmgen: gatherDependencies(c: var TCtx; n: PNode; withGlobals = false)	
+gABC	vm/vmgen.html#gABC,TCtx,PNode,TOpcode,TRegister,TRegister,TRegister	vmgen: gABC(ctx: var TCtx; n: PNode; opc: TOpcode; a, b, c: TRegister = 0)	
+gABx	vm/vmgen.html#gABx,TCtx,PNode,TOpcode,TRegister,int	vmgen: gABx(c: var TCtx; n: PNode; opc: TOpcode; a: TRegister = 0; bx: int)	
+importcCondVar	vm/vmgen.html#importcCondVar,PSym	vmgen: importcCondVar(s: PSym): bool	
+importcCond	vm/vmgen.html#importcCond,TCtx,PSym	vmgen: importcCond(c: TCtx; s: PSym): bool	
+genStmt	vm/vmgen.html#genStmt,TCtx,PNode	vmgen: genStmt(c: var TCtx; n: PNode): Result[void, VmGenDiag]	
+genExpr	vm/vmgen.html#genExpr,TCtx,PNode	vmgen: genExpr(c: var TCtx; n: PNode; requiresValue = true): VmGenResult	
+genProc	vm/vmgen.html#genProc,TCtx,PSym,PNode	vmgen: genProc(c: var TCtx; s: PSym; body: PNode): VmGenResult	
+vmGenDiagToAstDiagVmGenError	vm/vmgen.html#vmGenDiagToAstDiagVmGenError,VmGenDiag	vmgen: vmGenDiagToAstDiagVmGenError(diag: VmGenDiag): AstDiagVmGenError	
