@@ -61,7 +61,9 @@ jobs:
             core.setOutput('run', 'true');
             core.setOutput('body', body);
             core.setOutput('body-tail', body_tail);
-            core.setOutput('update-body', pr_info.body !== body);
+            if (pr_info.body !== body) {
+              core.setOutput('update-body', 'true');
+            }
 
       - if: steps.pr-data.outputs.run
         id: find-comment
