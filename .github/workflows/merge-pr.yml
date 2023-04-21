@@ -53,7 +53,7 @@ jobs:
             core.setOutput('run', 'true')
             core.setOutput('body', body)
             core.setOutput('body-tail', body_tail)
-            core.setOutput('update-body', pr_info.body !== result.body)
+            core.setOutput('update-body', pr_info.body !== body)
 
       - if: steps.pr-data.outputs.run
         id: find-comment
