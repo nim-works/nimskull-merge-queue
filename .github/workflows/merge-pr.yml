@@ -43,13 +43,13 @@ jobs:
             core.debug(`PR data: ${pr_info}`);
 
             if (node.autoMergeRequest || node.closed) {
-              core.notice("PR is already merged or is in queue.");
+              core.notice('PR is already merged or is in queue.');
               return;
             }
 
             const [ body, body_tail ] = pr_info.body.split(/^---\s*$/, 2)
             body = body.trimEnd()
-            body_tail = body_tail?.trimEnd() || ""
+            body_tail = body_tail?.trimEnd() || ''
             core.setOutput('run', 'true')
             core.setOutput('body', body)
             core.setOutput('body-tail', body_tail)
@@ -64,7 +64,7 @@ jobs:
           body-includes: <!-- /merge info comment -->
           direction: last
 
-      - if: steps.pr-data.outputs.run && !(steps.find-comment.outputs.comment-id && steps.pr-data.outputs.body_tail == "")
+      - if: steps.pr-data.outputs.run && !(steps.find-comment.outputs.comment-id && steps.pr-data.outputs.body_tail == '')
         name: Create or update informational comment
         uses: peter-evans/create-or-update-comment@v3
         with:
