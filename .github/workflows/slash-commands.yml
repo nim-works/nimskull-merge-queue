@@ -9,13 +9,12 @@ jobs:
   dispatch:
     name: Dispatch command
     runs-on: ubuntu-latest
-    environment: chore runner
     steps:
       - id: token
         uses: tibdex/github-app-token@v1
         with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          app_id: ${{ secrets.CHORE_APP_ID }}
+          private_key: ${{ secrets.CHORE_APP_KEY }}
 
       - uses: peter-evans/slash-command-dispatch@v3
         with:
