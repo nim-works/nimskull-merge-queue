@@ -40,9 +40,9 @@ jobs:
             }`;
 
             const { node: pr_info } = await github.graphql(query, { id: pull_id });
-            core.debug(`PR data: ${pr_info}`);
+            core.debug(`PR data: ${JSON.stringify(pr_info)}`);
 
-            if (node.autoMergeRequest || node.closed) {
+            if (pr_info.autoMergeRequest || pr_info.closed) {
               core.notice('PR is already merged or is in queue.');
               return;
             }
