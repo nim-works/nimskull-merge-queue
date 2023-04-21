@@ -1,0 +1,23 @@
+name: Dispatch slash commands
+
+on:
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  pull-requests: write
+
+jobs:
+  dispatch:
+    name: Dispatch command
+    runs-on: ubuntu-latest
+    environment: pr-merge
+    steps:
+      - uses: peter-evans/slash-command-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          commands: |
+            merge
+          issue-type: pull-request
+          permission: write
