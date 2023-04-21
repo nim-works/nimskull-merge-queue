@@ -1,12 +1,6 @@
 name: Test compiler build reproducibility
 
 on:
-  push:
-    # Only run on bors branches
-    branches:
-      - staging
-      - trying
-
   # This is for passing required checks
   pull_request:
   merge_group:
