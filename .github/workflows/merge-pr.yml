@@ -128,7 +128,7 @@ jobs:
         with:
           script: |
             const pull_id = context.payload.client_payload.pull_request.node_id;
-            const queue = `mutation ($input: EnablePullRequestAutoMergeInput) {
+            const queue = `mutation ($input: EnablePullRequestAutoMergeInput!) {
               enablePullRequestAutoMerge(input: $input) {
                 clientMutationId
               }
