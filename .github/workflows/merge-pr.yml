@@ -64,7 +64,7 @@ jobs:
           body-includes: <!-- /merge info comment -->
           direction: last
 
-      - if: steps.pr-data.outputs.run && !(steps.find-comment.outputs.comment-id && steps.pr-data.outputs.body_tail == '')
+      - if: steps.pr-data.outputs.run && !(steps.find-comment.outputs.comment-id && steps.pr-data.outputs.body-tail == '')
         name: Create or update informational comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -98,8 +98,10 @@ jobs:
             }`;
 
             await github.graphql(update, {
-              pullRequestId: pull_id,
-              body: process.env.NEW_PR_BODY
+              input: {
+                pullRequestId: pull_id,
+                body: process.env.NEW_PR_BODY
+              }
             });
 
       - name: Queue for merging
