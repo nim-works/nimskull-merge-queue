@@ -47,7 +47,7 @@ jobs:
               return;
             }
 
-            const [ body, body_tail ] = pr_info.body.split(/^---\s*$/, 2)
+            let [ body, body_tail ] = pr_info.body.split(/^---\s*$/, 2)
             body = body.trimEnd()
             body_tail = body_tail?.trimEnd() || ''
             core.setOutput('run', 'true')
