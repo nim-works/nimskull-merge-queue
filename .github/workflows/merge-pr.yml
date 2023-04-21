@@ -129,7 +129,9 @@ jobs:
           script: |
             const pull_id = context.payload.client_payload.pull_request.node_id;
             const queue = `mutation ($input: EnablePullRequestAutoMergeInput) {
-              clientMutationId
+              enablePullRequestAutoMerge(input: $input) {
+                clientMutationId
+              }
             }`;
 
             await github.graphql(queue, {
