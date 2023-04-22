@@ -6,8 +6,9 @@ on:
       - created
 
 jobs:
-  dispatch:
-    name: Dispatch command
+  dispatch_pr:
+    if: github.event.issue.pull_request
+    name: Dispatch on Pull Request comments
     runs-on: ubuntu-latest
     steps:
       - id: token
