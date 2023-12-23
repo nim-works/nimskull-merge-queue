@@ -1,6 +1,5 @@
 flushDot	front/msgs.html#flushDot,ConfigRef	msgs: flushDot(conf: ConfigRef)	
 gCmdLineInfo	front/msgs.html#gCmdLineInfo	msgs: gCmdLineInfo	
-suggestWriteln	front/msgs.html#suggestWriteln,ConfigRef,string	msgs: suggestWriteln(conf: ConfigRef; s: string)	
 msgQuit	front/msgs.html#msgQuit,int8	msgs: msgQuit(x: int8)	
 msgQuit	front/msgs.html#msgQuit,string	msgs: msgQuit(x: string)	
 suggestQuit	front/msgs.html#suggestQuit	msgs: suggestQuit()	
@@ -32,9 +31,6 @@ toReportPoint	front/msgs.html#toReportPoint,ConfigRef,TLineInfo	msgs: toReportPo
 `$`	front/msgs.html#$,ConfigRef,TLineInfo	msgs: `$`(conf: ConfigRef; info: TLineInfo): string	
 `$`	front/msgs.html#$,TLineInfo	msgs: `$`(info: TLineInfo): string	
 msgWrite	front/msgs.html#msgWrite,ConfigRef,string,MsgFlags	msgs: msgWrite(conf: ConfigRef; s: string; flags: MsgFlags = {})	
-log	front/msgs.html#log,string	msgs: log(s: string)	
-`==`	front/msgs.html#==,TLineInfo,TLineInfo	msgs: `==`(a, b: TLineInfo): bool	
-exactEquals	front/msgs.html#exactEquals,TLineInfo,TLineInfo	msgs: exactEquals(a, b: TLineInfo): bool	
 getContext	front/msgs.html#getContext,ConfigRef,TLineInfo	msgs: getContext(conf: ConfigRef; lastinfo: TLineInfo): seq[ReportContext]	
 numLines	front/msgs.html#numLines,ConfigRef,FileIndex	msgs: numLines(conf: ConfigRef; fileIdx: FileIndex): int	
 sourceLine	front/msgs.html#sourceLine,ConfigRef,TLineInfo	msgs: sourceLine(conf: ConfigRef; i: TLineInfo): string	
@@ -46,6 +42,7 @@ astDiagToLegacyReportKind	front/msgs.html#astDiagToLegacyReportKind,PAstDiag	msg
 report	front/msgs.html#report,ConfigRef,PNode	msgs: report(conf: ConfigRef; node: PNode): TErrorHandling	
 handleReport	front/msgs.html#handleReport,ConfigRef,Report,InstantiationInfo,TErrorHandling	msgs: handleReport(conf: ConfigRef; r: Report; reportFrom: InstantiationInfo;\n             eh: TErrorHandling = doNothing)	
 globalAssert	front/msgs.html#globalAssert.t,ConfigRef,untyped,TLineInfo,string	msgs: globalAssert(conf: ConfigRef; cond: untyped; info: TLineInfo = unknownLineInfo;\n             arg = &quot;&quot;)	
+fatalReport	front/msgs.html#fatalReport.t,ConfigRef,TLineInfo,ReportTypes	msgs: fatalReport(conf: ConfigRef; info: TLineInfo; report: ReportTypes)	
 globalReport	front/msgs.html#globalReport.t,ConfigRef,TLineInfo,ReportTypes	msgs: globalReport(conf: ConfigRef; info: TLineInfo; report: ReportTypes)	
 globalReport	front/msgs.html#globalReport.t,ConfigRef,ReportTypes	msgs: globalReport(conf: ConfigRef; report: ReportTypes)	
 localReport	front/msgs.html#localReport.t,ConfigRef,TLineInfo,ReportTypes	msgs: localReport(conf: ConfigRef; info: TLineInfo; report: ReportTypes)	
@@ -53,8 +50,6 @@ localReport	front/msgs.html#localReport.t,ConfigRef,PNode,SemReport	msgs: localR
 temporaryStringError	front/msgs.html#temporaryStringError,ConfigRef,TLineInfo,string	msgs: temporaryStringError(conf: ConfigRef; info: TLineInfo; text: string)	
 localReport	front/msgs.html#localReport.t,ConfigRef,ReportTypes	msgs: localReport(conf: ConfigRef; report: ReportTypes)	
 localReport	front/msgs.html#localReport.t,ConfigRef,Report	msgs: localReport(conf: ConfigRef; report: Report)	
-internalError	front/msgs.html#internalError.t,ConfigRef,InternalReportKind,string	msgs: internalError(conf: ConfigRef; repKind: InternalReportKind; fail: string): untyped	
-internalError	front/msgs.html#internalError.t,ConfigRef,TLineInfo,InternalReportKind,string	msgs: internalError(conf: ConfigRef; info: TLineInfo; repKind: InternalReportKind;\n              fail: string): untyped	
 doInternalUnreachable	front/msgs.html#doInternalUnreachable,ConfigRef,TLineInfo,string,InstantiationInfo	msgs: doInternalUnreachable(conf: ConfigRef; info: TLineInfo; msg: string;\n                      instLoc: InstantiationInfo)	
 internalError	front/msgs.html#internalError.t,ConfigRef,TLineInfo,string	msgs: internalError(conf: ConfigRef; info: TLineInfo; fail: string): untyped	
 internalError	front/msgs.html#internalError.t,ConfigRef,string	msgs: internalError(conf: ConfigRef; fail: string): untyped	
@@ -63,7 +58,7 @@ internalAssert	front/msgs.html#internalAssert.t,ConfigRef,bool,TLineInfo,string	
 internalAssert	front/msgs.html#internalAssert.t,ConfigRef,bool,string	msgs: internalAssert(conf: ConfigRef; condition: bool; failMsg = &quot;&quot;)	
 lexDiagToLegacyReportKind	front/msgs.html#lexDiagToLegacyReportKind,LexerDiagKind	msgs: lexDiagToLegacyReportKind(diag: LexerDiagKind): ReportKind	
 lexerDiagToLegacyReport	front/msgs.html#lexerDiagToLegacyReport,LexerDiag	msgs: lexerDiagToLegacyReport(diag: LexerDiag): Report	
-handleReport	front/msgs.html#handleReport,ConfigRef,LexerDiag,InstantiationInfo,TErrorHandling	msgs: handleReport(conf: ConfigRef; diag: LexerDiag; reportFrom: InstantiationInfo;\n             eh: TErrorHandling = doNothing)	
+handleLexerDiag	front/msgs.html#handleLexerDiag,ConfigRef,LexerDiag,InstantiationInfo,TErrorHandling	msgs: handleLexerDiag(conf: ConfigRef; diag: LexerDiag; reportFrom: InstantiationInfo;\n                eh: TErrorHandling = doNothing)	
 handleParserDiag	front/msgs.html#handleParserDiag,ConfigRef,ParseDiag,InstantiationInfo,TErrorHandling	msgs: handleParserDiag(conf: ConfigRef; diag: ParseDiag;\n                 reportFrom: InstantiationInfo; eh: TErrorHandling = doNothing)	
 handleReport	front/msgs.html#handleReport,ConfigRef,PAstDiag,InstantiationInfo,TErrorHandling	msgs: handleReport(conf: ConfigRef; diag: PAstDiag; reportFrom: InstantiationInfo;\n             eh: TErrorHandling = doNothing)	
 semReportCountMismatch	front/msgs.html#semReportCountMismatch,ReportKind,,,PNode	msgs: semReportCountMismatch(kind: ReportKind; expected, got: distinct SomeInteger;\n                       node: PNode = nil): SemReport	
@@ -76,4 +71,3 @@ quotedFilename	front/msgs.html#quotedFilename,ConfigRef,TLineInfo	msgs: quotedFi
 listWarnings	front/msgs.html#listWarnings,ConfigRef	msgs: listWarnings(conf: ConfigRef)	
 listHints	front/msgs.html#listHints,ConfigRef	msgs: listHints(conf: ConfigRef)	
 uniqueModuleName	front/msgs.html#uniqueModuleName,ConfigRef,FileIndex	msgs: uniqueModuleName(conf: ConfigRef; fid: FileIndex): string	
-genSuccessX	front/msgs.html#genSuccessX,ConfigRef	msgs: genSuccessX(conf: ConfigRef)	

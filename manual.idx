@@ -189,6 +189,7 @@ Static statement/expression	manual.html#statements-and-expressions-static-statem
 If statement	manual.html#statements-and-expressions-if-statement	  If statement	
 Case statement	manual.html#statements-and-expressions-case-statement	  Case statement	
 When statement	manual.html#statements-and-expressions-when-statement	  When statement	
+When statement inside object	manual.html#statements-and-expressions-when-statement-inside-nimobject	  When statement inside <tt class="docutils literal"><span class="pre"><span class="Keyword">object</span></span></tt>	
 When nimvm statement	manual.html#statements-and-expressions-when-nimvm-statement	  When nimvm statement	
 Return statement	manual.html#statements-and-expressions-return-statement	  Return statement	
 result	manual.html#result_1	Return statement	
@@ -254,6 +255,7 @@ First-class iterators	manual.html#iterators-and-the-for-statement-firstminusclas
 inline iterator	manual.html#inline-iterator_1	First-class iterators	
 closure iterator	manual.html#closure-iterator_1	First-class iterators	
 collaborative tasking	manual.html#collaborative-tasking_1	First-class iterators	
+Parameter Passing For Iterators In for Loops	manual.html#firstminusclass-iterators-parameter-passing-for-iterators-in-nimfor-loops	   Parameter Passing For Iterators In <tt class="docutils literal"><span class="pre"><span class="Keyword">for</span></span></tt> Loops	
 Converters	manual.html#converters	 Converters	
 Type sections	manual.html#type-sections	 Type sections	
 Exception handling	manual.html#exception-handling	 Exception handling	
@@ -354,7 +356,6 @@ compileTime pragma	manual.html#pragmas-compiletime-pragma	  compileTime pragma
 noreturn pragma	manual.html#pragmas-noreturn-pragma	  noreturn pragma	
 acyclic pragma	manual.html#pragmas-acyclic-pragma	  acyclic pragma	
 final pragma	manual.html#pragmas-final-pragma	  final pragma	
-shallow pragma	manual.html#pragmas-shallow-pragma	  shallow pragma	
 pure pragma	manual.html#pragmas-pure-pragma	  pure pragma	
 asmNoStackFrame pragma	manual.html#pragmas-asmnostackframe-pragma	  asmNoStackFrame pragma	
 error pragma	manual.html#pragmas-error-pragma	  error pragma	
@@ -362,10 +363,8 @@ fatal pragma	manual.html#pragmas-fatal-pragma	  fatal pragma
 warning pragma	manual.html#pragmas-warning-pragma	  warning pragma	
 hint pragma	manual.html#pragmas-hint-pragma	  hint pragma	
 line pragma	manual.html#pragmas-line-pragma	  line pragma	
-linearScanEnd pragma	manual.html#pragmas-linearscanend-pragma	  linearScanEnd pragma	
-case	manual.html#case_1	linearScanEnd pragma	
 computedGoto pragma	manual.html#pragmas-computedgoto-pragma	  computedGoto pragma	
-case	manual.html#case_2	computedGoto pragma	
+case	manual.html#case_1	computedGoto pragma	
 immediate pragma	manual.html#pragmas-immediate-pragma	  immediate pragma	
 compilation option pragmas	manual.html#pragmas-compilation-option-pragmas	  compilation option pragmas	
 push and pop pragmas	manual.html#pragmas-push-and-pop-pragmas	  push and pop pragmas	

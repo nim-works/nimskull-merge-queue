@@ -131,7 +131,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/doc/intern.rst#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/doc/intern.rst#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/doc/intern.rst#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -251,7 +251,8 @@ class="link-seesrc" target="_blank">Source</a>
 <h3><a class="toc-backref" id="the-compiler-s-architecture-errors-nkerror" href="#the-compiler-s-architecture-errors-nkerror">Errors (nkError)</a></h3><p>Errors are now stored within the AST itself via <tt class="docutils literal"><span class="pre">nkError</span></tt> nodes, see the <tt class="docutils literal"><span class="pre">compiler/errorhandling</span></tt> module for more details. At the time of writing this is an ongoing <tt class="docutils literal"><span class="pre">refactoring project &lt;https://github.com/nim-works/nimskull/projects/1&gt;</span></tt> _.</p>
 <p>The legacy way of error reporting and handling is done via a set of <tt class="docutils literal"><span class="pre">template</span></tt>s and <tt class="docutils literal"><span class="pre">proc</span></tt>s within the <tt class="docutils literal"><span class="pre">msgs</span></tt> module. This complects control flow, as by default it aborts compilation on error and reporting itself. Additionally, it lead to complexity at the time of reporting as a significant amount of contextual information is required, in what is typically a local part of the AST being examined. Please help refactor accordingly if you encounter the legacy method.</p>
 
-<h3><a class="toc-backref" id="the-compiler-s-architecture-reports" href="#the-compiler-s-architecture-reports">Reports</a></h3><p>All output generates during compiler runtime is handled using <tt class="docutils literal"><span class="pre">Report</span></tt> type, defined in <tt class="docutils literal"><span class="pre">reports.nim</span></tt> module. Every single compilation warning, hint, error, and lots of other reports are wrapped into several categories (lexer, parser, sem, internal, external, debug and backend) and passed around.</p>
+<h3><a class="toc-backref" id="the-compiler-s-architecture-reports" href="#the-compiler-s-architecture-reports">Reports</a></h3><p>..note:: Reports are legacy and will be entirely removed/reworked</p>
+<p>All output generated during compiler runtime is handled using <tt class="docutils literal"><span class="pre">Report</span></tt> type, defined in <tt class="docutils literal"><span class="pre">reports.nim</span></tt> module. Every single compilation warning, hint, error, and lots of other reports are wrapped into several categories (lexer, parser, sem, internal, external, debug and backend) and passed around.</p>
 <p>Each error node (<tt class="docutils literal"><span class="pre">nkError</span></tt>) stores associated report id that is written out during error traversal. Postponed reports are stored in the <tt class="docutils literal"><span class="pre">MsgConfig.reports</span></tt> field, which can be asscessed from <tt class="docutils literal"><span class="pre">ConfigRef.m</span></tt>.</p>
 <p>For more details on the specific report kinds and categories see the <tt class="docutils literal"><span class="pre">report.nim</span></tt> module (for type definitions), <tt class="docutils literal"><span class="pre">options.nim</span></tt> (for writing storing postponed or writing out activated reports) and <tt class="docutils literal"><span class="pre">msgs.nim</span></tt> (for main logic related to error handing and report submission).</p>
 <p>When report need to be written out it is handed to <tt class="docutils literal"><span class="pre">ConfigRef.structuredReportHook</span></tt> - it can be reimplemented by other tooling, can generate output information in any format (json, pretty-printed, S-expression), and filter it out unnecessary reports. Default implementation of the report hook is provided in the <tt class="docutils literal"><span class="pre">cli_reporter.nim</span></tt> - if you want to improve particular error messages it is (ideally) the only (compiler) file that you need to edit.</p>
@@ -263,7 +264,8 @@ class="link-seesrc" target="_blank">Source</a>
 <pre class="listing"><span class="program">git</span> <span class="option">bisect</span> <span class="option">start</span> <span class="option">bad-commit</span> <span class="option">good-commit</span>
 <span class="program">git</span> <span class="option">bisect</span> <span class="option">run</span> <span class="Identifier">./koch.py</span> <span class="option">temp</span> <span class="option">-r</span> <span class="option">c</span> <span class="Identifier">test-source.nim</span></pre><p>You can also bisect using custom options to build the compiler, for example if you don't need a debug version of the compiler (which runs slower), you can replace <tt class="docutils literal"><span class="pre"><span class="program">./koch.py</span> <span class="option">temp</span></span></tt> by explicit compilation command, see <a class="reference internal" href="#bootstrapping-the-compiler">Bootstrapping the compiler</a>.</p>
 
-<h2><a class="toc-backref" id="runtimes" href="#runtimes">Runtimes</a></h2><p> NimSkull has two different runtimes, the &quot;old runtime&quot; and the &quot;new runtime&quot;. The old runtime supports the old GCs (markAndSweep, refc, Boehm), the new runtime supports ARC/ORC. The new runtime is active <tt class="docutils literal"><span class="pre">when defined(nimV2)</span></tt>.</p>
+<h2><a class="toc-backref" id="runtimes" href="#runtimes">Runtimes</a></h2><p> NimSkull had two different runtimes at one point, but support for the old one was removed from the compiler. Some documentation might still use the terms &quot;old runtime&quot; and &quot;new runtime&quot;.</p>
+<p>The new runtime is active <tt class="docutils literal"><span class="pre">when defined(nimV2)</span></tt>.</p>
 
 <h2><a class="toc-backref" id="coding-guidelines" href="#coding-guidelines">Coding Guidelines</a></h2><ul class="simple"><li>We follow  NimSkull's official style guide, see <a class="reference external" href="nep1.html">nep1.html</a>.</li>
 <li>Max line length is 100 characters.</li>
@@ -274,14 +276,11 @@ class="link-seesrc" target="_blank">Source</a>
 
 <h2><a class="toc-backref" id="porting-to-new-platforms" href="#porting-to-new-platforms">Porting to new platforms</a></h2><p>Porting  NimSkull to a new architecture is pretty easy, since C is the most portable programming language (within certain limits) and  NimSkull generates C code, porting the code generator is not necessary.</p>
 <p>POSIX-compliant systems on conventional hardware are usually pretty easy to port: Add the platform to <tt class="docutils literal"><span class="pre">platform</span></tt> (if it is not already listed there), check that the OS, System modules work and recompile  NimSkull.</p>
-<p>The only case where things aren't as easy is when old runtime's garbage collectors need some assembler tweaking to work. The default implementation uses C's <tt class="docutils literal"><span class="pre"><span class="Identifier">setjmp</span></span></tt> function to store all registers on the hardware stack. It may be necessary that the new platform needs to replace this generic code by some assembler code.</p>
 
 <h2><a class="toc-backref" id="runtime-type-information" href="#runtime-type-information">Runtime type information</a></h2><p><strong>Note</strong>: This section describes the &quot;old runtime&quot;.</p>
 <p><em>Runtime type information</em> (RTTI) is needed for several aspects of the  NimSkull programming language:</p>
-<dl class="docutils"><dt>Garbage collection</dt>
-<dd>The old GCs use the RTTI for traversing abitrary  NimSkull types, but usually only the <tt class="docutils literal"><span class="pre">marker</span></tt> field which contains a proc that does the traversal.</dd>
-<dt>Complex assignments</dt>
-<dd>Sequences and strings are implemented as pointers to resizeable buffers, but  NimSkull requires copying for assignments. Apart from RTTI the compiler also generates copy procedures as a specialization.</dd>
+<dl class="docutils"><dt>Deep copying</dt>
+<dd>Compared to a normal copy, a <em>deep</em> copy also creates copies of cells referenced by <tt class="docutils literal"><span class="pre">ref</span></tt>s, instead of just copying the pointers. The type of the <tt class="docutils literal"><span class="pre">ref</span></tt> can be different from the type of the cell, so an approach only taking static types into account wouldn't work.</dd>
 </dl>
 <p>We already know the type information as a graph in the compiler. Thus we need to serialize this graph as RTTI for C code generation. Look at the file <tt class="docutils literal"><span class="pre">lib/system/hti.nim</span></tt> for more information.</p>
 
@@ -415,7 +414,7 @@ n.typ.n == n</pre>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

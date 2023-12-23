@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', main);
                              tyTuple, tyRange, tyPtr, tyRef, tyVar, tyLent,
                              tySequence, tyProc, tyPointer, tyOpenArray,
                              tyString, tyCstring, tyInt..tyInt64,
-                             tyFloat..tyFloat128, tyUInt..tyUInt64}">ConcreteTypes</a></li>
+                             tyFloat..tyFloat64, tyUInt..tyUInt64}">ConcreteTypes</a></li>
   <li><a class="reference" href="#ConstantDataTypes"
     title="ConstantDataTypes: TTypeKinds = {tyArray, tySet, tyTuple, tySequence}">ConstantDataTypes</a></li>
   <li><a class="reference" href="#declarativeDefs"
@@ -157,10 +157,13 @@ window.addEventListener('DOMContentLoaded', main);
     title="defaultSize = -1">defaultSize</a></li>
   <li><a class="reference" href="#dispatcherPos"
     title="dispatcherPos = 8">dispatcherPos</a></li>
+  <li><a class="reference" href="#entityDefs"
+    title="entityDefs = {nkIdentDefs..nkVarTuple, nkLambda..nkDo, nkProcDef..nkIteratorDef,
+              nkForStmt, nkConstDef, nkFuncDef}">entityDefs</a></li>
   <li><a class="reference" href="#errorKindPos"
     title="errorKindPos = 1">errorKindPos</a></li>
   <li><a class="reference" href="#FakeVarParams"
-    title="FakeVarParams = {mNew, mInc, mDec, mIncl, mExcl, mSetLengthStr, mSetLengthSeq,
+    title="FakeVarParams = {mInc, mDec, mIncl, mExcl, mSetLengthStr, mSetLengthSeq,
                  mAppendStrCh, mAppendStrStr, mSwap, mAppendSeqElem, mNewSeq,
                  mReset, mShallowCopy, mDeepCopy, mMove, mWasMoved}">FakeVarParams</a></li>
   <li><a class="reference" href="#firstArgPos"
@@ -170,16 +173,16 @@ window.addEventListener('DOMContentLoaded', main);
   <li><a class="reference" href="#GenericTypes"
     title="GenericTypes: TTypeKinds = {tyGenericInvocation, tyGenericBody, tyGenericParam}">GenericTypes</a></li>
   <li><a class="reference" href="#IntegralTypes"
-    title="IntegralTypes = {tyBool, tyChar, tyEnum, tyInt..tyInt64, tyFloat..tyFloat128,
+    title="IntegralTypes = {tyBool, tyChar, tyEnum, tyInt..tyInt64, tyFloat..tyFloat64,
                  tyUInt..tyUInt64}">IntegralTypes</a></li>
+  <li><a class="reference" href="#magicsThatCanRaise"
+    title="magicsThatCanRaise = {mNone, mParseExprToAst, mParseStmtToAst, mEcho, mChckRange}">magicsThatCanRaise</a></li>
   <li><a class="reference" href="#MaxLockLevel"
     title="MaxLockLevel = 1000'i16">MaxLockLevel</a></li>
   <li><a class="reference" href="#miscPos"
     title="miscPos = 5">miscPos</a></li>
   <li><a class="reference" href="#namePos"
     title="namePos = 0">namePos</a></li>
-  <li><a class="reference" href="#nfAllFieldsSet"
-    title="nfAllFieldsSet = nfBase2">nfAllFieldsSet</a></li>
   <li><a class="reference" href="#NilableTypes"
     title="NilableTypes: TTypeKinds = {tyPointer, tyCstring, tyRef, tyPtr, tyProc, tyProxy}">NilableTypes</a></li>
   <li><a class="reference" href="#nkAllNodeKinds"
@@ -188,9 +191,9 @@ window.addEventListener('DOMContentLoaded', main);
     title="nkCallKinds = {nkCall, nkInfix, nkPrefix, nkPostfix, nkCommand, nkCallStrLit,
                nkHiddenCallConv}">nkCallKinds</a></li>
   <li><a class="reference" href="#nkFloatKinds"
-    title="nkFloatKinds = {nkFloatLit..nkFloat128Lit}">nkFloatKinds</a></li>
+    title="nkFloatKinds = {nkFloatLit..nkFloat64Lit}">nkFloatKinds</a></li>
   <li><a class="reference" href="#nkFloatLiterals"
-    title="nkFloatLiterals = {nkFloatLit..nkFloat128Lit}">nkFloatLiterals</a></li>
+    title="nkFloatLiterals = {nkFloatLit..nkFloat64Lit}">nkFloatLiterals</a></li>
   <li><a class="reference" href="#nkIdentKinds"
     title="nkIdentKinds = {nkIdent, nkSym, nkAccQuoted, nkOpenSymChoice, nkClosedSymChoice}">nkIdentKinds</a></li>
   <li><a class="reference" href="#nkIntKinds"
@@ -209,6 +212,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="nkStrLiterals = {nkStrLit..nkTripleStrLit}">nkStrLiterals</a></li>
   <li><a class="reference" href="#nkSymChoices"
     title="nkSymChoices = {nkClosedSymChoice, nkOpenSymChoice}">nkSymChoices</a></li>
+  <li><a class="reference" href="#nkTypeExprs"
+    title="nkTypeExprs = {nkTypeOfExpr, nkObjectTy, nkTupleTy, nkTupleClassTy,
+               nkTypeClassTy, nkStaticTy, nkRefTy, nkPtrTy, nkVarTy, nkConstTy,
+               nkMutableTy, nkDistinctTy, nkProcTy, nkIteratorTy, nkSharedTy,
+               nkEnumTy, nkStmtListType, nkBlockType}">nkTypeExprs</a></li>
   <li><a class="reference" href="#OverloadableSyms"
     title="OverloadableSyms = {skProc, skFunc, skMethod, skIterator, skConverter,
                     skTemplate, skMacro, skEnumField, skModule}">OverloadableSyms</a></li>
@@ -217,9 +225,8 @@ window.addEventListener('DOMContentLoaded', main);
   <li><a class="reference" href="#patternPos"
     title="patternPos = 1">patternPos</a></li>
   <li><a class="reference" href="#PersistentNodeFlags"
-    title="PersistentNodeFlags: TNodeFlags = {nfBase2, nfBase8, nfBase16, nfDotSetter,
-                                   nfDotField, nfIsRef, nfIsPtr, nfPreventCg,
-                                   nfLL, nfFromTemplate, nfDefaultRefsParam}">PersistentNodeFlags</a></li>
+    title="PersistentNodeFlags: TNodeFlags = {nfDotSetter, nfDotField, nfLL,
+                                   nfFromTemplate, nfDefaultRefsParam}">PersistentNodeFlags</a></li>
   <li><a class="reference" href="#pragmasPos"
     title="pragmasPos = 4">pragmasPos</a></li>
   <li><a class="reference" href="#procDefs"
@@ -305,6 +312,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="getFloat(a: PNode): BiggestFloat">getFloat(a: PNode): BiggestFloat</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">getIdentLineInfo
+      <li><a class="reference" href="#getIdentLineInfo%2CPNode"
+    title="getIdentLineInfo(n: PNode): TLineInfo">getIdentLineInfo(n: PNode): TLineInfo</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">getInt
       <li><a class="reference" href="#getInt%2CPNode"
     title="getInt(a: PNode): Int128">getInt(a: PNode): Int128</a></li>
@@ -338,6 +350,11 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">getStrOrChar
       <li><a class="reference" href="#getStrOrChar%2CPNode"
     title="getStrOrChar(a: PNode): string">getStrOrChar(a: PNode): string</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">hasDestructor
+      <li><a class="reference" href="#hasDestructor%2CPType"
+    title="hasDestructor(t: PType): bool">hasDestructor(t: PType): bool</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">hasNilSon
@@ -470,6 +487,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="isUnresolvedStatic(t: PType): bool">isUnresolvedStatic(t: PType): bool</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">isUnresolvedSym
+      <li><a class="reference" href="#isUnresolvedSym%2CPSym"
+    title="isUnresolvedSym(s: PSym): bool">isUnresolvedSym(s: PSym): bool</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">lastSon
       <li><a class="reference" href="#lastSon%2CIndexable"
     title="lastSon(n: Indexable): Indexable">lastSon(n: Indexable): Indexable</a></li>
@@ -548,6 +570,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="branchLabels(node: PNode): (int, PNode)">branchLabels(node: PNode): (int, PNode)</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">forLoopDefs
+      <li><a class="reference" href="#forLoopDefs.i%2CPNode"
+    title="forLoopDefs(forStmt: PNode): PNode">forLoopDefs(forStmt: PNode): PNode</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">genericParamsInMacroCall
       <li><a class="reference" href="#genericParamsInMacroCall.i%2CPSym%2CPNode"
     title="genericParamsInMacroCall(macroSym: PSym; call: PNode): (PSym, PNode)">genericParamsInMacroCall(macroSym: PSym; call: PNode): (PSym, PNode)</a></li>
@@ -556,6 +583,11 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">items
       <li><a class="reference" href="#items.i%2CPNode"
     title="items(n: PNode): PNode">items(n: PNode): PNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">names
+      <li><a class="reference" href="#names.i%2CPNode"
+    title="names(node: PNode): PNode">names(node: PNode): PNode</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">pairs
@@ -582,11 +614,6 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">filename
       <li><a class="reference" href="#filename.t%2CPSym"
     title="filename(c: PSym): string">filename(c: PSym): string</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">hasDestructor
-      <li><a class="reference" href="#hasDestructor.t%2CPType"
-    title="hasDestructor(t: PType): bool">hasDestructor(t: PType): bool</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">id
@@ -617,7 +644,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -630,7 +657,7 @@ class="link-seesrc" target="_blank">Source</a>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="lineinfos.html">lineinfos</a>, <a class="reference external" href="idents.html">idents</a>, <a class="reference external" href="ast_types.html">ast_types</a>, <a class="reference external" href="../utils/int128.html">../utils/int128</a>
+<a class="reference external" href="lineinfos.html">lineinfos</a>, <a class="reference external" href="idents.html">idents</a>, <a class="reference external" href="ast_types.html">ast_types</a>, <a class="reference external" href="../utils/int128.html">../utils/int128</a>, <a class="reference external" href="../utils/idioms.html">../utils/idioms</a>
 </dl></div>
 <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
@@ -652,9 +679,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Named node position accessor
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L625"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L675"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L625" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L675" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -668,9 +695,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Named node slice accessor
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L639"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L689"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L639" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L689" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -686,9 +713,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L172"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L210"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L172" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L210" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -698,9 +725,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 position of body; use rodread.getBody() instead!
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L75"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L74"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L75" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L74" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -710,9 +737,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L105"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L102"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L105" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -722,9 +749,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Error compiler source file as strlit, line &amp; col on info
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L81"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L80"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -733,14 +760,14 @@ class="link-seesrc" target="_blank">Source</a>
                              <span class="DecNumber">tyTuple</span><span class="Other">,</span> <span class="DecNumber">tyRange</span><span class="Other">,</span> <span class="DecNumber">tyPtr</span><span class="Other">,</span> <span class="DecNumber">tyRef</span><span class="Other">,</span> <span class="DecNumber">tyVar</span><span class="Other">,</span> <span class="DecNumber">tyLent</span><span class="Other">,</span>
                              <span class="DecNumber">tySequence</span><span class="Other">,</span> <span class="DecNumber">tyProc</span><span class="Other">,</span> <span class="DecNumber">tyPointer</span><span class="Other">,</span> <span class="DecNumber">tyOpenArray</span><span class="Other">,</span>
                              <span class="DecNumber">tyString</span><span class="Other">,</span> <span class="DecNumber">tyCstring</span><span class="Other">,</span> <span class="DecNumber">tyInt</span><span class="Other">..</span><span class="DecNumber">tyInt64</span><span class="Other">,</span>
-                             <span class="DecNumber">tyFloat</span><span class="Other">..</span><span class="DecNumber">tyFloat128</span><span class="Other">,</span> <span class="DecNumber">tyUInt</span><span class="Other">..</span><span class="DecNumber">tyUInt64</span><span class="Other">}</span></pre></dt>
+                             <span class="DecNumber">tyFloat</span><span class="Other">..</span><span class="DecNumber">tyFloat64</span><span class="Other">,</span> <span class="DecNumber">tyUInt</span><span class="Other">..</span><span class="DecNumber">tyUInt64</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L45"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L46"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L45" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L46" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -750,9 +777,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L56"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L57"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L56" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L57" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -763,9 +790,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L102"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L99"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L99" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -775,9 +802,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L122"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L143"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L122" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L143" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -787,9 +814,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L123"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L144"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L123" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L144" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -799,9 +826,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L121"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L142"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L121" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L142" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -811,9 +838,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L77"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L76"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L77" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L76" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="entityDefs">
+<dt><pre><a href="ast_query.html#entityDefs"><span class="Identifier">entityDefs</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nkIdentDefs</span><span class="Other">..</span><span class="DecNumber">nkVarTuple</span><span class="Other">,</span> <span class="DecNumber">nkLambda</span><span class="Other">..</span><span class="DecNumber">nkDo</span><span class="Other">,</span> <span class="DecNumber">nkProcDef</span><span class="Other">..</span><span class="DecNumber">nkIteratorDef</span><span class="Other">,</span>
+              <span class="DecNumber">nkForStmt</span><span class="Other">,</span> <span class="DecNumber">nkConstDef</span><span class="Other">,</span> <span class="DecNumber">nkFuncDef</span><span class="Other">}</span></pre></dt>
+<dd>
+
+all nodes that have definition slots. In other words, semantic analysis of these can introduce new symbols
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L103"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L103" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -823,23 +863,23 @@ class="link-seesrc" target="_blank">Source</a>
 
 Error kind enum as an intlit
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L80"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L79"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L79" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="FakeVarParams">
-<dt><pre><a href="ast_query.html#FakeVarParams"><span class="Identifier">FakeVarParams</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mNew</span><span class="Other">,</span> <span class="DecNumber">mInc</span><span class="Other">,</span> <span class="DecNumber">mDec</span><span class="Other">,</span> <span class="DecNumber">mIncl</span><span class="Other">,</span> <span class="DecNumber">mExcl</span><span class="Other">,</span> <span class="DecNumber">mSetLengthStr</span><span class="Other">,</span> <span class="DecNumber">mSetLengthSeq</span><span class="Other">,</span>
+<dt><pre><a href="ast_query.html#FakeVarParams"><span class="Identifier">FakeVarParams</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mInc</span><span class="Other">,</span> <span class="DecNumber">mDec</span><span class="Other">,</span> <span class="DecNumber">mIncl</span><span class="Other">,</span> <span class="DecNumber">mExcl</span><span class="Other">,</span> <span class="DecNumber">mSetLengthStr</span><span class="Other">,</span> <span class="DecNumber">mSetLengthSeq</span><span class="Other">,</span>
                  <span class="DecNumber">mAppendStrCh</span><span class="Other">,</span> <span class="DecNumber">mAppendStrStr</span><span class="Other">,</span> <span class="DecNumber">mSwap</span><span class="Other">,</span> <span class="DecNumber">mAppendSeqElem</span><span class="Other">,</span> <span class="DecNumber">mNewSeq</span><span class="Other">,</span>
                  <span class="DecNumber">mReset</span><span class="Other">,</span> <span class="DecNumber">mShallowCopy</span><span class="Other">,</span> <span class="DecNumber">mDeepCopy</span><span class="Other">,</span> <span class="DecNumber">mMove</span><span class="Other">,</span> <span class="DecNumber">mWasMoved</span><span class="Other">}</span></pre></dt>
 <dd>
 
 An arguments to these magics never uses <tt class="docutils literal"><span class="pre">nkHiddenAddr</span></tt>, even if the corresponding parameter is a 'var' parameter. The reason for this is that these magics are lowered into code that, because it gets inlined directly, doesn't mutate the arguments through indirection. This also implies that the &quot;is address taken&quot; analysis (see <tt class="docutils literal"><span class="pre">sfAddrTaken</span></tt>) must not be performed for arguments to these magics.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L125"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L146"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L125" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L146" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -849,9 +889,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Error first 0..n additional nodes depends on error kind
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L83"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L82"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L83" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -861,9 +901,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Generic parametesr in the procedure-like nodes
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L71"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L70"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L71" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L70" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -873,22 +913,34 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L38"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L39"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L38" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L39" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="IntegralTypes">
-<dt><pre><a href="ast_query.html#IntegralTypes"><span class="Identifier">IntegralTypes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">tyBool</span><span class="Other">,</span> <span class="DecNumber">tyChar</span><span class="Other">,</span> <span class="DecNumber">tyEnum</span><span class="Other">,</span> <span class="DecNumber">tyInt</span><span class="Other">..</span><span class="DecNumber">tyInt64</span><span class="Other">,</span> <span class="DecNumber">tyFloat</span><span class="Other">..</span><span class="DecNumber">tyFloat128</span><span class="Other">,</span>
+<dt><pre><a href="ast_query.html#IntegralTypes"><span class="Identifier">IntegralTypes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">tyBool</span><span class="Other">,</span> <span class="DecNumber">tyChar</span><span class="Other">,</span> <span class="DecNumber">tyEnum</span><span class="Other">,</span> <span class="DecNumber">tyInt</span><span class="Other">..</span><span class="DecNumber">tyInt64</span><span class="Other">,</span> <span class="DecNumber">tyFloat</span><span class="Other">..</span><span class="DecNumber">tyFloat64</span><span class="Other">,</span>
                  <span class="DecNumber">tyUInt</span><span class="Other">..</span><span class="DecNumber">tyUInt64</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L53"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L54"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L53" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L54" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="magicsThatCanRaise">
+<dt><pre><a href="ast_query.html#magicsThatCanRaise"><span class="Identifier">magicsThatCanRaise</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mNone</span><span class="Other">,</span> <span class="DecNumber">mParseExprToAst</span><span class="Other">,</span> <span class="DecNumber">mParseStmtToAst</span><span class="Other">,</span> <span class="DecNumber">mEcho</span><span class="Other">,</span> <span class="DecNumber">mChckRange</span><span class="Other">}</span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L636"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L636" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -898,9 +950,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L170"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L208"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L170" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L208" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -910,9 +962,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 used for undocumented and hacky stuff
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L74"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L73"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L74" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L73" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -922,21 +974,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Name of the type/proc-like node
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L69"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L68"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L69" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="nfAllFieldsSet">
-<dt><pre><a href="ast_query.html#nfAllFieldsSet"><span class="Identifier">nfAllFieldsSet</span></a> <span class="Other">=</span> <span class="DecNumber">nfBase2</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L86"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L86" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L68" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -946,9 +986,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L59"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L60"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L59" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L60" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -958,9 +998,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L114"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L135"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L114" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L135" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -971,33 +1011,33 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L88"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L85"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L88" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L85" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="nkFloatKinds">
-<dt><pre><a href="ast_query.html#nkFloatKinds"><span class="Identifier">nkFloatKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nkFloatLit</span><span class="Other">..</span><span class="DecNumber">nkFloat128Lit</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="ast_query.html#nkFloatKinds"><span class="Identifier">nkFloatKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nkFloatLit</span><span class="Other">..</span><span class="DecNumber">nkFloat64Lit</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L111"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L132"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L111" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L132" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="nkFloatLiterals">
-<dt><pre><a href="ast_query.html#nkFloatLiterals"><span class="Identifier">nkFloatLiterals</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nkFloatLit</span><span class="Other">..</span><span class="DecNumber">nkFloat128Lit</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="ast_query.html#nkFloatLiterals"><span class="Identifier">nkFloatLiterals</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nkFloatLit</span><span class="Other">..</span><span class="DecNumber">nkFloat64Lit</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L96"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L93"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L96" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L93" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1007,9 +1047,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L90"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L87"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L90" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L87" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1019,9 +1059,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L110"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L131"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L110" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1031,9 +1071,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L95"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L92"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L95" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L92" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1043,9 +1083,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L101"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L98"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L101" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L98" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1055,9 +1095,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L99"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L96"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L99" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L96" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1067,9 +1107,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L93"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L90"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L93" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L90" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1079,9 +1119,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L112"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L133"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L112" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L133" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1091,9 +1131,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L97"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L94"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L97" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L94" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1103,9 +1143,24 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L107"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L107"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L107" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="nkTypeExprs">
+<dt><pre><a href="ast_query.html#nkTypeExprs"><span class="Identifier">nkTypeExprs</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nkTypeOfExpr</span><span class="Other">,</span> <span class="DecNumber">nkObjectTy</span><span class="Other">,</span> <span class="DecNumber">nkTupleTy</span><span class="Other">,</span> <span class="DecNumber">nkTupleClassTy</span><span class="Other">,</span>
+               <span class="DecNumber">nkTypeClassTy</span><span class="Other">,</span> <span class="DecNumber">nkStaticTy</span><span class="Other">,</span> <span class="DecNumber">nkRefTy</span><span class="Other">,</span> <span class="DecNumber">nkPtrTy</span><span class="Other">,</span> <span class="DecNumber">nkVarTy</span><span class="Other">,</span> <span class="DecNumber">nkConstTy</span><span class="Other">,</span>
+               <span class="DecNumber">nkMutableTy</span><span class="Other">,</span> <span class="DecNumber">nkDistinctTy</span><span class="Other">,</span> <span class="DecNumber">nkProcTy</span><span class="Other">,</span> <span class="DecNumber">nkIteratorTy</span><span class="Other">,</span> <span class="DecNumber">nkSharedTy</span><span class="Other">,</span>
+               <span class="DecNumber">nkEnumTy</span><span class="Other">,</span> <span class="DecNumber">nkStmtListType</span><span class="Other">,</span> <span class="DecNumber">nkBlockType</span><span class="Other">}</span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L109"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L109" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1116,9 +1171,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L18"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L19"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L18" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L19" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1128,9 +1183,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Formal parameters in the procedure-like nodes
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L72"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L71"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L72" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L71" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1140,23 +1195,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 empty except for term rewriting macros
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L70"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L69"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L70" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L69" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="PersistentNodeFlags">
-<dt><pre><a href="ast_query.html#PersistentNodeFlags"><span class="Identifier">PersistentNodeFlags</span></a><span class="Other">:</span> <a href="ast_types.html#TNodeFlags"><span class="Identifier">TNodeFlags</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nfBase2</span><span class="Other">,</span> <span class="DecNumber">nfBase8</span><span class="Other">,</span> <span class="DecNumber">nfBase16</span><span class="Other">,</span> <span class="DecNumber">nfDotSetter</span><span class="Other">,</span>
-                                   <span class="DecNumber">nfDotField</span><span class="Other">,</span> <span class="DecNumber">nfIsRef</span><span class="Other">,</span> <span class="DecNumber">nfIsPtr</span><span class="Other">,</span> <span class="DecNumber">nfPreventCg</span><span class="Other">,</span>
-                                   <span class="DecNumber">nfLL</span><span class="Other">,</span> <span class="DecNumber">nfFromTemplate</span><span class="Other">,</span> <span class="DecNumber">nfDefaultRefsParam</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="ast_query.html#PersistentNodeFlags"><span class="Identifier">PersistentNodeFlags</span></a><span class="Other">:</span> <a href="ast_types.html#TNodeFlags"><span class="Identifier">TNodeFlags</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">nfDotSetter</span><span class="Other">,</span> <span class="DecNumber">nfDotField</span><span class="Other">,</span> <span class="DecNumber">nfLL</span><span class="Other">,</span>
+                                   <span class="DecNumber">nfFromTemplate</span><span class="Other">,</span> <span class="DecNumber">nfDefaultRefsParam</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L64"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L65"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L64" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L65" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1166,9 +1220,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Position of the pragma in the procedure-like nodes
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L73"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L72"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L73" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L72" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1178,9 +1232,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L104"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L101"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L104" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L101" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1190,9 +1244,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L62"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L63"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L62" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L63" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1202,9 +1256,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L76"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L75"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L76" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L75" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1214,9 +1268,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L103"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L100"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L103" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L100" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1229,9 +1283,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L33"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L34"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L33" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L34" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1241,9 +1295,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L116"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L137"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L116" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L137" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1254,9 +1308,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L117"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L138"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L117" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L138" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1268,9 +1322,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L41"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L42"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L41" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L42" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1280,9 +1334,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L171"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L209"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L171" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L209" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1292,9 +1346,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L169"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L207"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L169" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L207" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1304,9 +1358,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Error the ast node we swapped
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L79"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L78"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L79" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L78" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1321,9 +1375,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L181"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L219"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L181" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L219" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1333,9 +1387,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L176"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L214"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L176" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L214" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1345,9 +1399,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get subnode by named position
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L646"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L696"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L646" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L696" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1357,9 +1411,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Access named node slice
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L685"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L735"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L685" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L735" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1369,9 +1423,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 get only the definition (initializer) portion of the ast
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L237"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L276"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L237" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L276" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1381,9 +1435,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L595"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L645"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L595" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L645" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1393,9 +1447,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L589"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L639"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L589" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L639" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1405,9 +1459,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L309"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L356"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L309" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L356" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1417,9 +1471,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L539"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L586"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L539" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L586" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1429,9 +1483,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 return the <tt class="docutils literal"><span class="pre"><span class="Identifier">nkPragma</span></span></tt> node for declaration <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt>, or <tt class="docutils literal"><span class="pre"><span class="Keyword">nil</span></span></tt> if no pragma was found. Currently only supports routineDefs + {nkTypeDef}.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L201"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L240"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L201" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L240" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1441,9 +1495,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L349"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L396"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L349" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L396" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="getIdentLineInfo,PNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#getIdentLineInfo%2CPNode"><span class="Identifier">getIdentLineInfo</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <a href="ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="lineinfos.html#TLineInfo"><span class="Identifier">TLineInfo</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Returns the line information of the identifier-like node in the (semantically valid) AST <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> appearing in a name slot.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L166"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L166" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1453,9 +1519,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L329"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L376"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L329" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L376" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1469,9 +1535,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L342"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L389"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L342" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L389" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1481,9 +1547,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L145"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L183"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L145" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L183" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1493,9 +1559,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L188"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L226"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L188" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L226" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1505,9 +1571,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns underlying <tt class="docutils literal"><span class="pre"><span class="Identifier">PIdent</span></span></tt> for <tt class="docutils literal"><span class="pre"><span class="Punctuation">{</span><span class="Identifier">nkSym</span><span class="Punctuation">,</span> <span class="Identifier">nkIdent</span><span class="Punctuation">}</span></span></tt>, or <tt class="docutils literal"><span class="pre"><span class="Keyword">nil</span></span></tt>.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L136"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L157"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L136" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L157" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1517,9 +1583,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L360"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L407"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L360" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L407" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1529,9 +1595,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L372"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L419"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L372" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L419" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="hasDestructor,PType">
+<dt><pre><span class="Keyword">func</span> <a href="#hasDestructor%2CPType"><span class="Identifier">hasDestructor</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="ast_types.html#PType"><span class="Identifier">PType</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span class="Identifier">inline</span><span class="Other">,</span> <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Returns whether the underlying concrete type of <tt class="docutils literal"><span class="pre"><span class="Identifier">t</span></span></tt> has attached lifetime tracking hooks (that is, is resource-like).
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L607"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L607" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1541,9 +1619,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L301"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L348"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L301" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L348" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1553,9 +1631,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L507"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L554"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L507" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L554" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1565,9 +1643,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L295"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L342"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L295" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L342" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1577,9 +1655,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L317"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L364"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L317" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L364" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1589,9 +1667,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L516"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L563"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L516" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L563" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1601,9 +1679,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L193"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L231"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L193" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L231" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1613,9 +1691,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L577"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L627"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L577" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L627" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1625,9 +1703,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L574"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L624"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L574" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L624" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1637,9 +1715,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L475"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L522"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L475" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L522" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1649,9 +1727,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 'void' and 'typed' types are often equivalent to 'nil' these days:
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L519"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L566"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L519" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L566" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1661,9 +1739,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 whether the node is an error, strictly checks nkError and is nil safe
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L389"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L436"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L389" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L436" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1673,9 +1751,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 whether the symbol is an error, strictly checks skError, an error node exists, and is nil safe.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L393"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L440"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L393" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L440" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1687,9 +1765,9 @@ class="link-seesrc" target="_blank">Source</a>
 <p>xxx: currently we have no way to disambiguate between legacy and new</p>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L398"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L445"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L398" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L445" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1702,9 +1780,9 @@ whether the node is an error, including error symbol, or error type<dl class="do
 </dl>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L419"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L466"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L419" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L466" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1714,9 +1792,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 whether the symbol is an error. useful because of compiler legacy, as <tt class="docutils literal"><span class="pre"><span class="Identifier">skError</span></span></tt> isn't an enum field rather a const refering to <tt class="docutils literal"><span class="pre"><span class="Identifier">skUnkonwn</span></span></tt>. we disambiguate via the presence of the ast field being non-nil and of kind <tt class="docutils literal"><span class="pre"><span class="Identifier">nkError</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L412"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L459"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L412" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L459" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1728,9 +1806,9 @@ class="link-seesrc" target="_blank">Source</a>
 <p>xxx: currently we have no way to disambiguate between legacy and new</p>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L405"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L452"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L405" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L452" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1740,9 +1818,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 used to judge whether a node is generic params.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L382"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L429"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L382" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L429" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1752,9 +1830,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L386"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L433"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L386" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L433" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1770,9 +1848,9 @@ class="link-seesrc" target="_blank">Source</a>
 </ul>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L437"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L484"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L437" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L484" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1782,9 +1860,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 determines if this symbol represents a generic routine the unusual name is so it doesn't collide and eventually replaces <tt class="docutils literal"><span class="pre"><span class="Identifier">isGenericRoutine</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L431"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L478"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L431" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L478" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1794,9 +1872,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L531"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L578"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L531" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L578" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1806,9 +1884,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L571"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L621"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L571" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L621" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1818,9 +1896,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L245"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L284"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L245" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L284" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1830,9 +1908,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Tests if <tt class="docutils literal"><span class="pre"><span class="Identifier">b</span></span></tt> is the transitive owner of <tt class="docutils literal"><span class="pre"><span class="Identifier">a</span></span></tt>, returns true if <tt class="docutils literal"><span class="pre"><span class="Identifier">a</span></span></tt> got owned! :)
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L460"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L507"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L460" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L507" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1842,9 +1920,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L472"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L519"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L472" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L519" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1854,9 +1932,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L479"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L526"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L479" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L526" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1866,9 +1944,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L580"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L630"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L580" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L630" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1878,9 +1956,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L583"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L633"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L583" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L633" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1890,9 +1968,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L250"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L289"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L250" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L289" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="isUnresolvedSym,PSym">
+<dt><pre><span class="Keyword">proc</span> <a href="#isUnresolvedSym%2CPSym"><span class="Identifier">isUnresolvedSym</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <a href="ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L292"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L292" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1902,9 +1992,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L262"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L309"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L262" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L309" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1914,9 +2004,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L468"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L515"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L468" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L515" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1926,9 +2016,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L493"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L540"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L493" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L540" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1938,9 +2028,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L484"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L531"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L484" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L531" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1950,9 +2040,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 works even for leaves.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L196"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L234"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L196" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L234" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1962,9 +2052,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L611"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L661"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L611" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L661" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1974,9 +2064,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L534"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L581"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L534" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L581" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1986,9 +2076,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Skips over all possible distinct instantiations, getting base.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L276"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L323"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L276" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L323" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1998,9 +2088,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Generic instantiations are owned by their originating generic symbol. This proc skips such owners and goes straight to the owner of the generic itself (the module or the enclosing proc).
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L451"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L498"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L451" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L498" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2010,9 +2100,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L523"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L570"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L523" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L570" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2022,9 +2112,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Used throughout the compiler code to test whether a type tree contains or doesn't contain a specific type/types - it is often the case that only the last child nodes of a type tree need to be searched. This is a really hot path within the compiler!
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L268"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L315"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L268" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L315" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2035,9 +2125,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L280"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L327"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L280" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L327" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2047,9 +2137,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 same as skipTypes but handles 'nil'
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L288"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L335"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L288" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L335" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2065,9 +2155,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns all branches of the <tt class="docutils literal"><span class="pre">case</span></tt> statement or expression <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> in order of occurrence. <tt class="docutils literal"><span class="pre"><span class="Identifier">position</span></span></tt> is the 0-based position of the branch, not the index of the sub-node
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L692"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L742"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L692" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L742" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2077,9 +2167,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns all labels of the branch-like constructs (i.e. <tt class="docutils literal"><span class="pre">of</span></tt>, <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">elif</span></tt>) that <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> represents, together with their position. For convenience, <tt class="docutils literal"><span class="pre">else</span></tt> branches are also allowed: they're treated as having no labels
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L700"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L750"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L700" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L750" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="forLoopDefs.i,PNode">
+<dt><pre><span class="Keyword">iterator</span> <a href="#forLoopDefs.i%2CPNode"><span class="Identifier">forLoopDefs</span></a><span class="Other">(</span><span class="Identifier">forStmt</span><span class="Other">:</span> <a href="ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Returns the nodes appearing in the name slots (including nested ones) of the provided <tt class="docutils literal"><span class="pre">nkForStmt</span></tt> node.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L767"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L767" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2090,9 +2192,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 For a macro call, yields the symbol for each generic parameter toghether with the <em>argument</em> provided to it
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L614"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L664"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L614" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L664" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2102,9 +2204,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L510"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L557"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L510" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L557" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="names.i,PNode">
+<dt><pre><span class="Keyword">iterator</span> <a href="#names.i%2CPNode"><span class="Identifier">names</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Returns the node for each name slot of the <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>, where <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> is the definition node for some symbol that is not a routine.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L760"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L760" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2114,9 +2228,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L513"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L560"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L513" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L560" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2131,9 +2245,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L568"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L618"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L568" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L618" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2143,9 +2257,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L253"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L300"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L253" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L300" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2155,21 +2269,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L257"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L304"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L257" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="hasDestructor.t,PType">
-<dt><pre><span class="Keyword">template</span> <a href="#hasDestructor.t%2CPType"><span class="Identifier">hasDestructor</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <a href="ast_types.html#PType"><span class="Identifier">PType</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L560"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L560" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L304" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2179,9 +2281,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L163"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L201"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L163" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L201" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2191,9 +2293,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L562"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L612"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L562" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L612" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2203,9 +2305,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L233"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L272"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L233" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L272" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2215,9 +2317,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/ast_query.nim#L565"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/ast_query.nim#L615"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L565" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/ast_query.nim#L615" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -2231,7 +2333,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

@@ -58,6 +58,7 @@ rawAddSonNoPropagationOfTypeFlags	ast/ast.html#rawAddSonNoPropagationOfTypeFlags
 addSonNilAllowed	ast/ast.html#addSonNilAllowed,PNode,PNode	ast: addSonNilAllowed(father, son: PNode)	
 delSon	ast/ast.html#delSon,PNode,int	ast: delSon(father: PNode; idx: int)	
 copyNode	ast/ast.html#copyNode,PNode	ast: copyNode(src: PNode): PNode	
+copyNodeWithKids	ast/ast.html#copyNodeWithKids,PNode	ast: copyNodeWithKids(src: PNode): PNode	
 transitionSonsKind	ast/ast.html#transitionSonsKind,PNode,range[]	ast: transitionSonsKind(n: PNode; kind: range[nkDotCall .. nkTupleConstr])	
 transitionIntKind	ast/ast.html#transitionIntKind,PNode,range[]	ast: transitionIntKind(n: PNode; kind: range[nkCharLit .. nkUInt64Lit])	
 transitionNoneToSym	ast/ast.html#transitionNoneToSym,PNode	ast: transitionNoneToSym(n: PNode)	
@@ -72,14 +73,12 @@ copyTreeWithoutNode	ast/ast.html#copyTreeWithoutNode,PNode,PNode	ast: copyTreeWi
 copyTreeWithoutNodes	ast/ast.html#copyTreeWithoutNodes,PNode,varargs[PNode]	ast: copyTreeWithoutNodes(src: PNode; skippedNodes: varargs[PNode]): PNode	
 makeStmtList	ast/ast.html#makeStmtList,PNode	ast: makeStmtList(n: PNode): PNode	
 toVar	ast/ast.html#toVar,PType,TTypeKind,IdGenerator	ast: toVar(typ: PType; kind: TTypeKind; idgen: IdGenerator): PType	
-toRef	ast/ast.html#toRef,PType,IdGenerator	ast: toRef(typ: PType; idgen: IdGenerator): PType	
 toObject	ast/ast.html#toObject,PType	ast: toObject(typ: PType): PType	
 toObjectFromRefPtrGeneric	ast/ast.html#toObjectFromRefPtrGeneric,PType	ast: toObjectFromRefPtrGeneric(typ: PType): PType	
 newProcType	ast/ast.html#newProcType,TLineInfo,ItemId,PSym	ast: newProcType(info: TLineInfo; id: ItemId; owner: PSym): PType	
 addParam	ast/ast.html#addParam,PType,PSym	ast: addParam(procType: PType; param: PSym)	
 toHumanStr	ast/ast.html#toHumanStr,TSymKind	ast: toHumanStr(kind: TSymKind): string	
 toHumanStr	ast/ast.html#toHumanStr,TTypeKind	ast: toHumanStr(kind: TTypeKind): string	
-setBaseFlags	ast/ast.html#setBaseFlags,PNode,NumericalBase	ast: setBaseFlags(n: PNode; base: NumericalBase)	
 toTNodeKind	ast/ast.html#toTNodeKind,ParsedNodeKind	ast: toTNodeKind(kind: ParsedNodeKind): TNodeKind	
 splitCustomLit	ast/ast.html#splitCustomLit,ParsedNode	ast: splitCustomLit(n: ParsedNode): tuple[num, ident: ParsedNode]	
 toPNode	ast/ast.html#toPNode,ParsedNode	ast: toPNode(parsed: ParsedNode): PNode	

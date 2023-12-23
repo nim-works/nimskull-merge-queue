@@ -86,7 +86,6 @@ tkUInt64Lit	ast/lexer.html#tkUInt64Lit	TokType.tkUInt64Lit
 tkFloatLit	ast/lexer.html#tkFloatLit	TokType.tkFloatLit	
 tkFloat32Lit	ast/lexer.html#tkFloat32Lit	TokType.tkFloat32Lit	
 tkFloat64Lit	ast/lexer.html#tkFloat64Lit	TokType.tkFloat64Lit	
-tkFloat128Lit	ast/lexer.html#tkFloat128Lit	TokType.tkFloat128Lit	
 tkStrLit	ast/lexer.html#tkStrLit	TokType.tkStrLit	
 tkRStrLit	ast/lexer.html#tkRStrLit	TokType.tkRStrLit	
 tkTripleStrLit	ast/lexer.html#tkTripleStrLit	TokType.tkTripleStrLit	
@@ -125,7 +124,8 @@ tkHideableStart	ast/lexer.html#tkHideableStart	TokType.tkHideableStart
 tkHideableEnd	ast/lexer.html#tkHideableEnd	TokType.tkHideableEnd	
 TokType	ast/lexer.html#TokType	lexer: TokType	
 TokTypes	ast/lexer.html#TokTypes	lexer: TokTypes	
-lexDiagMalformedUnderscores	ast/lexer.html#lexDiagMalformedUnderscores	LexerDiagKind.lexDiagMalformedUnderscores	
+lexDiagMalformedNumUnderscores	ast/lexer.html#lexDiagMalformedNumUnderscores	LexerDiagKind.lexDiagMalformedNumUnderscores	
+lexDiagMalformedIdentUnderscores	ast/lexer.html#lexDiagMalformedIdentUnderscores	LexerDiagKind.lexDiagMalformedIdentUnderscores	
 lexDiagMalformedTrailingUnderscre	ast/lexer.html#lexDiagMalformedTrailingUnderscre	LexerDiagKind.lexDiagMalformedTrailingUnderscre	
 lexDiagInvalidToken	ast/lexer.html#lexDiagInvalidToken	LexerDiagKind.lexDiagInvalidToken	
 lexDiagInvalidTokenSpaceBetweenNumAndIdent	ast/lexer.html#lexDiagInvalidTokenSpaceBetweenNumAndIdent	LexerDiagKind.lexDiagInvalidTokenSpaceBetweenNumAndIdent	
@@ -156,6 +156,8 @@ LexDiagsWarning	ast/lexer.html#LexDiagsWarning	lexer: LexDiagsWarning
 LexDiagsHint	ast/lexer.html#LexDiagsHint	lexer: LexDiagsHint	
 tokKeywordLow	ast/lexer.html#tokKeywordLow	lexer: tokKeywordLow	
 tokKeywordHigh	ast/lexer.html#tokKeywordHigh	lexer: tokKeywordHigh	
+tkKeywords	ast/lexer.html#tkKeywords	lexer: tkKeywords	
+diagToHumanStr	ast/lexer.html#diagToHumanStr,LexerDiag	lexer: diagToHumanStr(d: LexerDiag): string	
 Token	ast/lexer.html#Token	lexer: Token	
 Lexer	ast/lexer.html#Lexer	lexer: Lexer	
 diagOffset	ast/lexer.html#diagOffset,Lexer	lexer: diagOffset(L: Lexer): int	
@@ -173,7 +175,5 @@ openLexer	ast/lexer.html#openLexer,Lexer,AbsoluteFile,PLLStream,IdentCache,Confi
 closeLexer	ast/lexer.html#closeLexer,Lexer	lexer: closeLexer(lex: var Lexer)	
 getLineInfo	ast/lexer.html#getLineInfo,Lexer	lexer: getLineInfo(L: Lexer): TLineInfo	
 getPrecedence	ast/lexer.html#getPrecedence,Token	lexer: getPrecedence(tok: Token): int	
-newlineFollows	ast/lexer.html#newlineFollows,Lexer	lexer: newlineFollows(L: Lexer): bool	
 rawGetTok	ast/lexer.html#rawGetTok,Lexer,Token	lexer: rawGetTok(L: var Lexer; tok: var Token)	
-getIndentWidth	ast/lexer.html#getIndentWidth,FileIndex,PLLStream,IdentCache,ConfigRef	lexer: getIndentWidth(fileIdx: FileIndex; inputstream: PLLStream; cache: IdentCache;\n               config: ConfigRef): int	
 getPrecedence	ast/lexer.html#getPrecedence,PIdent	lexer: getPrecedence(ident: PIdent): int	

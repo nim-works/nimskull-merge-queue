@@ -44,7 +44,6 @@ nkUInt64Lit	ast/ast_types.html#nkUInt64Lit	TNodeKind.nkUInt64Lit
 nkFloatLit	ast/ast_types.html#nkFloatLit	TNodeKind.nkFloatLit	
 nkFloat32Lit	ast/ast_types.html#nkFloat32Lit	TNodeKind.nkFloat32Lit	
 nkFloat64Lit	ast/ast_types.html#nkFloat64Lit	TNodeKind.nkFloat64Lit	
-nkFloat128Lit	ast/ast_types.html#nkFloat128Lit	TNodeKind.nkFloat128Lit	
 nkStrLit	ast/ast_types.html#nkStrLit	TNodeKind.nkStrLit	
 nkRStrLit	ast/ast_types.html#nkRStrLit	TNodeKind.nkRStrLit	
 nkTripleStrLit	ast/ast_types.html#nkTripleStrLit	TNodeKind.nkTripleStrLit	
@@ -189,6 +188,8 @@ nkReplayAction	ast/ast_types.html#nkReplayAction	TNodeKind.nkReplayAction
 nkNilRodNode	ast/ast_types.html#nkNilRodNode	TNodeKind.nkNilRodNode	
 TNodeKind	ast/ast_types.html#TNodeKind	ast_types: TNodeKind	
 TNodeKinds	ast/ast_types.html#TNodeKinds	ast_types: TNodeKinds	
+nkWithoutSons	ast/ast_types.html#nkWithoutSons	ast_types: nkWithoutSons	
+nkWithSons	ast/ast_types.html#nkWithSons	ast_types: nkWithSons	
 nodeKindsProducedByParse	ast/ast_types.html#nodeKindsProducedByParse	ast_types: nodeKindsProducedByParse	
 sfUsed	ast/ast_types.html#sfUsed	TSymFlag.sfUsed	
 sfExported	ast/ast_types.html#sfExported	TSymFlag.sfExported	
@@ -293,7 +294,6 @@ tyInt64	ast/ast_types.html#tyInt64	TTypeKind.tyInt64
 tyFloat	ast/ast_types.html#tyFloat	TTypeKind.tyFloat	
 tyFloat32	ast/ast_types.html#tyFloat32	TTypeKind.tyFloat32	
 tyFloat64	ast/ast_types.html#tyFloat64	TTypeKind.tyFloat64	
-tyFloat128	ast/ast_types.html#tyFloat128	TTypeKind.tyFloat128	
 tyUInt	ast/ast_types.html#tyUInt	TTypeKind.tyUInt	
 tyUInt8	ast/ast_types.html#tyUInt8	TTypeKind.tyUInt8	
 tyUInt16	ast/ast_types.html#tyUInt16	TTypeKind.tyUInt16	
@@ -325,6 +325,7 @@ tyUnknownTypes	ast/ast_types.html#tyUnknownTypes	ast_types: tyUnknownTypes
 tyTypeClasses	ast/ast_types.html#tyTypeClasses	ast_types: tyTypeClasses	
 tyMetaTypes	ast/ast_types.html#tyMetaTypes	ast_types: tyMetaTypes	
 tyUserTypeClasses	ast/ast_types.html#tyUserTypeClasses	ast_types: tyUserTypeClasses	
+tyBuiltInTypeClasses	ast/ast_types.html#tyBuiltInTypeClasses	ast_types: tyBuiltInTypeClasses	
 abstractInst	ast/ast_types.html#abstractInst	ast_types: abstractInst	
 abstractPtrs	ast/ast_types.html#abstractPtrs	ast_types: abstractPtrs	
 abstractVar	ast/ast_types.html#abstractVar	ast_types: abstractVar	
@@ -333,11 +334,8 @@ abstractVarRange	ast/ast_types.html#abstractVarRange	ast_types: abstractVarRange
 skipPtrs	ast/ast_types.html#skipPtrs	ast_types: skipPtrs	
 typedescPtrs	ast/ast_types.html#typedescPtrs	ast_types: typedescPtrs	
 typedescInst	ast/ast_types.html#typedescInst	ast_types: typedescInst	
+skipForHooks	ast/ast_types.html#skipForHooks	ast_types: skipForHooks	
 TTypeKinds	ast/ast_types.html#TTypeKinds	ast_types: TTypeKinds	
-nfNone	ast/ast_types.html#nfNone	TNodeFlag.nfNone	
-nfBase2	ast/ast_types.html#nfBase2	TNodeFlag.nfBase2	
-nfBase8	ast/ast_types.html#nfBase8	TNodeFlag.nfBase8	
-nfBase16	ast/ast_types.html#nfBase16	TNodeFlag.nfBase16	
 nfAllConst	ast/ast_types.html#nfAllConst	TNodeFlag.nfAllConst	
 nfTransf	ast/ast_types.html#nfTransf	TNodeFlag.nfTransf	
 nfNoRewrite	ast/ast_types.html#nfNoRewrite	TNodeFlag.nfNoRewrite	
@@ -346,10 +344,6 @@ nfLL	ast/ast_types.html#nfLL	TNodeFlag.nfLL
 nfDotField	ast/ast_types.html#nfDotField	TNodeFlag.nfDotField	
 nfDotSetter	ast/ast_types.html#nfDotSetter	TNodeFlag.nfDotSetter	
 nfExplicitCall	ast/ast_types.html#nfExplicitCall	TNodeFlag.nfExplicitCall	
-nfIsRef	ast/ast_types.html#nfIsRef	TNodeFlag.nfIsRef	
-nfIsPtr	ast/ast_types.html#nfIsPtr	TNodeFlag.nfIsPtr	
-nfPreventCg	ast/ast_types.html#nfPreventCg	TNodeFlag.nfPreventCg	
-nfBlockArg	ast/ast_types.html#nfBlockArg	TNodeFlag.nfBlockArg	
 nfFromTemplate	ast/ast_types.html#nfFromTemplate	TNodeFlag.nfFromTemplate	
 nfDefaultParam	ast/ast_types.html#nfDefaultParam	TNodeFlag.nfDefaultParam	
 nfDefaultRefsParam	ast/ast_types.html#nfDefaultRefsParam	TNodeFlag.nfDefaultRefsParam	
@@ -361,7 +355,6 @@ tfNoSideEffect	ast/ast_types.html#tfNoSideEffect	TTypeFlag.tfNoSideEffect
 tfFinal	ast/ast_types.html#tfFinal	TTypeFlag.tfFinal	
 tfInheritable	ast/ast_types.html#tfInheritable	TTypeFlag.tfInheritable	
 tfEnumHasHoles	ast/ast_types.html#tfEnumHasHoles	TTypeFlag.tfEnumHasHoles	
-tfShallow	ast/ast_types.html#tfShallow	TTypeFlag.tfShallow	
 tfThread	ast/ast_types.html#tfThread	TTypeFlag.tfThread	
 tfFromGeneric	ast/ast_types.html#tfFromGeneric	TTypeFlag.tfFromGeneric	
 tfUnresolved	ast/ast_types.html#tfUnresolved	TTypeFlag.tfUnresolved	
@@ -456,8 +449,6 @@ mTypeOf	ast/ast_types.html#mTypeOf	TMagic.mTypeOf
 mPlugin	ast/ast_types.html#mPlugin	TMagic.mPlugin	
 mEcho	ast/ast_types.html#mEcho	TMagic.mEcho	
 mShallowCopy	ast/ast_types.html#mShallowCopy	TMagic.mShallowCopy	
-mSlurp	ast/ast_types.html#mSlurp	TMagic.mSlurp	
-mStaticExec	ast/ast_types.html#mStaticExec	TMagic.mStaticExec	
 mStatic	ast/ast_types.html#mStatic	TMagic.mStatic	
 mParseExprToAst	ast/ast_types.html#mParseExprToAst	TMagic.mParseExprToAst	
 mParseStmtToAst	ast/ast_types.html#mParseStmtToAst	TMagic.mParseStmtToAst	
@@ -610,7 +601,6 @@ mUInt64	ast/ast_types.html#mUInt64	TMagic.mUInt64
 mFloat	ast/ast_types.html#mFloat	TMagic.mFloat	
 mFloat32	ast/ast_types.html#mFloat32	TMagic.mFloat32	
 mFloat64	ast/ast_types.html#mFloat64	TMagic.mFloat64	
-mFloat128	ast/ast_types.html#mFloat128	TMagic.mFloat128	
 mBool	ast/ast_types.html#mBool	TMagic.mBool	
 mChar	ast/ast_types.html#mChar	TMagic.mChar	
 mString	ast/ast_types.html#mString	TMagic.mString	
@@ -694,6 +684,9 @@ mGetImplTransf	ast/ast_types.html#mGetImplTransf	TMagic.mGetImplTransf
 mSymIsInstantiationOf	ast/ast_types.html#mSymIsInstantiationOf	TMagic.mSymIsInstantiationOf	
 mNodeId	ast/ast_types.html#mNodeId	TMagic.mNodeId	
 mPrivateAccess	ast/ast_types.html#mPrivateAccess	TMagic.mPrivateAccess	
+mAsgnDynlibVar	ast/ast_types.html#mAsgnDynlibVar	TMagic.mAsgnDynlibVar	
+mChckRange	ast/ast_types.html#mChckRange	TMagic.mChckRange	
+mSamePayload	ast/ast_types.html#mSamePayload	TMagic.mSamePayload	
 TMagic	ast/ast_types.html#TMagic	ast_types: TMagic	
 ctfeWhitelist	ast/ast_types.html#ctfeWhitelist	ast_types: ctfeWhitelist	
 ItemId	ast/ast_types.html#ItemId	ast_types: ItemId	
@@ -752,18 +745,11 @@ adVmNoType	ast/ast_types.html#adVmNoType	AstDiagVmKind.adVmNoType
 adVmTooManyIterations	ast/ast_types.html#adVmTooManyIterations	AstDiagVmKind.adVmTooManyIterations	
 AstDiagVmKind	ast/ast_types.html#AstDiagVmKind	ast_types: AstDiagVmKind	
 AstDiagVmError	ast/ast_types.html#AstDiagVmError	ast_types: AstDiagVmError	
-adVmGenBadExpandToAstArgRequired	ast/ast_types.html#adVmGenBadExpandToAstArgRequired	AstDiagVmGenKind.adVmGenBadExpandToAstArgRequired	
 adVmGenTooManyRegistersRequired	ast/ast_types.html#adVmGenTooManyRegistersRequired	AstDiagVmGenKind.adVmGenTooManyRegistersRequired	
-adVmGenCannotFindBreakTarget	ast/ast_types.html#adVmGenCannotFindBreakTarget	AstDiagVmGenKind.adVmGenCannotFindBreakTarget	
 adVmGenNotUnused	ast/ast_types.html#adVmGenNotUnused	AstDiagVmGenKind.adVmGenNotUnused	
-adVmGenNotAFieldSymbol	ast/ast_types.html#adVmGenNotAFieldSymbol	AstDiagVmGenKind.adVmGenNotAFieldSymbol	
-adVmGenCannotGenerateCode	ast/ast_types.html#adVmGenCannotGenerateCode	AstDiagVmGenKind.adVmGenCannotGenerateCode	
 adVmGenCannotEvaluateAtComptime	ast/ast_types.html#adVmGenCannotEvaluateAtComptime	AstDiagVmGenKind.adVmGenCannotEvaluateAtComptime	
-adVmGenInvalidObjectConstructor	ast/ast_types.html#adVmGenInvalidObjectConstructor	AstDiagVmGenKind.adVmGenInvalidObjectConstructor	
 adVmGenMissingImportcCompleteStruct	ast/ast_types.html#adVmGenMissingImportcCompleteStruct	AstDiagVmGenKind.adVmGenMissingImportcCompleteStruct	
 adVmGenCodeGenUnhandledMagic	ast/ast_types.html#adVmGenCodeGenUnhandledMagic	AstDiagVmGenKind.adVmGenCodeGenUnhandledMagic	
-adVmGenCodeGenGenericInNonMacro	ast/ast_types.html#adVmGenCodeGenGenericInNonMacro	AstDiagVmGenKind.adVmGenCodeGenGenericInNonMacro	
-adVmGenCodeGenUnexpectedSym	ast/ast_types.html#adVmGenCodeGenUnexpectedSym	AstDiagVmGenKind.adVmGenCodeGenUnexpectedSym	
 adVmGenCannotImportc	ast/ast_types.html#adVmGenCannotImportc	AstDiagVmGenKind.adVmGenCannotImportc	
 adVmGenTooLargeOffset	ast/ast_types.html#adVmGenTooLargeOffset	AstDiagVmGenKind.adVmGenTooLargeOffset	
 adVmGenCannotCallMethod	ast/ast_types.html#adVmGenCannotCallMethod	AstDiagVmGenKind.adVmGenCannotCallMethod	
@@ -786,6 +772,7 @@ adSemOnlyDeclaredIdentifierFoundIsError	ast/ast_types.html#adSemOnlyDeclaredIden
 adSemCannotImportItself	ast/ast_types.html#adSemCannotImportItself	AstDiagKind.adSemCannotImportItself	
 adSemInvalidPragma	ast/ast_types.html#adSemInvalidPragma	AstDiagKind.adSemInvalidPragma	
 adSemIllegalCustomPragma	ast/ast_types.html#adSemIllegalCustomPragma	AstDiagKind.adSemIllegalCustomPragma	
+adSemExternalLocalNotAllowed	ast/ast_types.html#adSemExternalLocalNotAllowed	AstDiagKind.adSemExternalLocalNotAllowed	
 adSemStringLiteralExpected	ast/ast_types.html#adSemStringLiteralExpected	AstDiagKind.adSemStringLiteralExpected	
 adSemIntLiteralExpected	ast/ast_types.html#adSemIntLiteralExpected	AstDiagKind.adSemIntLiteralExpected	
 adSemOnOrOffExpected	ast/ast_types.html#adSemOnOrOffExpected	AstDiagKind.adSemOnOrOffExpected	
@@ -831,6 +818,7 @@ adVmDerefAccessTypeMismatch	ast/ast_types.html#adVmDerefAccessTypeMismatch	AstDi
 adVmGenError	ast/ast_types.html#adVmGenError	AstDiagKind.adVmGenError	
 adVmError	ast/ast_types.html#adVmError	AstDiagKind.adVmError	
 adVmQuit	ast/ast_types.html#adVmQuit	AstDiagKind.adVmQuit	
+adSemUnavailableLocation	ast/ast_types.html#adSemUnavailableLocation	AstDiagKind.adSemUnavailableLocation	
 adSemRawTypeMismatch	ast/ast_types.html#adSemRawTypeMismatch	AstDiagKind.adSemRawTypeMismatch	
 adSemExpressionCannotBeCalled	ast/ast_types.html#adSemExpressionCannotBeCalled	AstDiagKind.adSemExpressionCannotBeCalled	
 adSemCallTypeMismatch	ast/ast_types.html#adSemCallTypeMismatch	AstDiagKind.adSemCallTypeMismatch	
@@ -851,6 +839,10 @@ adSemImplementationExpected	ast/ast_types.html#adSemImplementationExpected	AstDi
 adSemImplementationNotAllowed	ast/ast_types.html#adSemImplementationNotAllowed	AstDiagKind.adSemImplementationNotAllowed	
 adSemInvalidExpression	ast/ast_types.html#adSemInvalidExpression	AstDiagKind.adSemInvalidExpression	
 adSemExpectedNonemptyPattern	ast/ast_types.html#adSemExpectedNonemptyPattern	AstDiagKind.adSemExpectedNonemptyPattern	
+adSemInvalidControlFlow	ast/ast_types.html#adSemInvalidControlFlow	AstDiagKind.adSemInvalidControlFlow	
+adSemExpectedLabel	ast/ast_types.html#adSemExpectedLabel	AstDiagKind.adSemExpectedLabel	
+adSemForExpectedIterator	ast/ast_types.html#adSemForExpectedIterator	AstDiagKind.adSemForExpectedIterator	
+adSemContinueCannotHaveLabel	ast/ast_types.html#adSemContinueCannotHaveLabel	AstDiagKind.adSemContinueCannotHaveLabel	
 adSemUseOrDiscardExpr	ast/ast_types.html#adSemUseOrDiscardExpr	AstDiagKind.adSemUseOrDiscardExpr	
 adSemAmbiguousIdent	ast/ast_types.html#adSemAmbiguousIdent	AstDiagKind.adSemAmbiguousIdent	
 adSemCannotConvertToRange	ast/ast_types.html#adSemCannotConvertToRange	AstDiagKind.adSemCannotConvertToRange	
@@ -893,6 +885,8 @@ adSemRecursiveDependencyIterator	ast/ast_types.html#adSemRecursiveDependencyIter
 adSemCallIndirectTypeMismatch	ast/ast_types.html#adSemCallIndirectTypeMismatch	AstDiagKind.adSemCallIndirectTypeMismatch	
 adSemSystemNeeds	ast/ast_types.html#adSemSystemNeeds	AstDiagKind.adSemSystemNeeds	
 adSemDisallowedNilDeref	ast/ast_types.html#adSemDisallowedNilDeref	AstDiagKind.adSemDisallowedNilDeref	
+adSemCannotDeref	ast/ast_types.html#adSemCannotDeref	AstDiagKind.adSemCannotDeref	
+adSemInvalidTupleSubscript	ast/ast_types.html#adSemInvalidTupleSubscript	AstDiagKind.adSemInvalidTupleSubscript	
 adSemLocalEscapesStackFrame	ast/ast_types.html#adSemLocalEscapesStackFrame	AstDiagKind.adSemLocalEscapesStackFrame	
 adSemImplicitAddrIsNotFirstParam	ast/ast_types.html#adSemImplicitAddrIsNotFirstParam	AstDiagKind.adSemImplicitAddrIsNotFirstParam	
 adSemCannotAssignTo	ast/ast_types.html#adSemCannotAssignTo	AstDiagKind.adSemCannotAssignTo	
@@ -910,14 +904,15 @@ adSemExprHasNoAddress	ast/ast_types.html#adSemExprHasNoAddress	AstDiagKind.adSem
 adSemExpectedOrdinal	ast/ast_types.html#adSemExpectedOrdinal	AstDiagKind.adSemExpectedOrdinal	
 adSemConstExprExpected	ast/ast_types.html#adSemConstExprExpected	AstDiagKind.adSemConstExprExpected	
 adSemExpectedRangeType	ast/ast_types.html#adSemExpectedRangeType	AstDiagKind.adSemExpectedRangeType	
-adSemFieldAssignmentInvalidNeedSpace	ast/ast_types.html#adSemFieldAssignmentInvalidNeedSpace	AstDiagKind.adSemFieldAssignmentInvalidNeedSpace	
+adSemExpectedObjectForOf	ast/ast_types.html#adSemExpectedObjectForOf	AstDiagKind.adSemExpectedObjectForOf	
+adSemCannotBeOfSubtype	ast/ast_types.html#adSemCannotBeOfSubtype	AstDiagKind.adSemCannotBeOfSubtype	
 adSemFieldAssignmentInvalid	ast/ast_types.html#adSemFieldAssignmentInvalid	AstDiagKind.adSemFieldAssignmentInvalid	
 adSemFieldNotAccessible	ast/ast_types.html#adSemFieldNotAccessible	AstDiagKind.adSemFieldNotAccessible	
-adSemFieldOkButAssignedValueInvalid	ast/ast_types.html#adSemFieldOkButAssignedValueInvalid	AstDiagKind.adSemFieldOkButAssignedValueInvalid	
-adSemObjectConstructorIncorrect	ast/ast_types.html#adSemObjectConstructorIncorrect	AstDiagKind.adSemObjectConstructorIncorrect	
+adSemObjectRequiresFieldInit	ast/ast_types.html#adSemObjectRequiresFieldInit	AstDiagKind.adSemObjectRequiresFieldInit	
 adSemObjectRequiresFieldInitNoDefault	ast/ast_types.html#adSemObjectRequiresFieldInitNoDefault	AstDiagKind.adSemObjectRequiresFieldInitNoDefault	
 adSemExpectedObjectType	ast/ast_types.html#adSemExpectedObjectType	AstDiagKind.adSemExpectedObjectType	
 adSemExpectedObjectOfType	ast/ast_types.html#adSemExpectedObjectOfType	AstDiagKind.adSemExpectedObjectOfType	
+adSemObjectDoesNotHaveDefaultValue	ast/ast_types.html#adSemObjectDoesNotHaveDefaultValue	AstDiagKind.adSemObjectDoesNotHaveDefaultValue	
 adSemDistinctDoesNotHaveDefaultValue	ast/ast_types.html#adSemDistinctDoesNotHaveDefaultValue	AstDiagKind.adSemDistinctDoesNotHaveDefaultValue	
 adSemFoldRangeCheckForLiteralConversionFailed	ast/ast_types.html#adSemFoldRangeCheckForLiteralConversionFailed	AstDiagKind.adSemFoldRangeCheckForLiteralConversionFailed	
 adSemIndexOutOfBoundsStatic	ast/ast_types.html#adSemIndexOutOfBoundsStatic	AstDiagKind.adSemIndexOutOfBoundsStatic	
@@ -926,8 +921,11 @@ adSemInvalidIntDefine	ast/ast_types.html#adSemInvalidIntDefine	AstDiagKind.adSem
 adSemInvalidBoolDefine	ast/ast_types.html#adSemInvalidBoolDefine	AstDiagKind.adSemInvalidBoolDefine	
 adSemFoldOverflow	ast/ast_types.html#adSemFoldOverflow	AstDiagKind.adSemFoldOverflow	
 adSemFoldDivByZero	ast/ast_types.html#adSemFoldDivByZero	AstDiagKind.adSemFoldDivByZero	
-adSemInvalidRangeConversion	ast/ast_types.html#adSemInvalidRangeConversion	AstDiagKind.adSemInvalidRangeConversion	
 adSemFoldCannotComputeOffset	ast/ast_types.html#adSemFoldCannotComputeOffset	AstDiagKind.adSemFoldCannotComputeOffset	
+adSemCompilerOptionInvalid	ast/ast_types.html#adSemCompilerOptionInvalid	AstDiagKind.adSemCompilerOptionInvalid	
+adSemCompilerOptionArgInvalid	ast/ast_types.html#adSemCompilerOptionArgInvalid	AstDiagKind.adSemCompilerOptionArgInvalid	
+adSemDeprecatedCompilerOpt	ast/ast_types.html#adSemDeprecatedCompilerOpt	AstDiagKind.adSemDeprecatedCompilerOpt	
+adSemDeprecatedCompilerOptArg	ast/ast_types.html#adSemDeprecatedCompilerOptArg	AstDiagKind.adSemDeprecatedCompilerOptArg	
 AstDiagKind	ast/ast_types.html#AstDiagKind	ast_types: AstDiagKind	
 PAstDiag	ast/ast_types.html#PAstDiag	ast_types: PAstDiag	
 TAstDiag	ast/ast_types.html#TAstDiag	ast_types: TAstDiag	
@@ -939,47 +937,24 @@ AdSemDefNameSymKind	ast/ast_types.html#AdSemDefNameSymKind	ast_types: AdSemDefNa
 AdSemDefNameSym	ast/ast_types.html#AdSemDefNameSym_2	ast_types: AdSemDefNameSym	
 TNode	ast/ast_types.html#TNode	ast_types: TNode	
 TStrTable	ast/ast_types.html#TStrTable	ast_types: TStrTable	
-locNone	ast/ast_types.html#locNone	TLocKind.locNone	
-locTemp	ast/ast_types.html#locTemp	TLocKind.locTemp	
-locLocalVar	ast/ast_types.html#locLocalVar	TLocKind.locLocalVar	
-locGlobalVar	ast/ast_types.html#locGlobalVar	TLocKind.locGlobalVar	
-locParam	ast/ast_types.html#locParam	TLocKind.locParam	
-locField	ast/ast_types.html#locField	TLocKind.locField	
-locExpr	ast/ast_types.html#locExpr	TLocKind.locExpr	
-locProc	ast/ast_types.html#locProc	TLocKind.locProc	
-locData	ast/ast_types.html#locData	TLocKind.locData	
-locCall	ast/ast_types.html#locCall	TLocKind.locCall	
-locOther	ast/ast_types.html#locOther	TLocKind.locOther	
-TLocKind	ast/ast_types.html#TLocKind	ast_types: TLocKind	
-lfIndirect	ast/ast_types.html#lfIndirect	TLocFlag.lfIndirect	
-lfFullExternalName	ast/ast_types.html#lfFullExternalName	TLocFlag.lfFullExternalName	
-lfNoDeepCopy	ast/ast_types.html#lfNoDeepCopy	TLocFlag.lfNoDeepCopy	
-lfNoDecl	ast/ast_types.html#lfNoDecl	TLocFlag.lfNoDecl	
-lfDynamicLib	ast/ast_types.html#lfDynamicLib	TLocFlag.lfDynamicLib	
-lfExportLib	ast/ast_types.html#lfExportLib	TLocFlag.lfExportLib	
-lfHeader	ast/ast_types.html#lfHeader	TLocFlag.lfHeader	
-lfImportCompilerProc	ast/ast_types.html#lfImportCompilerProc	TLocFlag.lfImportCompilerProc	
-lfSingleUse	ast/ast_types.html#lfSingleUse	TLocFlag.lfSingleUse	
-lfEnforceDeref	ast/ast_types.html#lfEnforceDeref	TLocFlag.lfEnforceDeref	
-lfPrepareForMutation	ast/ast_types.html#lfPrepareForMutation	TLocFlag.lfPrepareForMutation	
-TLocFlag	ast/ast_types.html#TLocFlag	ast_types: TLocFlag	
-OnUnknown	ast/ast_types.html#OnUnknown	TStorageLoc.OnUnknown	
-OnStatic	ast/ast_types.html#OnStatic	TStorageLoc.OnStatic	
-OnStack	ast/ast_types.html#OnStack	TStorageLoc.OnStack	
-OnHeap	ast/ast_types.html#OnHeap	TStorageLoc.OnHeap	
-TStorageLoc	ast/ast_types.html#TStorageLoc	ast_types: TStorageLoc	
-TLocFlags	ast/ast_types.html#TLocFlags	ast_types: TLocFlags	
-TLoc	ast/ast_types.html#TLoc	ast_types: TLoc	
+exfFullExternalName	ast/ast_types.html#exfFullExternalName	ExternalFlag.exfFullExternalName	
+exfNoDecl	ast/ast_types.html#exfNoDecl	ExternalFlag.exfNoDecl	
+exfDynamicLib	ast/ast_types.html#exfDynamicLib	ExternalFlag.exfDynamicLib	
+exfExportLib	ast/ast_types.html#exfExportLib	ExternalFlag.exfExportLib	
+exfHeader	ast/ast_types.html#exfHeader	ExternalFlag.exfHeader	
+exfImportCompilerProc	ast/ast_types.html#exfImportCompilerProc	ExternalFlag.exfImportCompilerProc	
+ExternalFlag	ast/ast_types.html#ExternalFlag	ast_types: ExternalFlag	
+ExternalFlags	ast/ast_types.html#ExternalFlags	ast_types: ExternalFlags	
 libHeader	ast/ast_types.html#libHeader	TLibKind.libHeader	
 libDynamic	ast/ast_types.html#libDynamic	TLibKind.libDynamic	
 TLibKind	ast/ast_types.html#TLibKind	ast_types: TLibKind	
 TLib	ast/ast_types.html#TLib	ast_types: TLib	
+LibId	ast/ast_types.html#LibId	ast_types: LibId	
 CompilesId	ast/ast_types.html#CompilesId	ast_types: CompilesId	
 TInstantiation	ast/ast_types.html#TInstantiation	ast_types: TInstantiation	
 PInstantiation	ast/ast_types.html#PInstantiation	ast_types: PInstantiation	
 TScope	ast/ast_types.html#TScope	ast_types: TScope	
 PScope	ast/ast_types.html#PScope	ast_types: PScope	
-PLib	ast/ast_types.html#PLib	ast_types: PLib	
 TSym	ast/ast_types.html#TSym	ast_types: TSym	
 TTypeSeq	ast/ast_types.html#TTypeSeq	ast_types: TTypeSeq	
 TLockLevel	ast/ast_types.html#TLockLevel	ast_types: TLockLevel	
@@ -1007,8 +982,6 @@ impUnknown	ast/ast_types.html#impUnknown	TImplication.impUnknown
 impNo	ast/ast_types.html#impNo	TImplication.impNo	
 impYes	ast/ast_types.html#impYes	TImplication.impYes	
 TImplication	ast/ast_types.html#TImplication	ast_types: TImplication	
-nkWithoutSons	ast/ast_types.html#nkWithoutSons	ast_types: nkWithoutSons	
-nkWithSons	ast/ast_types.html#nkWithSons	ast_types: nkWithSons	
 efCompat	ast/ast_types.html#efCompat	EffectsCompat.efCompat	
 efRaisesDiffer	ast/ast_types.html#efRaisesDiffer	EffectsCompat.efRaisesDiffer	
 efRaisesUnknown	ast/ast_types.html#efRaisesUnknown	EffectsCompat.efRaisesUnknown	
@@ -1038,9 +1011,6 @@ ProcConvMismatch	ast/ast_types.html#ProcConvMismatch	ast_types: ProcConvMismatch
 efLValue	ast/ast_types.html#efLValue	TExprFlag.efLValue	
 efWantIterator	ast/ast_types.html#efWantIterator	TExprFlag.efWantIterator	
 efInTypeof	ast/ast_types.html#efInTypeof	TExprFlag.efInTypeof	
-efNeedStatic	ast/ast_types.html#efNeedStatic	TExprFlag.efNeedStatic	
-efPreferStatic	ast/ast_types.html#efPreferStatic	TExprFlag.efPreferStatic	
-efPreferNilResult	ast/ast_types.html#efPreferNilResult	TExprFlag.efPreferNilResult	
 efWantStmt	ast/ast_types.html#efWantStmt	TExprFlag.efWantStmt	
 efAllowStmt	ast/ast_types.html#efAllowStmt	TExprFlag.efAllowStmt	
 efExplain	ast/ast_types.html#efExplain	TExprFlag.efExplain	
@@ -1065,3 +1035,4 @@ invalidNodeId	ast/ast_types.html#invalidNodeId	ast_types: invalidNodeId
 comment	ast/ast_types.html#comment,PNode	ast_types: comment(n: PNode): string	
 comment=	ast/ast_types.html#comment=,PNode,string	ast_types: comment=(n: PNode; a: string)	
 setUseIc	ast/ast_types.html#setUseIc,bool	ast_types: setUseIc(useIc: bool)	
+isNil	ast/ast_types.html#isNil,LibId	ast_types: isNil(id: LibId): bool	

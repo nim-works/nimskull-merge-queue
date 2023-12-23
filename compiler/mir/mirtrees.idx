@@ -1,3 +1,5 @@
+SourceId	mir/mirtrees.html#SourceId	mirtrees: SourceId	
+indexLike	mir/mirtrees.html#indexLike.t,typedesc[SourceId]	mirtrees: indexLike(_: typedesc[SourceId])	
 TempId	mir/mirtrees.html#TempId	mirtrees: TempId	
 LabelId	mir/mirtrees.html#LabelId	mirtrees: LabelId	
 mnkProc	mir/mirtrees.html#mnkProc	MirNodeKind.mnkProc	
@@ -21,6 +23,7 @@ mnkPathNamed	mir/mirtrees.html#mnkPathNamed	MirNodeKind.mnkPathNamed
 mnkPathPos	mir/mirtrees.html#mnkPathPos	MirNodeKind.mnkPathPos	
 mnkPathArray	mir/mirtrees.html#mnkPathArray	MirNodeKind.mnkPathArray	
 mnkPathVariant	mir/mirtrees.html#mnkPathVariant	MirNodeKind.mnkPathVariant	
+mnkPathConv	mir/mirtrees.html#mnkPathConv	MirNodeKind.mnkPathConv	
 mnkAddr	mir/mirtrees.html#mnkAddr	MirNodeKind.mnkAddr	
 mnkDeref	mir/mirtrees.html#mnkDeref	MirNodeKind.mnkDeref	
 mnkView	mir/mirtrees.html#mnkView	MirNodeKind.mnkView	
@@ -53,6 +56,8 @@ mnkBlock	mir/mirtrees.html#mnkBlock	MirNodeKind.mnkBlock
 mnkBreak	mir/mirtrees.html#mnkBreak	MirNodeKind.mnkBreak	
 mnkReturn	mir/mirtrees.html#mnkReturn	MirNodeKind.mnkReturn	
 mnkBranch	mir/mirtrees.html#mnkBranch	MirNodeKind.mnkBranch	
+mnkAsm	mir/mirtrees.html#mnkAsm	MirNodeKind.mnkAsm	
+mnkEmit	mir/mirtrees.html#mnkEmit	MirNodeKind.mnkEmit	
 mnkEnd	mir/mirtrees.html#mnkEnd	MirNodeKind.mnkEnd	
 mnkPNode	mir/mirtrees.html#mnkPNode	MirNodeKind.mnkPNode	
 MirNodeKind	mir/mirtrees.html#MirNodeKind	mirtrees: MirNodeKind	
@@ -84,12 +89,12 @@ ArgumentNodes	mir/mirtrees.html#ArgumentNodes	mirtrees: ArgumentNodes
 SingleInputNodes	mir/mirtrees.html#SingleInputNodes	mirtrees: SingleInputNodes	
 StmtNodes	mir/mirtrees.html#StmtNodes	mirtrees: StmtNodes	
 SymbolLike	mir/mirtrees.html#SymbolLike	mirtrees: SymbolLike	
-NoLabel	mir/mirtrees.html#NoLabel	mirtrees: NoLabel	
+ConsumeCtx	mir/mirtrees.html#ConsumeCtx	mirtrees: ConsumeCtx	
+UseContext	mir/mirtrees.html#UseContext	mirtrees: UseContext	
+OpsWithEffects	mir/mirtrees.html#OpsWithEffects	mirtrees: OpsWithEffects	
+`==`	mir/mirtrees.html#==,SourceId,SourceId	mirtrees: `==`(a, b: SourceId): bool	
 `==`	mir/mirtrees.html#==,TempId,TempId	mirtrees: `==`(a, b: TempId): bool	
 `==`	mir/mirtrees.html#==,LabelId,LabelId	mirtrees: `==`(a, b: LabelId): bool	
-isSome	mir/mirtrees.html#isSome,LabelId	mirtrees: isSome(x: LabelId): bool	
-isNone	mir/mirtrees.html#isNone,LabelId	mirtrees: isNone(x: LabelId): bool	
-`[]`	mir/mirtrees.html#[].t,LabelId	mirtrees: `[]`(x: LabelId): uint32	
 indexLike	mir/mirtrees.html#indexLike.t,typedesc[NodeInstance]	mirtrees: indexLike(_: typedesc[NodeInstance])	
 `-`	mir/mirtrees.html#-.t,NodePosition,int	mirtrees: `-`(a: NodePosition; b: int): NodePosition	
 `+`	mir/mirtrees.html#+.t,NodePosition,int	mirtrees: `+`(a: NodePosition; b: int): NodePosition	
@@ -117,8 +122,9 @@ operand	mir/mirtrees.html#operand,MirTree,Operation,Natural	mirtrees: operand(tr
 operands	mir/mirtrees.html#operands,MirTree,Operation,Slice[int],openArray[OpValue]	mirtrees: operands(tree: MirTree; op: Operation; slice: Slice[int];\n         result: var openArray[OpValue])	
 fetchArgs	mir/mirtrees.html#fetchArgs,MirTree,Operation,openArray[NodePosition]	mirtrees: fetchArgs(tree: MirTree; op: Operation; result: var openArray[NodePosition])	
 numArgs	mir/mirtrees.html#numArgs,MirTree,Operation	mirtrees: numArgs(tree: MirTree; op: Operation): int	
-unaryOperand	mir/mirtrees.html#unaryOperand,MirTree,Operation	mirtrees: unaryOperand(tree: MirTree; op: Operation): OpValue	
+operand	mir/mirtrees.html#operand,MirTree,	mirtrees: operand(tree: MirTree; op: Operation | OpValue | NodePosition): OpValue	
 hasInput	mir/mirtrees.html#hasInput,MirTree,Operation	mirtrees: hasInput(tree: MirTree; op: Operation): bool	
 pairs	mir/mirtrees.html#pairs.i,MirTree	mirtrees: pairs(tree: MirTree): (NodePosition, lent MirNode)	
 subNodes	mir/mirtrees.html#subNodes.i,MirTree,NodePosition	mirtrees: subNodes(tree: MirTree; n: NodePosition): NodePosition	
+effects	mir/mirtrees.html#effects.i,MirTree,NodePosition	mirtrees: effects(tree: MirTree; n: NodePosition): (EffectKind, OpValue)	
 lpairs	mir/mirtrees.html#lpairs.i,seq[T]	mirtrees: lpairs[T](x: seq[T]): (int, lent T)	

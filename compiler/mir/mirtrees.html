@@ -122,6 +122,8 @@ window.addEventListener('DOMContentLoaded', main);
   <li><a class="reference" href="#MirNode"
     title="MirNode = object
   typ*: PType                ## must be non-nil for operators, inputs, and sinks
+  info*: SourceId ## non-critical meta-data associated with the node (e.g., origin
+                  ## information)
   case kind*: MirNodeKind
   of mnkProc, mnkConst, mnkGlobal, mnkParam, mnkLocal:
       sym*: PSym
@@ -148,11 +150,8 @@ window.addEventListener('DOMContentLoaded', main);
       param*: uint32         ## the 0-based index of the enclosing region's parameter
     
   of mnkBlock, mnkBreak:
-      label*: LabelId ## for a block, its label. A block always must always
-                      ## have a valid label ('none' is disallowed).
-                      ## for a break, the label of the block to break out of.
-                      ## May be 'none', in which case it means &quot;exit the
-                      ## enclosing 'repeat'&quot;
+      label*: LabelId        ## for a block, the label that identifies the block;
+                             ## for a break, the label of the block to break out of
     
   of mnkEnd:
       start*: MirNodeKind    ## the kind of the corresponding start node
@@ -217,6 +216,9 @@ window.addEventListener('DOMContentLoaded', main);
                    ##      record-case part of an object should be its own
                    ##      dedicated object type, which can then be addressed
                    ##      as a normal field
+  mnkPathConv, ## an handle conversion. That is, a conversion that produces a
+                ## *handle*, and not a new *value*. At present, this operator
+                ## also applies to first-class handles, like ``ref``.
   mnkAddr, ## ``addr(x)``; creates a first-class unsafe alias/handle (i.e.
             ## pointer) from the input lvalue `x`
   mnkDeref, ## ``deref(x)``; dereferences the pointer-like `x` (this
@@ -227,10 +229,10 @@ window.addEventListener('DOMContentLoaded', main);
   mnkView,                  ## ``view(x)``; creates a safe alias of the l-value 'x'
   mnkDerefView, ## ``derefView(x)``; dereferences a view, producing the lvalue
                  ## named by it
-  mnkStdConv, ## ``stdConv(x)``; a standard conversion. Depending on the
-               ## source and target type, lvalue-ness is preserved
-  mnkConv, ## ``conv(x)``; a conversion. Depending on the source and
-            ## target type, lvalue-ness is preserved
+  mnkStdConv, ## ``stdConv(x)``; a standard conversion.Produce a new value.
+               ## Also used for to-slice (``openArray``) conversions, in
+               ## which case the semantics are still fuzzy.
+  mnkConv,                  ## ``conv(x)``; a conversion. Produces a new value.
   mnkCast, ## ``cast(x)``; produces a new *instance* of the input value
             ## with a different type
   mnkCall, ## ``call(p, ...)``; transfers control-flow (i.e. calls) the
@@ -309,14 +311,16 @@ window.addEventListener('DOMContentLoaded', main);
              ## Once control-flow reaches the end of a ``block``, it is
              ## transferred to the next statement/operation following the
              ## block
-  mnkBreak, ## if a non-nil label is provided, transfers control-flow to the
-             ## statement/operation following after the ``block`` with the
-             ## given label. If no label is provided, control-flow is
-             ## transferred to the exit of the enclosing ``repeat`` (it is
-             ## required that there exists one)
+  mnkBreak, ## transfers control-flow to the statement/operation following
+             ## after the ``block`` with the given label
   mnkReturn, ## if the code-fragment represents the body of a procedure,
               ## transfers control-flow back to the caller
   mnkBranch,                ## defines a branch of an ``mnkExcept`` or ``mnkCase``
+  mnkAsm, ## corresponds to the high-level ``asm`` statement. Takes an
+           ## argument block as input, but has itself no meaning at the MIR
+           ## level
+  mnkEmit, ## corresponds to the ``emit`` directive. In the context of the
+            ## MIR, has the same behaviour as ``mnkAsm``
   mnkEnd, ## marks the physical end of a sub-tree. Has no semantic
            ## meaning -- it's only required to know where a sub-tree ends
   mnkPNode ## depending on the context, either statement or something else.
@@ -339,6 +343,8 @@ window.addEventListener('DOMContentLoaded', main);
     title="Operation = distinct uint32">Operation</a></li>
   <li><a class="reference" href="#OpValue"
     title="OpValue = distinct uint32">OpValue</a></li>
+  <li><a class="reference" href="#SourceId"
+    title="SourceId = distinct range[0'u32 .. high(uint32) - 1]">SourceId</a></li>
   <li><a class="reference" href="#TempId"
     title="TempId = distinct uint32">TempId</a></li>
 
@@ -353,21 +359,25 @@ window.addEventListener('DOMContentLoaded', main);
     title="ArgumentNodes = {mnkArg, mnkName, mnkConsume}">ArgumentNodes</a></li>
   <li><a class="reference" href="#AtomNodes"
     title="AtomNodes = {mnkProc..mnkNone, mnkFastAsgn..mnkConstr, mnkArg..mnkField,
-             mnkBreak..mnkReturn, mnkEnd..mnkPNode}">AtomNodes</a></li>
+             mnkBreak..mnkReturn, mnkAsm..mnkPNode}">AtomNodes</a></li>
+  <li><a class="reference" href="#ConsumeCtx"
+    title="ConsumeCtx = {mnkConsume, mnkRaise, mnkDefUnpack}">ConsumeCtx</a></li>
   <li><a class="reference" href="#DefNodes"
     title="DefNodes = {mnkDef, mnkDefCursor, mnkDefUnpack}">DefNodes</a></li>
   <li><a class="reference" href="#InOutNodes"
-    title="InOutNodes = {mnkMagic, mnkCall, mnkPathNamed..mnkPathVariant, mnkConstr,
+    title="InOutNodes = {mnkMagic, mnkCall, mnkPathNamed..mnkPathConv, mnkConstr,
               mnkObjConstr, mnkView, mnkTag, mnkCast, mnkDeref, mnkAddr,
               mnkDerefView, mnkStdConv, mnkConv}">InOutNodes</a></li>
   <li><a class="reference" href="#InputNodes"
     title="InputNodes = {mnkProc..mnkNone, mnkArgBlock}">InputNodes</a></li>
-  <li><a class="reference" href="#NoLabel"
-    title="NoLabel = 0'u">NoLabel</a></li>
+  <li><a class="reference" href="#OpsWithEffects"
+    title="OpsWithEffects = {mnkCall, mnkMagic, mnkAsgn, mnkFastAsgn, mnkSwitch, mnkInit,
+                  mnkRegion}">OpsWithEffects</a></li>
   <li><a class="reference" href="#OutputNodes"
-    title="OutputNodes = {mnkDef..mnkSwitch, mnkRaise, mnkVoid, mnkRegion, mnkIf..mnkCase}">OutputNodes</a></li>
+    title="OutputNodes = {mnkDef..mnkSwitch, mnkRaise, mnkVoid, mnkRegion, mnkIf..mnkCase,
+               mnkAsm..mnkEmit}">OutputNodes</a></li>
   <li><a class="reference" href="#SingleInputNodes"
-    title="SingleInputNodes = {mnkAddr..mnkDeref, mnkDerefView, mnkConv..mnkCast,
+    title="SingleInputNodes = {mnkPathNamed..mnkPathPos, mnkPathVariant..mnkCast,
                     mnkRaise..mnkTag, mnkArg..mnkVoid, mnkIf..mnkCase}">SingleInputNodes</a></li>
   <li><a class="reference" href="#SourceNodes"
     title="SourceNodes = {mnkProc..mnkNone, mnkPathNamed..mnkMagic, mnkTag..mnkObjConstr,
@@ -380,6 +390,9 @@ window.addEventListener('DOMContentLoaded', main);
                 mnkBranch}">SubTreeNodes</a></li>
   <li><a class="reference" href="#SymbolLike"
     title="SymbolLike = {mnkProc, mnkConst, mnkGlobal, mnkParam, mnkLocal}">SymbolLike</a></li>
+  <li><a class="reference" href="#UseContext"
+    title="UseContext = {mnkDefUnpack, mnkDeref, mnkDerefView..mnkCast, mnkRaise, mnkArg,
+              mnkConsume..mnkVoid, mnkIf..mnkCase}">UseContext</a></li>
 
   </ul>
 </li>
@@ -403,6 +416,8 @@ window.addEventListener('DOMContentLoaded', main);
     title="`==`(a, b: NodePosition): bool">`==`(a, b: NodePosition): bool</a></li>
   <li><a class="reference" href="#%3D%3D%2COperation%2COperation"
     title="`==`(a, b: Operation): bool">`==`(a, b: Operation): bool</a></li>
+  <li><a class="reference" href="#%3D%3D%2CSourceId%2CSourceId"
+    title="`==`(a, b: SourceId): bool">`==`(a, b: SourceId): bool</a></li>
   <li><a class="reference" href="#%3D%3D%2CTempId%2CTempId"
     title="`==`(a, b: TempId): bool">`==`(a, b: TempId): bool</a></li>
 
@@ -452,23 +467,15 @@ window.addEventListener('DOMContentLoaded', main);
     title="`in`(p: NodePosition; tree: MirTree): bool">`in`(p: NodePosition; tree: MirTree): bool</a></li>
 
   </ul>
-  <ul class="simple nested-toc-section">isNone
-      <li><a class="reference" href="#isNone%2CLabelId"
-    title="isNone(x: LabelId): bool">isNone(x: LabelId): bool</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">isSome
-      <li><a class="reference" href="#isSome%2CLabelId"
-    title="isSome(x: LabelId): bool">isSome(x: LabelId): bool</a></li>
-
-  </ul>
   <ul class="simple nested-toc-section">numArgs
       <li><a class="reference" href="#numArgs%2CMirTree%2COperation"
     title="numArgs(tree: MirTree; op: Operation): int">numArgs(tree: MirTree; op: Operation): int</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">operand
-      <li><a class="reference" href="#operand%2CMirTree%2COperation%2CNatural"
+      <li><a class="reference" href="#operand%2CMirTree%2C"
+    title="operand(tree: MirTree; op: Operation | OpValue | NodePosition): OpValue">operand(tree: MirTree; op: Operation | OpValue | NodePosition): OpValue</a></li>
+  <li><a class="reference" href="#operand%2CMirTree%2COperation%2CNatural"
     title="operand(tree: MirTree; op: Operation; opr: Natural): OpValue">operand(tree: MirTree; op: Operation; opr: Natural): OpValue</a></li>
 
   </ul>
@@ -504,18 +511,18 @@ window.addEventListener('DOMContentLoaded', main);
     title="start(tree: MirTree; n: NodePosition): NodePosition">start(tree: MirTree; n: NodePosition): NodePosition</a></li>
 
   </ul>
-  <ul class="simple nested-toc-section">unaryOperand
-      <li><a class="reference" href="#unaryOperand%2CMirTree%2COperation"
-    title="unaryOperand(tree: MirTree; op: Operation): OpValue">unaryOperand(tree: MirTree; op: Operation): OpValue</a></li>
-
-  </ul>
 
   </ul>
 </li>
 <li>
   <a class="reference reference-toplevel" href="#15" id="65">Iterators</a>
   <ul class="simple simple-toc-section">
-      <ul class="simple nested-toc-section">lpairs
+      <ul class="simple nested-toc-section">effects
+      <li><a class="reference" href="#effects.i%2CMirTree%2CNodePosition"
+    title="effects(tree: MirTree; n: NodePosition): (EffectKind, OpValue)">effects(tree: MirTree; n: NodePosition): (EffectKind, OpValue)</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">lpairs
       <li><a class="reference" href="#lpairs.i%2Cseq%5BT%5D"
     title="lpairs[T](x: seq[T]): (int, lent T)">lpairs[T](x: seq[T]): (int, lent T)</a></li>
 
@@ -560,8 +567,6 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">[]
       <li><a class="reference" href="#%5B%5D.t%2CMirTree%2C"
     title="`[]`(tree: MirTree; i: NodePosition | NodeInstance | Operation | OpValue): untyped">`[]`(tree: MirTree; i: NodePosition | NodeInstance | Operation | OpValue): untyped</a></li>
-  <li><a class="reference" href="#%5B%5D.t%2CLabelId"
-    title="`[]`(x: LabelId): uint32">`[]`(x: LabelId): uint32</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">dec
@@ -577,6 +582,8 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">indexLike
       <li><a class="reference" href="#indexLike.t%2Ctypedesc%5BNodeInstance%5D"
     title="indexLike(_: typedesc[NodeInstance])">indexLike(_: typedesc[NodeInstance])</a></li>
+  <li><a class="reference" href="#indexLike.t%2Ctypedesc%5BSourceId%5D"
+    title="indexLike(_: typedesc[SourceId])">indexLike(_: typedesc[SourceId])</a></li>
 
   </ul>
 
@@ -587,7 +594,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -618,9 +625,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L247"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L258"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L247" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L258" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -632,9 +639,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L256"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L267"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L256" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L267" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -642,17 +649,19 @@ class="link-seesrc" target="_blank">Source</a>
 <dt><pre><a href="mirtrees.html#LabelId"><span class="Identifier">LabelId</span></a> <span class="Other">=</span> <span class="Keyword">distinct</span> <span class="Identifier">uint32</span></pre></dt>
 <dd>
 
-ID of a label, used to identify a block (<tt class="docutils literal"><span class="pre">mnkBlock</span></tt>). The default value is empty state and means &quot;absence of label&quot;
+ID of a label, used to identify a block (<tt class="docutils literal"><span class="pre">mnkBlock</span></tt>).
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L46"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L52"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L46" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L52" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="MirNode">
 <dt><pre><a href="mirtrees.html#MirNode"><span class="Identifier">MirNode</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">typ</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#PType"><span class="Identifier">PType</span></a>                <span class="Comment">## must be non-nil for operators, inputs, and sinks</span>
+  <span class="Identifier">info</span><span class="Operator">*</span><span class="Other">:</span> <a href="mirtrees.html#SourceId"><span class="Identifier">SourceId</span></a> <span class="Comment">## non-critical meta-data associated with the node (e.g., origin</span>
+                  <span class="Comment">## information)</span>
   <span class="Keyword">case</span> <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="mirtrees.html#MirNodeKind"><span class="Identifier">MirNodeKind</span></a>
   <span class="Keyword">of</span> <span class="Identifier">mnkProc</span><span class="Other">,</span> <span class="Identifier">mnkConst</span><span class="Other">,</span> <span class="Identifier">mnkGlobal</span><span class="Other">,</span> <span class="Identifier">mnkParam</span><span class="Other">,</span> <span class="Identifier">mnkLocal</span><span class="Other">:</span>
       <span class="Identifier">sym</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a>
@@ -679,11 +688,8 @@ class="link-seesrc" target="_blank">Source</a>
       <span class="Identifier">param</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint32</span>         <span class="Comment">## the 0-based index of the enclosing region's parameter</span>
     
   <span class="Keyword">of</span> <span class="Identifier">mnkBlock</span><span class="Other">,</span> <span class="Identifier">mnkBreak</span><span class="Other">:</span>
-      <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <a href="mirtrees.html#LabelId"><span class="Identifier">LabelId</span></a> <span class="Comment">## for a block, its label. A block always must always</span>
-                      <span class="Comment">## have a valid label ('none' is disallowed).</span>
-                      <span class="Comment">## for a break, the label of the block to break out of.</span>
-                      <span class="Comment">## May be 'none', in which case it means &quot;exit the</span>
-                      <span class="Comment">## enclosing 'repeat'&quot;</span>
+      <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <a href="mirtrees.html#LabelId"><span class="Identifier">LabelId</span></a>        <span class="Comment">## for a block, the label that identifies the block;</span>
+                             <span class="Comment">## for a break, the label of the block to break out of</span>
     
   <span class="Keyword">of</span> <span class="Identifier">mnkEnd</span><span class="Other">:</span>
       <span class="Identifier">start</span><span class="Operator">*</span><span class="Other">:</span> <a href="mirtrees.html#MirNodeKind"><span class="Identifier">MirNodeKind</span></a>    <span class="Comment">## the kind of the corresponding start node</span>
@@ -703,9 +709,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L260"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L271"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L260" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L271" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -760,6 +766,9 @@ class="link-seesrc" target="_blank">Source</a>
                    <span class="Comment">##      record-case part of an object should be its own</span>
                    <span class="Comment">##      dedicated object type, which can then be addressed</span>
                    <span class="Comment">##      as a normal field</span>
+  <span class="Identifier">mnkPathConv</span><span class="Other">,</span> <span class="Comment">## an handle conversion. That is, a conversion that produces a</span>
+                <span class="Comment">## *handle*, and not a new *value*. At present, this operator</span>
+                <span class="Comment">## also applies to first-class handles, like ``ref``.</span>
   <span class="Identifier">mnkAddr</span><span class="Other">,</span> <span class="Comment">## ``addr(x)``; creates a first-class unsafe alias/handle (i.e.</span>
             <span class="Comment">## pointer) from the input lvalue `x`</span>
   <span class="Identifier">mnkDeref</span><span class="Other">,</span> <span class="Comment">## ``deref(x)``; dereferences the pointer-like `x` (this</span>
@@ -770,10 +779,10 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">mnkView</span><span class="Other">,</span>                  <span class="Comment">## ``view(x)``; creates a safe alias of the l-value 'x'</span>
   <span class="Identifier">mnkDerefView</span><span class="Other">,</span> <span class="Comment">## ``derefView(x)``; dereferences a view, producing the lvalue</span>
                  <span class="Comment">## named by it</span>
-  <span class="Identifier">mnkStdConv</span><span class="Other">,</span> <span class="Comment">## ``stdConv(x)``; a standard conversion. Depending on the</span>
-               <span class="Comment">## source and target type, lvalue-ness is preserved</span>
-  <span class="Identifier">mnkConv</span><span class="Other">,</span> <span class="Comment">## ``conv(x)``; a conversion. Depending on the source and</span>
-            <span class="Comment">## target type, lvalue-ness is preserved</span>
+  <span class="Identifier">mnkStdConv</span><span class="Other">,</span> <span class="Comment">## ``stdConv(x)``; a standard conversion.Produce a new value.</span>
+               <span class="Comment">## Also used for to-slice (``openArray``) conversions, in</span>
+               <span class="Comment">## which case the semantics are still fuzzy.</span>
+  <span class="Identifier">mnkConv</span><span class="Other">,</span>                  <span class="Comment">## ``conv(x)``; a conversion. Produces a new value.</span>
   <span class="Identifier">mnkCast</span><span class="Other">,</span> <span class="Comment">## ``cast(x)``; produces a new *instance* of the input value</span>
             <span class="Comment">## with a different type</span>
   <span class="Identifier">mnkCall</span><span class="Other">,</span> <span class="Comment">## ``call(p, ...)``; transfers control-flow (i.e. calls) the</span>
@@ -852,14 +861,16 @@ class="link-seesrc" target="_blank">Source</a>
              <span class="Comment">## Once control-flow reaches the end of a ``block``, it is</span>
              <span class="Comment">## transferred to the next statement/operation following the</span>
              <span class="Comment">## block</span>
-  <span class="Identifier">mnkBreak</span><span class="Other">,</span> <span class="Comment">## if a non-nil label is provided, transfers control-flow to the</span>
-             <span class="Comment">## statement/operation following after the ``block`` with the</span>
-             <span class="Comment">## given label. If no label is provided, control-flow is</span>
-             <span class="Comment">## transferred to the exit of the enclosing ``repeat`` (it is</span>
-             <span class="Comment">## required that there exists one)</span>
+  <span class="Identifier">mnkBreak</span><span class="Other">,</span> <span class="Comment">## transfers control-flow to the statement/operation following</span>
+             <span class="Comment">## after the ``block`` with the given label</span>
   <span class="Identifier">mnkReturn</span><span class="Other">,</span> <span class="Comment">## if the code-fragment represents the body of a procedure,</span>
               <span class="Comment">## transfers control-flow back to the caller</span>
   <span class="Identifier">mnkBranch</span><span class="Other">,</span>                <span class="Comment">## defines a branch of an ``mnkExcept`` or ``mnkCase``</span>
+  <span class="Identifier">mnkAsm</span><span class="Other">,</span> <span class="Comment">## corresponds to the high-level ``asm`` statement. Takes an</span>
+           <span class="Comment">## argument block as input, but has itself no meaning at the MIR</span>
+           <span class="Comment">## level</span>
+  <span class="Identifier">mnkEmit</span><span class="Other">,</span> <span class="Comment">## corresponds to the ``emit`` directive. In the context of the</span>
+            <span class="Comment">## MIR, has the same behaviour as ``mnkAsm``</span>
   <span class="Identifier">mnkEnd</span><span class="Other">,</span> <span class="Comment">## marks the physical end of a sub-tree. Has no semantic</span>
            <span class="Comment">## meaning -- it's only required to know where a sub-tree ends</span>
   <span class="Identifier">mnkPNode</span> <span class="Comment">## depending on the context, either statement or something else.</span>
@@ -872,9 +883,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Users of <tt class="docutils literal"><span class="pre">MirNodeKind</span></tt> should not depend on the absolute or relative order between the enum values
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L50"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L55"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L50" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L55" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -884,9 +895,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 A buffer of MIR nodes without any further meaning
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L305"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L315"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L305" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L315" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -896,9 +907,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L304"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L314"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L304" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L314" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -908,9 +919,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L312"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L322"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L312" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L322" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -920,9 +931,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 refers to a node as just a node. Used to communicate that only the node itself is of interest, not what it represents
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L313"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L323"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L313" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L323" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -932,9 +943,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 refers to a <tt class="docutils literal"><span class="pre">MirNode</span></tt> of which the position relative to other nodes has meaning. Uses a signed integer as the base
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L316"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L326"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L316" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L326" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -944,9 +955,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 refers to a <tt class="docutils literal"><span class="pre">MirNode</span></tt> that represents an operation
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L319"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L329"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L319" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L329" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -956,9 +967,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 refers to a value an operation produces
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L321"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L331"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L321" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L331" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="SourceId">
+<dt><pre><a href="mirtrees.html#SourceId"><span class="Identifier">SourceId</span></a> <span class="Other">=</span> <span class="Keyword">distinct</span> <span class="Identifier">range</span><span class="Other">[</span><span class="DecNumber">0'u32</span> <span class="Operator">..</span> <span class="Identifier">high</span><span class="Other">(</span><span class="Identifier">uint32</span><span class="Other">)</span> <span class="Operator">-</span> <span class="DecNumber">1</span><span class="Other">]</span></pre></dt>
+<dd>
+
+The ID of a source-mapping that's stored separately from the MIR nodes.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L38"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L38" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -968,9 +991,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 ID of a temporary location. A temporary location is created and inserted by the compiler. The only difference to other named locations is that temporaries are allowed to be elided (by an optimization pass, for example) if it's deemed to have no effect on the codes' semantics
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L41"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L47"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L41" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L47" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -985,9 +1008,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Convenience set containing all existing node kinds
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L325"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L335"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L325" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L335" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -997,22 +1020,34 @@ class="link-seesrc" target="_blank">Source</a>
 
 Node kinds only allowed in an output context directly inside an arg-block
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L355"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L365"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L355" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L365" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="AtomNodes">
 <dt><pre><a href="mirtrees.html#AtomNodes"><span class="Identifier">AtomNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkProc</span><span class="Other">..</span><span class="DecNumber">mnkNone</span><span class="Other">,</span> <span class="DecNumber">mnkFastAsgn</span><span class="Other">..</span><span class="DecNumber">mnkConstr</span><span class="Other">,</span> <span class="DecNumber">mnkArg</span><span class="Other">..</span><span class="DecNumber">mnkField</span><span class="Other">,</span>
-             <span class="DecNumber">mnkBreak</span><span class="Other">..</span><span class="DecNumber">mnkReturn</span><span class="Other">,</span> <span class="DecNumber">mnkEnd</span><span class="Other">..</span><span class="DecNumber">mnkPNode</span><span class="Other">}</span></pre></dt>
+             <span class="DecNumber">mnkBreak</span><span class="Other">..</span><span class="DecNumber">mnkReturn</span><span class="Other">,</span> <span class="DecNumber">mnkAsm</span><span class="Other">..</span><span class="DecNumber">mnkPNode</span><span class="Other">}</span></pre></dt>
 <dd>
 
 Nodes that aren't sub-trees
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L337"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L347"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L337" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L347" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="ConsumeCtx">
+<dt><pre><a href="mirtrees.html#ConsumeCtx"><span class="Identifier">ConsumeCtx</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkConsume</span><span class="Other">,</span> <span class="DecNumber">mnkRaise</span><span class="Other">,</span> <span class="DecNumber">mnkDefUnpack</span><span class="Other">}</span></pre></dt>
+<dd>
+
+if an lvalue is used as an operand to these operators, the value stored in the named location is considered to be consumed (ownership over it transfered to the operation)
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L384"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L384" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1022,23 +1057,23 @@ class="link-seesrc" target="_blank">Source</a>
 
 Node kinds that represent definition statements (i.e. something that introduces a named entity)
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L328"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L338"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L328" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L338" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="InOutNodes">
-<dt><pre><a href="mirtrees.html#InOutNodes"><span class="Identifier">InOutNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkMagic</span><span class="Other">,</span> <span class="DecNumber">mnkCall</span><span class="Other">,</span> <span class="DecNumber">mnkPathNamed</span><span class="Other">..</span><span class="DecNumber">mnkPathVariant</span><span class="Other">,</span> <span class="DecNumber">mnkConstr</span><span class="Other">,</span>
+<dt><pre><a href="mirtrees.html#InOutNodes"><span class="Identifier">InOutNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkMagic</span><span class="Other">,</span> <span class="DecNumber">mnkCall</span><span class="Other">,</span> <span class="DecNumber">mnkPathNamed</span><span class="Other">..</span><span class="DecNumber">mnkPathConv</span><span class="Other">,</span> <span class="DecNumber">mnkConstr</span><span class="Other">,</span>
               <span class="DecNumber">mnkObjConstr</span><span class="Other">,</span> <span class="DecNumber">mnkView</span><span class="Other">,</span> <span class="DecNumber">mnkTag</span><span class="Other">,</span> <span class="DecNumber">mnkCast</span><span class="Other">,</span> <span class="DecNumber">mnkDeref</span><span class="Other">,</span> <span class="DecNumber">mnkAddr</span><span class="Other">,</span>
               <span class="DecNumber">mnkDerefView</span><span class="Other">,</span> <span class="DecNumber">mnkStdConv</span><span class="Other">,</span> <span class="DecNumber">mnkConv</span><span class="Other">}</span></pre></dt>
 <dd>
 
 Operations that act as both input and output
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L343"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L353"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L343" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L353" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1048,46 +1083,48 @@ class="link-seesrc" target="_blank">Source</a>
 
 Nodes that can appear in the position of inputs/operands but that themselves don't have any operands
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L340"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L340" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="NoLabel">
-<dt><pre><a href="mirtrees.html#NoLabel"><span class="Identifier">NoLabel</span></a> <span class="Other">=</span> <span class="DecNumber">0'u</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L371"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L371" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="OutputNodes">
-<dt><pre><a href="mirtrees.html#OutputNodes"><span class="Identifier">OutputNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkDef</span><span class="Other">..</span><span class="DecNumber">mnkSwitch</span><span class="Other">,</span> <span class="DecNumber">mnkRaise</span><span class="Other">,</span> <span class="DecNumber">mnkVoid</span><span class="Other">,</span> <span class="DecNumber">mnkRegion</span><span class="Other">,</span> <span class="DecNumber">mnkIf</span><span class="Other">..</span><span class="DecNumber">mnkCase</span><span class="Other">}</span></pre></dt>
-<dd>
-
-Node kinds that are allowed in every output context
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L350"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L350"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L350" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
+<div id="OpsWithEffects">
+<dt><pre><a href="mirtrees.html#OpsWithEffects"><span class="Identifier">OpsWithEffects</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkCall</span><span class="Other">,</span> <span class="DecNumber">mnkMagic</span><span class="Other">,</span> <span class="DecNumber">mnkAsgn</span><span class="Other">,</span> <span class="DecNumber">mnkFastAsgn</span><span class="Other">,</span> <span class="DecNumber">mnkSwitch</span><span class="Other">,</span> <span class="DecNumber">mnkInit</span><span class="Other">,</span>
+                  <span class="DecNumber">mnkRegion</span><span class="Other">}</span></pre></dt>
+<dd>
+
+the set of operations that can have lvalue-parameterized or general effects
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L393"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L393" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="OutputNodes">
+<dt><pre><a href="mirtrees.html#OutputNodes"><span class="Identifier">OutputNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkDef</span><span class="Other">..</span><span class="DecNumber">mnkSwitch</span><span class="Other">,</span> <span class="DecNumber">mnkRaise</span><span class="Other">,</span> <span class="DecNumber">mnkVoid</span><span class="Other">,</span> <span class="DecNumber">mnkRegion</span><span class="Other">,</span> <span class="DecNumber">mnkIf</span><span class="Other">..</span><span class="DecNumber">mnkCase</span><span class="Other">,</span>
+               <span class="DecNumber">mnkAsm</span><span class="Other">..</span><span class="DecNumber">mnkEmit</span><span class="Other">}</span></pre></dt>
+<dd>
+
+Node kinds that are allowed in every output context
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L360"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L360" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
 <div id="SingleInputNodes">
-<dt><pre><a href="mirtrees.html#SingleInputNodes"><span class="Identifier">SingleInputNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkAddr</span><span class="Other">..</span><span class="DecNumber">mnkDeref</span><span class="Other">,</span> <span class="DecNumber">mnkDerefView</span><span class="Other">,</span> <span class="DecNumber">mnkConv</span><span class="Other">..</span><span class="DecNumber">mnkCast</span><span class="Other">,</span>
+<dt><pre><a href="mirtrees.html#SingleInputNodes"><span class="Identifier">SingleInputNodes</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkPathNamed</span><span class="Other">..</span><span class="DecNumber">mnkPathPos</span><span class="Other">,</span> <span class="DecNumber">mnkPathVariant</span><span class="Other">..</span><span class="DecNumber">mnkCast</span><span class="Other">,</span>
                     <span class="DecNumber">mnkRaise</span><span class="Other">..</span><span class="DecNumber">mnkTag</span><span class="Other">,</span> <span class="DecNumber">mnkArg</span><span class="Other">..</span><span class="DecNumber">mnkVoid</span><span class="Other">,</span> <span class="DecNumber">mnkIf</span><span class="Other">..</span><span class="DecNumber">mnkCase</span><span class="Other">}</span></pre></dt>
 <dd>
 
 Operators and statements that must not have argument-blocks as input
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L359"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L369"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L359" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L369" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1098,9 +1135,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Nodes than can appear in the position of inputs/operands
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L347"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L357"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L347" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L357" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1111,9 +1148,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Nodes that act as statements syntax-wise
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L364"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L375"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L364" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L375" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1124,9 +1161,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Nodes that mark the start of a sub-tree. They're always matched with a corrsponding <tt class="docutils literal"><span class="pre">mnkEnd</span></tt> node
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L332"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L342"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L332" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L342" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1136,9 +1173,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 Nodes for which the <tt class="docutils literal"><span class="pre"><span class="Identifier">sym</span></span></tt> field is available
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L368"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L379"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L368" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L379" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="UseContext">
+<dt><pre><a href="mirtrees.html#UseContext"><span class="Identifier">UseContext</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">mnkDefUnpack</span><span class="Other">,</span> <span class="DecNumber">mnkDeref</span><span class="Other">,</span> <span class="DecNumber">mnkDerefView</span><span class="Other">..</span><span class="DecNumber">mnkCast</span><span class="Other">,</span> <span class="DecNumber">mnkRaise</span><span class="Other">,</span> <span class="DecNumber">mnkArg</span><span class="Other">,</span>
+              <span class="DecNumber">mnkConsume</span><span class="Other">..</span><span class="DecNumber">mnkVoid</span><span class="Other">,</span> <span class="DecNumber">mnkIf</span><span class="Other">..</span><span class="DecNumber">mnkCase</span><span class="Other">}</span></pre></dt>
+<dd>
+
+using an lvalue as the operand to one of these operators means that the content of the location is observed (when control-flow reaches the operator). In other words, applying the operator results in a read
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L388"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L388" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1153,9 +1203,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L410"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L427"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L410" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L427" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1165,9 +1215,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L409"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L426"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L409" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L426" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1177,9 +1227,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L374"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L401"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L374" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L401" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1189,9 +1239,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L411"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L428"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L411" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L428" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1201,9 +1251,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L413"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L430"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L413" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L430" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="==,SourceId,SourceId">
+<dt><pre><span class="Keyword">func</span> <a href="#%3D%3D%2CSourceId%2CSourceId"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="mirtrees.html#SourceId"><span class="Identifier">SourceId</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span class="Identifier">borrow</span><span class="Other">,</span> <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L399"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L399" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1213,9 +1275,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L373"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L400"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L373" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L400" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1225,9 +1287,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L415"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L432"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L415" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L432" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1238,9 +1300,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L516"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L533"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L516" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L533" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1251,9 +1313,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns the position of the child node at index <tt class="docutils literal"><span class="pre"><span class="Identifier">index</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">index</span></span></tt> <em>must</em> refer to a valid sub-node -- no validation is performed
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L509"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L526"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L509" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L526" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1264,9 +1326,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 If <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> refers to a leaf node, returns a span with the <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> as the single item. Otherwise, computes and returns the span of nodes part of the sub-tree at <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt>. The 'end' node is included.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L484"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L501"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L484" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L501" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1277,9 +1339,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Collects all operands of <tt class="docutils literal"><span class="pre"><span class="Identifier">op</span></span></tt> to <tt class="docutils literal"><span class="pre"><span class="Identifier">result</span></span></tt>. The length of <tt class="docutils literal"><span class="pre"><span class="Identifier">result</span></span></tt> must match the number of operands
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L590"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L607"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L590" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L607" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1290,9 +1352,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Finds the corresponding <tt class="docutils literal"><span class="pre">end</span></tt> node for the node <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> that starts a sub-tree
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L503"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L520"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L503" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L520" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1303,9 +1365,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Searches for the first enclosing sub-tree node of kind <tt class="docutils literal"><span class="pre"><span class="Identifier">kind</span></span></tt> (which is <em>required</em> to exist). The node at <tt class="docutils literal"><span class="pre"><span class="Identifier">start</span></span></tt> is itself also considered during the search
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L528"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L545"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L528" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L545" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1316,9 +1378,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 If <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> refers to an <tt class="docutils literal"><span class="pre">end</span></tt> node, returns the corresponding start node -- <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> otherwise
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L520"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L537"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L520" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L537" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1328,33 +1390,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L634"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L655"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L634" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="isNone,LabelId">
-<dt><pre><span class="Keyword">func</span> <a href="#isNone%2CLabelId"><span class="Identifier">isNone</span></a><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <a href="mirtrees.html#LabelId"><span class="Identifier">LabelId</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span class="Identifier">inline</span><span class="Other">,</span> <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L379"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L379" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="isSome,LabelId">
-<dt><pre><span class="Keyword">func</span> <a href="#isSome%2CLabelId"><span class="Identifier">isSome</span></a><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <a href="mirtrees.html#LabelId"><span class="Identifier">LabelId</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span class="Identifier">inline</span><span class="Other">,</span> <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L376"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L376" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L655" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1364,9 +1402,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 Computes the number of arguments in the argument-block used as the input to <tt class="docutils literal"><span class="pre"><span class="Identifier">op</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L614"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L631"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L614" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L631" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="operand,MirTree,">
+<dt><pre><span class="Keyword">func</span> <a href="#operand%2CMirTree%2C"><span class="Identifier">operand</span></a><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="mirtrees.html#MirTree"><span class="Identifier">MirTree</span></a><span class="Other">;</span> <span class="Identifier">op</span><span class="Other">:</span> <a href="mirtrees.html#Operation"><span class="Identifier">Operation</span></a> <span class="Operator">|</span> <a href="mirtrees.html#OpValue"><span class="Identifier">OpValue</span></a> <span class="Operator">|</span> <a href="mirtrees.html#NodePosition"><span class="Identifier">NodePosition</span></a><span class="Other">)</span><span class="Other">:</span> <a href="mirtrees.html#OpValue"><span class="Identifier">OpValue</span></a></pre></dt>
+<dd>
+
+Returns the index (<tt class="docutils literal"><span class="pre">OpValue</span></tt>) of operand for the single-input node at <tt class="docutils literal"><span class="pre"><span class="Identifier">op</span></span></tt>.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L646"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L646" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1377,9 +1427,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns the <tt class="docutils literal"><span class="pre"><span class="Identifier">opr</span></span></tt>th operand to the operation <tt class="docutils literal"><span class="pre"><span class="Identifier">op</span></span></tt>. It is expected that the operation has at least <tt class="docutils literal"><span class="pre"><span class="Identifier">opr</span></span></tt> + 1 operands
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L538"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L555"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L538" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L555" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1390,9 +1440,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Collects the operands of <tt class="docutils literal"><span class="pre"><span class="Identifier">op</span></span></tt> identified by <tt class="docutils literal"><span class="pre"><span class="Identifier">slice</span></span></tt> to <tt class="docutils literal"><span class="pre"><span class="Identifier">result</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L562"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L579"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L562" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L579" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1402,9 +1452,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L421"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L438"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L421" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L438" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1415,9 +1465,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L431"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L448"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L431" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L448" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1428,9 +1478,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Computes the index of the previous sibling node of <tt class="docutils literal"><span class="pre"><span class="Identifier">x</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L466"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L483"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L466" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L483" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1441,9 +1491,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Computes the index of the next sibling node of <tt class="docutils literal"><span class="pre"><span class="Identifier">x</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L445"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L462"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L445" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L462" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1453,21 +1503,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Find the corresponding start node for an <tt class="docutils literal"><span class="pre">mnkEnd</span></tt> node
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L491"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L508"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L491" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="unaryOperand,MirTree,Operation">
-<dt><pre><span class="Keyword">func</span> <a href="#unaryOperand%2CMirTree%2COperation"><span class="Identifier">unaryOperand</span></a><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="mirtrees.html#MirTree"><span class="Identifier">MirTree</span></a><span class="Other">;</span> <span class="Identifier">op</span><span class="Other">:</span> <a href="mirtrees.html#Operation"><span class="Identifier">Operation</span></a><span class="Other">)</span><span class="Other">:</span> <a href="mirtrees.html#OpValue"><span class="Identifier">OpValue</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L629"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L629" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L508" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1476,15 +1514,28 @@ class="link-seesrc" target="_blank">Source</a>
 <div class="section" id="15">
 <h1><a class="toc-backref" href="#15">Iterators</a></h1>
 <dl class="item">
+<div id="effects.i,MirTree,NodePosition">
+<dt><pre><span class="Keyword">iterator</span> <a href="#effects.i%2CMirTree%2CNodePosition"><span class="Identifier">effects</span></a><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="mirtrees.html#MirTree"><span class="Identifier">MirTree</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="mirtrees.html#NodePosition"><span class="Identifier">NodePosition</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><a href="mirtrees.html#EffectKind"><span class="Identifier">EffectKind</span></a><span class="Other">,</span> <a href="mirtrees.html#OpValue"><span class="Identifier">OpValue</span></a><span class="Other">)</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+For an effectful operation, returns in an unspecified order all lvalue effects together with their applying-to operand.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L682"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L682" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
 <div id="lpairs.i,seq[T]">
 <dt><pre><span class="Keyword">iterator</span> <a href="#lpairs.i%2Cseq%5BT%5D"><span class="Identifier">lpairs</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">int</span><span class="Other">,</span> <span class="Identifier">lent</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L663"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L702"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L663" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L702" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1495,9 +1546,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L646"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L667"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L646" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L667" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1508,9 +1559,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterates over and yields all direct child nodes of <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L653"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L674"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L653" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L674" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1525,9 +1576,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 For convenience, a converter is provided for this conversion. Each <tt class="docutils literal"><span class="pre">OpValue</span></tt> is always backed by an <tt class="docutils literal"><span class="pre">Operation</span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L404"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L421"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L404" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L421" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1542,9 +1593,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L395"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L412"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L395" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L412" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1554,9 +1605,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L392"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L409"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L392" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L409" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1567,21 +1618,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L418"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L435"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L418" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="[].t,LabelId">
-<dt><pre><span class="Keyword">template</span> <a href="#%5B%5D.t%2CLabelId"><span class="Identifier">`[]`</span></a><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <a href="mirtrees.html#LabelId"><span class="Identifier">LabelId</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">uint32</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L382"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L382" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L435" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1591,9 +1630,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L398"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L415"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L398" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L415" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1603,9 +1642,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L401"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L418"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L401" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L418" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1615,9 +1654,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/mir/mirtrees.nim#L387"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L404"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L387" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L404" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="indexLike.t,typedesc[SourceId]">
+<dt><pre><span class="Keyword">template</span> <a href="#indexLike.t%2Ctypedesc%5BSourceId%5D"><span class="Identifier">indexLike</span></a><span class="Other">(</span><span class="Operator">_</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">[</span><a href="mirtrees.html#SourceId"><span class="Identifier">SourceId</span></a><span class="Other">]</span><span class="Other">)</span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/mir/mirtrees.nim#L42"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/mir/mirtrees.nim#L42" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1631,7 +1682,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

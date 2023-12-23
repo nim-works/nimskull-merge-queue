@@ -122,6 +122,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="addUniqueField(obj: PType; s: PSym; cache: IdentCache; idgen: IdGenerator): PSym">addUniqueField(obj: PType; s: PSym; cache: IdentCache; idgen: IdGenerator): PSym</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">addUnmappedField
+      <li><a class="reference" href="#addUnmappedField%2CPType%2CPSym%2CIdentCache%2CIdGenerator"
+    title="addUnmappedField(obj: PType; s: PSym; cache: IdentCache; idgen: IdGenerator): PSym">addUnmappedField(obj: PType; s: PSym; cache: IdentCache; idgen: IdGenerator): PSym</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">callCodegenProc
       <li><a class="reference" href="#callCodegenProc%2CModuleGraph%2Cstring%2CTLineInfo%2CPNode%2CPNode%2CPNode%2CPNode"
     title="callCodegenProc(g: ModuleGraph; name: string; info: TLineInfo = unknownLineInfo;
@@ -177,11 +182,6 @@ window.addEventListener('DOMContentLoaded', main);
     title="indirectAccess(a: PNode; b: string; info: TLineInfo; cache: IdentCache): PNode">indirectAccess(a: PNode; b: string; info: TLineInfo; cache: IdentCache): PNode</a></li>
 
   </ul>
-  <ul class="simple nested-toc-section">lowerSwap
-      <li><a class="reference" href="#lowerSwap%2CModuleGraph%2CPNode%2CIdGenerator%2CPSym"
-    title="lowerSwap(g: ModuleGraph; n: PNode; idgen: IdGenerator; owner: PSym): PNode">lowerSwap(g: ModuleGraph; n: PNode; idgen: IdGenerator; owner: PSym): PNode</a></li>
-
-  </ul>
   <ul class="simple nested-toc-section">lowerTupleUnpacking
       <li><a class="reference" href="#lowerTupleUnpacking%2CModuleGraph%2CPNode%2CIdGenerator%2CPSym"
     title="lowerTupleUnpacking(g: ModuleGraph; n: PNode; idgen: IdGenerator; owner: PSym): PNode">lowerTupleUnpacking(g: ModuleGraph; n: PNode; idgen: IdGenerator; owner: PSym): PNode</a></li>
@@ -197,6 +197,11 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">newAsgnStmt
       <li><a class="reference" href="#newAsgnStmt%2CPNode%2CPNode"
     title="newAsgnStmt(le, ri: PNode): PNode">newAsgnStmt(le, ri: PNode): PNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">newBreakStmt
+      <li><a class="reference" href="#newBreakStmt%2CTLineInfo%2CPSym"
+    title="newBreakStmt(info: TLineInfo; label: PSym): PNode">newBreakStmt(info: TLineInfo; label: PSym): PNode</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">newDeref
@@ -269,7 +274,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -291,7 +296,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 prefix for generated names
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L13"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L13"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L13" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -307,11 +312,11 @@ class="link-seesrc" target="_blank">Source</a>
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-
+Similar to <tt class="docutils literal"><span class="pre">addUnmappedField</span></tt>, but makes sure that the field can later be looked up via the <tt class="docutils literal"><span class="pre">ItemId</span></tt> of <tt class="docutils literal"><span class="pre"><span class="Identifier">s</span></span></tt>.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L207"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L215"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L207" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L215" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -322,9 +327,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L222"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L221"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L222" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L221" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="addUnmappedField,PType,PSym,IdentCache,IdGenerator">
+<dt><pre><span class="Keyword">proc</span> <a href="#addUnmappedField%2CPType%2CPSym%2CIdentCache%2CIdGenerator"><span class="Identifier">addUnmappedField</span></a><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <a href="../ast/ast_types.html#PType"><span class="Identifier">PType</span></a><span class="Other">;</span> <span class="Identifier">s</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">cache</span><span class="Other">:</span> <a href="../ast/idents.html#IdentCache"><span class="Identifier">IdentCache</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Adds a new field to <tt class="docutils literal"><span class="pre"><span class="Identifier">obj</span></span></tt> and returns the new field's symbol. The field's type and whether it's a cursor are provided by <tt class="docutils literal"><span class="pre"><span class="Identifier">s</span></span></tt>; it's name is based on that of <tt class="docutils literal"><span class="pre"><span class="Identifier">s</span></span></tt>, but guaranteed to be unique.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L199"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L199" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -338,9 +356,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L303"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L302"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L303" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L302" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -352,9 +370,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L145"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L137"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L145" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L137" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -365,9 +383,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Turns (value) into (let tmp = value; tmp) so that 'value' can be re-used freely, multiple times. This is frequently required and such a builtin would also be handy to have in macros.nim. The value that can be reused is 'result.lastSon'!
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L99"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L105"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L99" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L105" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -378,9 +396,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L295"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L294"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L295" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L294" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -390,9 +408,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L300"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L299"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L300" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L299" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -404,9 +422,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L325"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L324"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L325" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L324" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -418,9 +436,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L332"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L331"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L332" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L331" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -430,9 +448,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L277"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L276"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L277" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L276" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -442,9 +460,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L292"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L291"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L292" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L291" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -455,9 +473,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L242"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L241"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L242" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L241" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -468,9 +486,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L288"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L287"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L288" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L287" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -481,22 +499,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L259"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L258"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L259" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="lowerSwap,ModuleGraph,PNode,IdGenerator,PSym">
-<dt><pre><span class="Keyword">proc</span> <a href="#lowerSwap%2CModuleGraph%2CPNode%2CIdGenerator%2CPSym"><span class="Identifier">lowerSwap</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="../modules/modulegraphs.html#ModuleGraph"><span class="Identifier">ModuleGraph</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">;</span> <span class="Identifier">owner</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L131"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L258" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -509,9 +514,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L78"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L84"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L78" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L84" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -523,9 +528,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L117"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L123"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L117" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L123" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -535,9 +540,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L66"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L66"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L66" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="newBreakStmt,TLineInfo,PSym">
+<dt><pre><span class="Keyword">proc</span> <a href="#newBreakStmt%2CTLineInfo%2CPSym"><span class="Identifier">newBreakStmt</span></a><span class="Other">(</span><span class="Identifier">info</span><span class="Other">:</span> <a href="../ast/lineinfos.html#TLineInfo"><span class="Identifier">TLineInfo</span></a><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Generates the AST for labeled break and marks <tt class="docutils literal"><span class="pre"><span class="Identifier">label</span></span></tt> as used.
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L78"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L78" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -547,7 +564,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L35"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L35"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L35" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -559,9 +576,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L236"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L235"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L236" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L235" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -571,7 +588,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L69"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L69"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L69" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -585,7 +602,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L72"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L72"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L72" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -597,7 +614,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L62"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L62"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L62" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -609,7 +626,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L57"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L57"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L57" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -623,9 +640,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L321"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L320"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L321" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L320" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -635,9 +652,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L114"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L120"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L114" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L120" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -649,7 +666,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L44"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L44"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L44" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -661,7 +678,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L38"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L38"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L38" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -673,9 +690,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L166"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L158"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L166" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L158" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -685,9 +702,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L180"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L172"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L180" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L172" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -698,9 +715,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/lowerings.nim#L173"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/lowerings.nim#L165"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L173" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/lowerings.nim#L165" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -714,7 +731,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

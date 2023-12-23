@@ -3,7 +3,6 @@ repLexer	ast/report_enums.html#repLexer	ReportCategory.repLexer
 repSem	ast/report_enums.html#repSem	ReportCategory.repSem	
 repCmd	ast/report_enums.html#repCmd	ReportCategory.repCmd	
 repVM	ast/report_enums.html#repVM	ReportCategory.repVM	
-repDbgTrace	ast/report_enums.html#repDbgTrace	ReportCategory.repDbgTrace	
 repDebug	ast/report_enums.html#repDebug	ReportCategory.repDebug	
 repInternal	ast/report_enums.html#repInternal	ReportCategory.repInternal	
 repBackend	ast/report_enums.html#repBackend	ReportCategory.repBackend	
@@ -17,11 +16,8 @@ rsevFatal	ast/report_enums.html#rsevFatal	ReportSeverity.rsevFatal
 rsevTrace	ast/report_enums.html#rsevTrace	ReportSeverity.rsevTrace	
 ReportSeverity	ast/report_enums.html#ReportSeverity	report_enums: ReportSeverity	
 repNone	ast/report_enums.html#repNone	ReportKind.repNone	
-rintUnknown	ast/report_enums.html#rintUnknown	ReportKind.rintUnknown	
-rintFatal	ast/report_enums.html#rintFatal	ReportKind.rintFatal	
 rintUnreachable	ast/report_enums.html#rintUnreachable	ReportKind.rintUnreachable	
 rintAssert	ast/report_enums.html#rintAssert	ReportKind.rintAssert	
-rintIce	ast/report_enums.html#rintIce	ReportKind.rintIce	
 rintCannotOpenFile	ast/report_enums.html#rintCannotOpenFile	ReportKind.rintCannotOpenFile	
 rintUsingLeanCompiler	ast/report_enums.html#rintUsingLeanCompiler	ReportKind.rintUsingLeanCompiler	
 rintNotUsingNimcore	ast/report_enums.html#rintNotUsingNimcore	ReportKind.rintNotUsingNimcore	
@@ -32,45 +28,18 @@ rintWarnFileChanged	ast/report_enums.html#rintWarnFileChanged	ReportKind.rintWar
 rintSource	ast/report_enums.html#rintSource	ReportKind.rintSource	
 rintMsgOrigin	ast/report_enums.html#rintMsgOrigin	ReportKind.rintMsgOrigin	
 rintErrKind	ast/report_enums.html#rintErrKind	ReportKind.rintErrKind	
-rintGCStats	ast/report_enums.html#rintGCStats	ReportKind.rintGCStats	
 rintQuitCalled	ast/report_enums.html#rintQuitCalled	ReportKind.rintQuitCalled	
 rintMissingStackTrace	ast/report_enums.html#rintMissingStackTrace	ReportKind.rintMissingStackTrace	
 rintSuccessX	ast/report_enums.html#rintSuccessX	ReportKind.rintSuccessX	
 rintStackTrace	ast/report_enums.html#rintStackTrace	ReportKind.rintStackTrace	
-rintNimconfWrite	ast/report_enums.html#rintNimconfWrite	ReportKind.rintNimconfWrite	
 rintListWarnings	ast/report_enums.html#rintListWarnings	ReportKind.rintListWarnings	
 rintListHints	ast/report_enums.html#rintListHints	ReportKind.rintListHints	
-rintCliHelp	ast/report_enums.html#rintCliHelp	ReportKind.rintCliHelp	
-rintCliFullHelp	ast/report_enums.html#rintCliFullHelp	ReportKind.rintCliFullHelp	
-rintCliVersion	ast/report_enums.html#rintCliVersion	ReportKind.rintCliVersion	
-rintCliAdvancedUsage	ast/report_enums.html#rintCliAdvancedUsage	ReportKind.rintCliAdvancedUsage	
-rintDumpState	ast/report_enums.html#rintDumpState	ReportKind.rintDumpState	
 rintEchoMessage	ast/report_enums.html#rintEchoMessage	ReportKind.rintEchoMessage	
-rextUnknownCCompiler	ast/report_enums.html#rextUnknownCCompiler	ReportKind.rextUnknownCCompiler	
-rextInvalidHint	ast/report_enums.html#rextInvalidHint	ReportKind.rextInvalidHint	
-rextInvalidWarning	ast/report_enums.html#rextInvalidWarning	ReportKind.rextInvalidWarning	
-rextInvalidCommandLineOption	ast/report_enums.html#rextInvalidCommandLineOption	ReportKind.rextInvalidCommandLineOption	
-rextOnlyAllOffSupported	ast/report_enums.html#rextOnlyAllOffSupported	ReportKind.rextOnlyAllOffSupported	
-rextExpectedOnOrOff	ast/report_enums.html#rextExpectedOnOrOff	ReportKind.rextExpectedOnOrOff	
-rextExpectedOnOrOffOrList	ast/report_enums.html#rextExpectedOnOrOffOrList	ReportKind.rextExpectedOnOrOffOrList	
-rextExpectedCmdArgument	ast/report_enums.html#rextExpectedCmdArgument	ReportKind.rextExpectedCmdArgument	
-rextExpectedNoCmdArgument	ast/report_enums.html#rextExpectedNoCmdArgument	ReportKind.rextExpectedNoCmdArgument	
-rextCmdDisallowsAdditionalArguments	ast/report_enums.html#rextCmdDisallowsAdditionalArguments	ReportKind.rextCmdDisallowsAdditionalArguments	
-rextInvalidNumber	ast/report_enums.html#rextInvalidNumber	ReportKind.rextInvalidNumber	
-rextInvalidValue	ast/report_enums.html#rextInvalidValue	ReportKind.rextInvalidValue	
-rextUnexpectedValue	ast/report_enums.html#rextUnexpectedValue	ReportKind.rextUnexpectedValue	
-rextExpectedCbackendForRun	ast/report_enums.html#rextExpectedCbackendForRun	ReportKind.rextExpectedCbackendForRun	
-rextExpectedTinyCForRun	ast/report_enums.html#rextExpectedTinyCForRun	ReportKind.rextExpectedTinyCForRun	
-rextInvalidCommand	ast/report_enums.html#rextInvalidCommand	ReportKind.rextInvalidCommand	
-rextCommandMissing	ast/report_enums.html#rextCommandMissing	ReportKind.rextCommandMissing	
-rextExpectedRunOptForArgs	ast/report_enums.html#rextExpectedRunOptForArgs	ReportKind.rextExpectedRunOptForArgs	
-rextUnexpectedRunOpt	ast/report_enums.html#rextUnexpectedRunOpt	ReportKind.rextUnexpectedRunOpt	
-rextInvalidPath	ast/report_enums.html#rextInvalidPath	ReportKind.rextInvalidPath	
-rextInvalidPackageName	ast/report_enums.html#rextInvalidPackageName	ReportKind.rextInvalidPackageName	
-rextDeprecated	ast/report_enums.html#rextDeprecated	ReportKind.rextDeprecated	
+rextCmdRequiresFile	ast/report_enums.html#rextCmdRequiresFile	ReportKind.rextCmdRequiresFile	
 rextConf	ast/report_enums.html#rextConf	ReportKind.rextConf	
 rextPath	ast/report_enums.html#rextPath	ReportKind.rextPath	
-rlexMalformedUnderscores	ast/report_enums.html#rlexMalformedUnderscores	ReportKind.rlexMalformedUnderscores	
+rlexMalformedNumUnderscores	ast/report_enums.html#rlexMalformedNumUnderscores	ReportKind.rlexMalformedNumUnderscores	
+rlexMalformedIdentUnderscores	ast/report_enums.html#rlexMalformedIdentUnderscores	ReportKind.rlexMalformedIdentUnderscores	
 rlexMalformedTrailingUnderscre	ast/report_enums.html#rlexMalformedTrailingUnderscre	ReportKind.rlexMalformedTrailingUnderscre	
 rlexInvalidToken	ast/report_enums.html#rlexInvalidToken	ReportKind.rlexInvalidToken	
 rlexInvalidTokenSpaceBetweenNumAndIdent	ast/report_enums.html#rlexInvalidTokenSpaceBetweenNumAndIdent	ReportKind.rlexInvalidTokenSpaceBetweenNumAndIdent	
@@ -90,8 +59,6 @@ rlexInvalidUnicodeCodepointEmpty	ast/report_enums.html#rlexInvalidUnicodeCodepoi
 rlexInvalidUnicodeCodepointGreaterThan0x10FFFF	ast/report_enums.html#rlexInvalidUnicodeCodepointGreaterThan0x10FFFF	ReportKind.rlexInvalidUnicodeCodepointGreaterThan0x10FFFF	
 rlexUnclosedTripleString	ast/report_enums.html#rlexUnclosedTripleString	ReportKind.rlexUnclosedTripleString	
 rlexUnclosedSingleString	ast/report_enums.html#rlexUnclosedSingleString	ReportKind.rlexUnclosedSingleString	
-rlexExpectedToken	ast/report_enums.html#rlexExpectedToken	ReportKind.rlexExpectedToken	
-rlexCfgInvalidDirective	ast/report_enums.html#rlexCfgInvalidDirective	ReportKind.rlexCfgInvalidDirective	
 rlexUnclosedComment	ast/report_enums.html#rlexUnclosedComment	ReportKind.rlexUnclosedComment	
 rlexDeprecatedOctalPrefix	ast/report_enums.html#rlexDeprecatedOctalPrefix	ReportKind.rlexDeprecatedOctalPrefix	
 rlexLineTooLong	ast/report_enums.html#rlexLineTooLong	ReportKind.rlexLineTooLong	
@@ -121,19 +88,15 @@ rparEnablePreviewDotOps	ast/report_enums.html#rparEnablePreviewDotOps	ReportKind
 rvmOpcParseExpectedExpression	ast/report_enums.html#rvmOpcParseExpectedExpression	ReportKind.rvmOpcParseExpectedExpression	
 rvmTooManyRegistersRequired	ast/report_enums.html#rvmTooManyRegistersRequired	ReportKind.rvmTooManyRegistersRequired	
 rvmMissingImportcCompleteStruct	ast/report_enums.html#rvmMissingImportcCompleteStruct	ReportKind.rvmMissingImportcCompleteStruct	
-rvmCannotFindBreakTarget	ast/report_enums.html#rvmCannotFindBreakTarget	ReportKind.rvmCannotFindBreakTarget	
 rvmNotUnused	ast/report_enums.html#rvmNotUnused	ReportKind.rvmNotUnused	
 rvmUserError	ast/report_enums.html#rvmUserError	ReportKind.rvmUserError	
-rvmNotAFieldSymbol	ast/report_enums.html#rvmNotAFieldSymbol	ReportKind.rvmNotAFieldSymbol	
 rvmTooLargetOffset	ast/report_enums.html#rvmTooLargetOffset	ReportKind.rvmTooLargetOffset	
 rvmUnhandledException	ast/report_enums.html#rvmUnhandledException	ReportKind.rvmUnhandledException	
 rvmCannotGenerateCode	ast/report_enums.html#rvmCannotGenerateCode	ReportKind.rvmCannotGenerateCode	
 rvmCannotCast	ast/report_enums.html#rvmCannotCast	ReportKind.rvmCannotCast	
 rvmGlobalError	ast/report_enums.html#rvmGlobalError	ReportKind.rvmGlobalError	
-rvmBadExpandToAst	ast/report_enums.html#rvmBadExpandToAst	ReportKind.rvmBadExpandToAst	
 rvmCannotEvaluateAtComptime	ast/report_enums.html#rvmCannotEvaluateAtComptime	ReportKind.rvmCannotEvaluateAtComptime	
 rvmCannotImportc	ast/report_enums.html#rvmCannotImportc	ReportKind.rvmCannotImportc	
-rvmInvalidObjectConstructor	ast/report_enums.html#rvmInvalidObjectConstructor	ReportKind.rvmInvalidObjectConstructor	
 rvmCannotCallMethod	ast/report_enums.html#rvmCannotCallMethod	ReportKind.rvmCannotCallMethod	
 rvmCallingNonRoutine	ast/report_enums.html#rvmCallingNonRoutine	ReportKind.rvmCallingNonRoutine	
 rvmCannotModifyTypechecked	ast/report_enums.html#rvmCannotModifyTypechecked	ReportKind.rvmCannotModifyTypechecked	
@@ -185,7 +148,6 @@ rsemInvalidModulePath	ast/report_enums.html#rsemInvalidModulePath	ReportKind.rse
 rsemInvalidModuleName	ast/report_enums.html#rsemInvalidModuleName	ReportKind.rsemInvalidModuleName	
 rsemCannotImportItself	ast/report_enums.html#rsemCannotImportItself	ReportKind.rsemCannotImportItself	
 rsemRecursiveInclude	ast/report_enums.html#rsemRecursiveInclude	ReportKind.rsemRecursiveInclude	
-rsemRecursiveImport	ast/report_enums.html#rsemRecursiveImport	ReportKind.rsemRecursiveImport	
 rsemCannotOpenFile	ast/report_enums.html#rsemCannotOpenFile	ReportKind.rsemCannotOpenFile	
 rsemExportRequiresToplevel	ast/report_enums.html#rsemExportRequiresToplevel	ReportKind.rsemExportRequiresToplevel	
 rsemExperimentalRequiresToplevel	ast/report_enums.html#rsemExperimentalRequiresToplevel	ReportKind.rsemExperimentalRequiresToplevel	
@@ -207,7 +169,6 @@ rsemStaticOutOfBounds	ast/report_enums.html#rsemStaticOutOfBounds	ReportKind.rse
 rsemStaticFieldNotFound	ast/report_enums.html#rsemStaticFieldNotFound	ReportKind.rsemStaticFieldNotFound	
 rsemSemfoldOverflow	ast/report_enums.html#rsemSemfoldOverflow	ReportKind.rsemSemfoldOverflow	
 rsemSemfoldDivByZero	ast/report_enums.html#rsemSemfoldDivByZero	ReportKind.rsemSemfoldDivByZero	
-rsemSemfoldInvalidConversion	ast/report_enums.html#rsemSemfoldInvalidConversion	ReportKind.rsemSemfoldInvalidConversion	
 rsemInvalidIntdefine	ast/report_enums.html#rsemInvalidIntdefine	ReportKind.rsemInvalidIntdefine	
 rsemInvalidBooldefine	ast/report_enums.html#rsemInvalidBooldefine	ReportKind.rsemInvalidBooldefine	
 rsemCaseInUnion	ast/report_enums.html#rsemCaseInUnion	ReportKind.rsemCaseInUnion	
@@ -226,7 +187,6 @@ rsemCannotInstantiate	ast/report_enums.html#rsemCannotInstantiate	ReportKind.rse
 rsemCannotInstantiateWithParameter	ast/report_enums.html#rsemCannotInstantiateWithParameter	ReportKind.rsemCannotInstantiateWithParameter	
 rsemCannotGenerateGenericDestructor	ast/report_enums.html#rsemCannotGenerateGenericDestructor	ReportKind.rsemCannotGenerateGenericDestructor	
 rsemUndeclaredField	ast/report_enums.html#rsemUndeclaredField	ReportKind.rsemUndeclaredField	
-rsemInheritanceOnlyWorksWithAnEnum	ast/report_enums.html#rsemInheritanceOnlyWorksWithAnEnum	ReportKind.rsemInheritanceOnlyWorksWithAnEnum	
 rsemExpectedOrdinal	ast/report_enums.html#rsemExpectedOrdinal	ReportKind.rsemExpectedOrdinal	
 rsemExpectedOrdinalOrFloat	ast/report_enums.html#rsemExpectedOrdinalOrFloat	ReportKind.rsemExpectedOrdinalOrFloat	
 rsemExpectedUnholyEnum	ast/report_enums.html#rsemExpectedUnholyEnum	ReportKind.rsemExpectedUnholyEnum	
@@ -307,6 +267,7 @@ rsemParameterNotPointerToPartial	ast/report_enums.html#rsemParameterNotPointerTo
 rsemDiscardingVoid	ast/report_enums.html#rsemDiscardingVoid	ReportKind.rsemDiscardingVoid	
 rsemDiscardingProc	ast/report_enums.html#rsemDiscardingProc	ReportKind.rsemDiscardingProc	
 rsemInvalidControlFlow	ast/report_enums.html#rsemInvalidControlFlow	ReportKind.rsemInvalidControlFlow	
+rsemExpectedLabel	ast/report_enums.html#rsemExpectedLabel	ReportKind.rsemExpectedLabel	
 rsemContinueCannotHaveLabel	ast/report_enums.html#rsemContinueCannotHaveLabel	ReportKind.rsemContinueCannotHaveLabel	
 rsemUseOrDiscard	ast/report_enums.html#rsemUseOrDiscard	ReportKind.rsemUseOrDiscard	
 rsemUseOrDiscardExpr	ast/report_enums.html#rsemUseOrDiscardExpr	ReportKind.rsemUseOrDiscardExpr	
@@ -377,12 +338,14 @@ rsemCannotIsolate	ast/report_enums.html#rsemCannotIsolate	ReportKind.rsemCannotI
 rsemRecursiveDependencyIterator	ast/report_enums.html#rsemRecursiveDependencyIterator	ReportKind.rsemRecursiveDependencyIterator	
 rsemIllegalNimvmContext	ast/report_enums.html#rsemIllegalNimvmContext	ReportKind.rsemIllegalNimvmContext	
 rsemDisallowedNilDeref	ast/report_enums.html#rsemDisallowedNilDeref	ReportKind.rsemDisallowedNilDeref	
+rsemCannotDeref	ast/report_enums.html#rsemCannotDeref	ReportKind.rsemCannotDeref	
 rsemInvalidTupleSubscript	ast/report_enums.html#rsemInvalidTupleSubscript	ReportKind.rsemInvalidTupleSubscript	
 rsemLocalEscapesStackFrame	ast/report_enums.html#rsemLocalEscapesStackFrame	ReportKind.rsemLocalEscapesStackFrame	
 rsemImplicitAddrIsNotFirstParam	ast/report_enums.html#rsemImplicitAddrIsNotFirstParam	ReportKind.rsemImplicitAddrIsNotFirstParam	
 rsemCannotAssignTo	ast/report_enums.html#rsemCannotAssignTo	ReportKind.rsemCannotAssignTo	
 rsemNoReturnTypeDeclared	ast/report_enums.html#rsemNoReturnTypeDeclared	ReportKind.rsemNoReturnTypeDeclared	
 rsemReturnNotAllowed	ast/report_enums.html#rsemReturnNotAllowed	ReportKind.rsemReturnNotAllowed	
+rsemIllegalCompileTimeAccess	ast/report_enums.html#rsemIllegalCompileTimeAccess	ReportKind.rsemIllegalCompileTimeAccess	
 rsemCannotInferReturnType	ast/report_enums.html#rsemCannotInferReturnType	ReportKind.rsemCannotInferReturnType	
 rsemExpectedValueForYield	ast/report_enums.html#rsemExpectedValueForYield	ReportKind.rsemExpectedValueForYield	
 rsemUnexpectedYield	ast/report_enums.html#rsemUnexpectedYield	ReportKind.rsemUnexpectedYield	
@@ -406,6 +369,7 @@ rsemRuntimeDiscriminantMustBeImmutable	ast/report_enums.html#rsemRuntimeDiscrimi
 rsemRuntimeDiscriminantRequiresElif	ast/report_enums.html#rsemRuntimeDiscriminantRequiresElif	ReportKind.rsemRuntimeDiscriminantRequiresElif	
 rsemObjectRequiresFieldInit	ast/report_enums.html#rsemObjectRequiresFieldInit	ReportKind.rsemObjectRequiresFieldInit	
 rsemObjectRequiresFieldInitNoDefault	ast/report_enums.html#rsemObjectRequiresFieldInitNoDefault	ReportKind.rsemObjectRequiresFieldInitNoDefault	
+rsemObjectDoesNotHaveDefaultValue	ast/report_enums.html#rsemObjectDoesNotHaveDefaultValue	ReportKind.rsemObjectDoesNotHaveDefaultValue	
 rsemDistinctDoesNotHaveDefaultValue	ast/report_enums.html#rsemDistinctDoesNotHaveDefaultValue	ReportKind.rsemDistinctDoesNotHaveDefaultValue	
 rsemExpectedModuleNameForImportExcept	ast/report_enums.html#rsemExpectedModuleNameForImportExcept	ReportKind.rsemExpectedModuleNameForImportExcept	
 rsemCannotExport	ast/report_enums.html#rsemCannotExport	ReportKind.rsemCannotExport	
@@ -415,6 +379,7 @@ rsemInvalidBindContext	ast/report_enums.html#rsemInvalidBindContext	ReportKind.r
 rsemCannotCreateImplicitOpenarray	ast/report_enums.html#rsemCannotCreateImplicitOpenarray	ReportKind.rsemCannotCreateImplicitOpenarray	
 rsemCannotAssignToDiscriminantWithCustomDestructor	ast/report_enums.html#rsemCannotAssignToDiscriminantWithCustomDestructor	ReportKind.rsemCannotAssignToDiscriminantWithCustomDestructor	
 rsemUnavailableTypeBound	ast/report_enums.html#rsemUnavailableTypeBound	ReportKind.rsemUnavailableTypeBound	
+rsemUnavailableLocation	ast/report_enums.html#rsemUnavailableLocation	ReportKind.rsemUnavailableLocation	
 rsemUndeclaredIdentifier	ast/report_enums.html#rsemUndeclaredIdentifier	ReportKind.rsemUndeclaredIdentifier	
 rsemExpectedIdentifier	ast/report_enums.html#rsemExpectedIdentifier	ReportKind.rsemExpectedIdentifier	
 rsemExpectedIdentifierQuoteLimit	ast/report_enums.html#rsemExpectedIdentifierQuoteLimit	ReportKind.rsemExpectedIdentifierQuoteLimit	
@@ -425,12 +390,9 @@ rsemOnlyDeclaredIdentifierFoundIsError	ast/report_enums.html#rsemOnlyDeclaredIde
 rsemFieldNotAccessible	ast/report_enums.html#rsemFieldNotAccessible	ReportKind.rsemFieldNotAccessible	
 rsemFieldAssignmentInvalid	ast/report_enums.html#rsemFieldAssignmentInvalid	ReportKind.rsemFieldAssignmentInvalid	
 rsemFieldAssignmentInvalidNeedSpace	ast/report_enums.html#rsemFieldAssignmentInvalidNeedSpace	ReportKind.rsemFieldAssignmentInvalidNeedSpace	
-rsemFieldOkButAssignedValueInvalid	ast/report_enums.html#rsemFieldOkButAssignedValueInvalid	ReportKind.rsemFieldOkButAssignedValueInvalid	
-rsemObjectConstructorIncorrect	ast/report_enums.html#rsemObjectConstructorIncorrect	ReportKind.rsemObjectConstructorIncorrect	
 rsemExpressionHasNoType	ast/report_enums.html#rsemExpressionHasNoType	ReportKind.rsemExpressionHasNoType	
 rsemRawTypeMismatch	ast/report_enums.html#rsemRawTypeMismatch	ReportKind.rsemRawTypeMismatch	
 rsemCannotConvertTypes	ast/report_enums.html#rsemCannotConvertTypes	ReportKind.rsemCannotConvertTypes	
-rsemUnresolvedGenericParameter	ast/report_enums.html#rsemUnresolvedGenericParameter	ReportKind.rsemUnresolvedGenericParameter	
 rsemCannotCreateFlowVarOfType	ast/report_enums.html#rsemCannotCreateFlowVarOfType	ReportKind.rsemCannotCreateFlowVarOfType	
 rsemTypeNotAllowed	ast/report_enums.html#rsemTypeNotAllowed	ReportKind.rsemTypeNotAllowed	
 rsemIntLiteralExpected	ast/report_enums.html#rsemIntLiteralExpected	ReportKind.rsemIntLiteralExpected	
@@ -460,12 +422,12 @@ rsemExpectedParameterForJsPattern	ast/report_enums.html#rsemExpectedParameterFor
 rsemExpectedLiteralForGoto	ast/report_enums.html#rsemExpectedLiteralForGoto	ReportKind.rsemExpectedLiteralForGoto	
 rsemRequiresDeepCopyEnabled	ast/report_enums.html#rsemRequiresDeepCopyEnabled	ReportKind.rsemRequiresDeepCopyEnabled	
 rsemDisallowedOfForPureObjects	ast/report_enums.html#rsemDisallowedOfForPureObjects	ReportKind.rsemDisallowedOfForPureObjects	
-rsemDisallowedReprForNewruntime	ast/report_enums.html#rsemDisallowedReprForNewruntime	ReportKind.rsemDisallowedReprForNewruntime	
 rsemCannotCodegenCompiletimeProc	ast/report_enums.html#rsemCannotCodegenCompiletimeProc	ReportKind.rsemCannotCodegenCompiletimeProc	
 rsemInvalidPragma	ast/report_enums.html#rsemInvalidPragma	ReportKind.rsemInvalidPragma	
 rsemUnexpectedPragma	ast/report_enums.html#rsemUnexpectedPragma	ReportKind.rsemUnexpectedPragma	
 rsemPropositionExpected	ast/report_enums.html#rsemPropositionExpected	ReportKind.rsemPropositionExpected	
 rsemIllegalCustomPragma	ast/report_enums.html#rsemIllegalCustomPragma	ReportKind.rsemIllegalCustomPragma	
+rsemExternalLocalNotAllowed	ast/report_enums.html#rsemExternalLocalNotAllowed	ReportKind.rsemExternalLocalNotAllowed	
 rsemNoReturnHasReturn	ast/report_enums.html#rsemNoReturnHasReturn	ReportKind.rsemNoReturnHasReturn	
 rsemImplicitPragmaError	ast/report_enums.html#rsemImplicitPragmaError	ReportKind.rsemImplicitPragmaError	
 rsemPragmaDynlibRequiresExportc	ast/report_enums.html#rsemPragmaDynlibRequiresExportc	ReportKind.rsemPragmaDynlibRequiresExportc	
@@ -476,6 +438,7 @@ rsemSymbolKindMismatch	ast/report_enums.html#rsemSymbolKindMismatch	ReportKind.r
 rsemIllformedAst	ast/report_enums.html#rsemIllformedAst	ReportKind.rsemIllformedAst	
 rsemInitHereNotAllowed	ast/report_enums.html#rsemInitHereNotAllowed	ReportKind.rsemInitHereNotAllowed	
 rsemTypeExpected	ast/report_enums.html#rsemTypeExpected	ReportKind.rsemTypeExpected	
+rsemSinkIsNotATypeClass	ast/report_enums.html#rsemSinkIsNotATypeClass	ReportKind.rsemSinkIsNotATypeClass	
 rsemGenericTypeExpected	ast/report_enums.html#rsemGenericTypeExpected	ReportKind.rsemGenericTypeExpected	
 rsemTypeInvalid	ast/report_enums.html#rsemTypeInvalid	ReportKind.rsemTypeInvalid	
 rsemWrongIdent	ast/report_enums.html#rsemWrongIdent	ReportKind.rsemWrongIdent	
@@ -496,6 +459,8 @@ rsemMismatchedPopPush	ast/report_enums.html#rsemMismatchedPopPush	ReportKind.rse
 rsemExcessiveCompilePragmaArgs	ast/report_enums.html#rsemExcessiveCompilePragmaArgs	ReportKind.rsemExcessiveCompilePragmaArgs	
 rsemLinePragmaExpectsTuple	ast/report_enums.html#rsemLinePragmaExpectsTuple	ReportKind.rsemLinePragmaExpectsTuple	
 rsemRaisesPragmaExpectsObject	ast/report_enums.html#rsemRaisesPragmaExpectsObject	ReportKind.rsemRaisesPragmaExpectsObject	
+rsemCompilerOptionInvalid	ast/report_enums.html#rsemCompilerOptionInvalid	ReportKind.rsemCompilerOptionInvalid	
+rsemCompilerOptionArgInvalid	ast/report_enums.html#rsemCompilerOptionArgInvalid	ReportKind.rsemCompilerOptionArgInvalid	
 rsemLocksPragmaExpectsList	ast/report_enums.html#rsemLocksPragmaExpectsList	ReportKind.rsemLocksPragmaExpectsList	
 rsemLocksPragmaBadLevel	ast/report_enums.html#rsemLocksPragmaBadLevel	ReportKind.rsemLocksPragmaBadLevel	
 rsemLocksRequiresArgs	ast/report_enums.html#rsemLocksRequiresArgs	ReportKind.rsemLocksRequiresArgs	
@@ -517,6 +482,8 @@ rsemUserWarning	ast/report_enums.html#rsemUserWarning	ReportKind.rsemUserWarning
 rsemUnknownMagic	ast/report_enums.html#rsemUnknownMagic	ReportKind.rsemUnknownMagic	
 rsemUnusedImport	ast/report_enums.html#rsemUnusedImport	ReportKind.rsemUnusedImport	
 rsemDeprecated	ast/report_enums.html#rsemDeprecated	ReportKind.rsemDeprecated	
+rsemDeprecatedCompilerOpt	ast/report_enums.html#rsemDeprecatedCompilerOpt	ReportKind.rsemDeprecatedCompilerOpt	
+rsemDeprecatedCompilerOptArg	ast/report_enums.html#rsemDeprecatedCompilerOptArg	ReportKind.rsemDeprecatedCompilerOptArg	
 rsemLockLevelMismatch	ast/report_enums.html#rsemLockLevelMismatch	ReportKind.rsemLockLevelMismatch	
 rsemTypelessParam	ast/report_enums.html#rsemTypelessParam	ReportKind.rsemTypelessParam	
 rsemOwnedTypeDeprecated	ast/report_enums.html#rsemOwnedTypeDeprecated	ReportKind.rsemOwnedTypeDeprecated	
@@ -529,7 +496,6 @@ rsemWarnGcUnsafe	ast/report_enums.html#rsemWarnGcUnsafe	ReportKind.rsemWarnGcUns
 rsemWarnGcUnsafeListing	ast/report_enums.html#rsemWarnGcUnsafeListing	ReportKind.rsemWarnGcUnsafeListing	
 rsemProveInit	ast/report_enums.html#rsemProveInit	ReportKind.rsemProveInit	
 rsemUninit	ast/report_enums.html#rsemUninit	ReportKind.rsemUninit	
-rsemWarnUnsafeCode	ast/report_enums.html#rsemWarnUnsafeCode	ReportKind.rsemWarnUnsafeCode	
 rsemImplicitCstringConvert	ast/report_enums.html#rsemImplicitCstringConvert	ReportKind.rsemImplicitCstringConvert	
 rsemHoleEnumConvert	ast/report_enums.html#rsemHoleEnumConvert	ReportKind.rsemHoleEnumConvert	
 rsemAnyEnumConvert	ast/report_enums.html#rsemAnyEnumConvert	ReportKind.rsemAnyEnumConvert	
@@ -547,9 +513,9 @@ rsemGenericMethodsDeprecated	ast/report_enums.html#rsemGenericMethodsDeprecated	
 rsemSuspiciousEnumConv	ast/report_enums.html#rsemSuspiciousEnumConv	ReportKind.rsemSuspiciousEnumConv	
 rsemUnsafeSetLen	ast/report_enums.html#rsemUnsafeSetLen	ReportKind.rsemUnsafeSetLen	
 rsemUnsafeDefault	ast/report_enums.html#rsemUnsafeDefault	ReportKind.rsemUnsafeDefault	
+rsemUntypedParamsFollwedByMoreSpecificType	ast/report_enums.html#rsemUntypedParamsFollwedByMoreSpecificType	ReportKind.rsemUntypedParamsFollwedByMoreSpecificType	
 rsemBindDeprecated	ast/report_enums.html#rsemBindDeprecated	ReportKind.rsemBindDeprecated	
 rsemObservableStores	ast/report_enums.html#rsemObservableStores	ReportKind.rsemObservableStores	
-rsemCaseTransition	ast/report_enums.html#rsemCaseTransition	ReportKind.rsemCaseTransition	
 rsemUseOfGc	ast/report_enums.html#rsemUseOfGc	ReportKind.rsemUseOfGc	
 rsemUserHint	ast/report_enums.html#rsemUserHint	ReportKind.rsemUserHint	
 rsemLinterReport	ast/report_enums.html#rsemLinterReport	ReportKind.rsemLinterReport	
@@ -572,7 +538,6 @@ rsemCopiesToSink	ast/report_enums.html#rsemCopiesToSink	ReportKind.rsemCopiesToS
 rsemGlobalVar	ast/report_enums.html#rsemGlobalVar	ReportKind.rsemGlobalVar	
 rsemEffectsListingHint	ast/report_enums.html#rsemEffectsListingHint	ReportKind.rsemEffectsListingHint	
 rsemExpandMacro	ast/report_enums.html#rsemExpandMacro	ReportKind.rsemExpandMacro	
-rsemExpandArc	ast/report_enums.html#rsemExpandArc	ReportKind.rsemExpandArc	
 rsemCompilesReport	ast/report_enums.html#rsemCompilesReport	ReportKind.rsemCompilesReport	
 rsemNonMatchingCandidates	ast/report_enums.html#rsemNonMatchingCandidates	ReportKind.rsemNonMatchingCandidates	
 rsemExtendedContext	ast/report_enums.html#rsemExtendedContext	ReportKind.rsemExtendedContext	
@@ -583,18 +548,8 @@ rcmdCompiling	ast/report_enums.html#rcmdCompiling	ReportKind.rcmdCompiling
 rcmdLinking	ast/report_enums.html#rcmdLinking	ReportKind.rcmdLinking	
 rcmdExecuting	ast/report_enums.html#rcmdExecuting	ReportKind.rcmdExecuting	
 rcmdRunnableExamplesSuccess	ast/report_enums.html#rcmdRunnableExamplesSuccess	ReportKind.rcmdRunnableExamplesSuccess	
-rdbgTraceDefined	ast/report_enums.html#rdbgTraceDefined	ReportKind.rdbgTraceDefined	
-rdbgTraceUndefined	ast/report_enums.html#rdbgTraceUndefined	ReportKind.rdbgTraceUndefined	
-rdbgTraceStart	ast/report_enums.html#rdbgTraceStart	ReportKind.rdbgTraceStart	
-rdbgTraceStep	ast/report_enums.html#rdbgTraceStep	ReportKind.rdbgTraceStep	
-rdbgTraceLine	ast/report_enums.html#rdbgTraceLine	ReportKind.rdbgTraceLine	
-rdbgTraceEnd	ast/report_enums.html#rdbgTraceEnd	ReportKind.rdbgTraceEnd	
 rdbgVmExecTraceFull	ast/report_enums.html#rdbgVmExecTraceFull	ReportKind.rdbgVmExecTraceFull	
 rdbgVmExecTraceMinimal	ast/report_enums.html#rdbgVmExecTraceMinimal	ReportKind.rdbgVmExecTraceMinimal	
-rdbgVmCodeListing	ast/report_enums.html#rdbgVmCodeListing	ReportKind.rdbgVmCodeListing	
-rdbgStartingConfRead	ast/report_enums.html#rdbgStartingConfRead	ReportKind.rdbgStartingConfRead	
-rdbgFinishedConfRead	ast/report_enums.html#rdbgFinishedConfRead	ReportKind.rdbgFinishedConfRead	
-rdbgCfgTrace	ast/report_enums.html#rdbgCfgTrace	ReportKind.rdbgCfgTrace	
 rdbgOptionsPush	ast/report_enums.html#rdbgOptionsPush	ReportKind.rdbgOptionsPush	
 rdbgOptionsPop	ast/report_enums.html#rdbgOptionsPop	ReportKind.rdbgOptionsPop	
 rbackCannotWriteScript	ast/report_enums.html#rbackCannotWriteScript	ReportKind.rbackCannotWriteScript	
@@ -633,7 +588,6 @@ SemReportKind	ast/report_enums.html#SemReportKind	report_enums: SemReportKind
 SemOrVMReportKind	ast/report_enums.html#SemOrVMReportKind	report_enums: SemOrVMReportKind	
 SemReportErrorKind	ast/report_enums.html#SemReportErrorKind	report_enums: SemReportErrorKind	
 CmdReportKind	ast/report_enums.html#CmdReportKind	report_enums: CmdReportKind	
-DbgTraceReportKind	ast/report_enums.html#DbgTraceReportKind	report_enums: DbgTraceReportKind	
 DebugReportKind	ast/report_enums.html#DebugReportKind	report_enums: DebugReportKind	
 BackendReportKind	ast/report_enums.html#BackendReportKind	report_enums: BackendReportKind	
 ExternalReportKind	ast/report_enums.html#ExternalReportKind	report_enums: ExternalReportKind	
@@ -661,7 +615,6 @@ repCmdKinds	ast/report_enums.html#repCmdKinds	report_enums: repCmdKinds
 rcmdErrorKinds	ast/report_enums.html#rcmdErrorKinds	report_enums: rcmdErrorKinds	
 rcmdWarningKinds	ast/report_enums.html#rcmdWarningKinds	report_enums: rcmdWarningKinds	
 rcmdHintKinds	ast/report_enums.html#rcmdHintKinds	report_enums: rcmdHintKinds	
-repDbgTraceKinds	ast/report_enums.html#repDbgTraceKinds	report_enums: repDbgTraceKinds	
 repDebugKinds	ast/report_enums.html#repDebugKinds	report_enums: repDebugKinds	
 repBackendKinds	ast/report_enums.html#repBackendKinds	report_enums: repBackendKinds	
 rbackErrorKinds	ast/report_enums.html#rbackErrorKinds	report_enums: rbackErrorKinds	
@@ -669,7 +622,6 @@ rbackWarningKinds	ast/report_enums.html#rbackWarningKinds	report_enums: rbackWar
 rbackHintKinds	ast/report_enums.html#rbackHintKinds	report_enums: rbackHintKinds	
 repExternalKinds	ast/report_enums.html#repExternalKinds	report_enums: repExternalKinds	
 rextErrorKinds	ast/report_enums.html#rextErrorKinds	report_enums: rextErrorKinds	
-rextWarningKinds	ast/report_enums.html#rextWarningKinds	report_enums: rextWarningKinds	
 rextHintKinds	ast/report_enums.html#rextHintKinds	report_enums: rextHintKinds	
 repInternalKinds	ast/report_enums.html#repInternalKinds	report_enums: repInternalKinds	
 rintFatalKinds	ast/report_enums.html#rintFatalKinds	report_enums: rintFatalKinds	
@@ -677,7 +629,6 @@ rintErrorKinds	ast/report_enums.html#rintErrorKinds	report_enums: rintErrorKinds
 rintWarningKinds	ast/report_enums.html#rintWarningKinds	report_enums: rintWarningKinds	
 rintHintKinds	ast/report_enums.html#rintHintKinds	report_enums: rintHintKinds	
 rintDataPassKinds	ast/report_enums.html#rintDataPassKinds	report_enums: rintDataPassKinds	
-rintCliKinds	ast/report_enums.html#rintCliKinds	report_enums: rintCliKinds	
 repWarningKinds	ast/report_enums.html#repWarningKinds	report_enums: repWarningKinds	
 repTraceKinds	ast/report_enums.html#repTraceKinds	report_enums: repTraceKinds	
 repHintKinds	ast/report_enums.html#repHintKinds	report_enums: repHintKinds	

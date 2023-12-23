@@ -14,7 +14,6 @@ optRun	front/in_options.html#optRun	TGlobalOption.optRun
 optUseNimcache	front/in_options.html#optUseNimcache	TGlobalOption.optUseNimcache	
 optStyleHint	front/in_options.html#optStyleHint	TGlobalOption.optStyleHint	
 optStyleError	front/in_options.html#optStyleError	TGlobalOption.optStyleError	
-optStyleUsages	front/in_options.html#optStyleUsages	TGlobalOption.optStyleUsages	
 optSkipSystemConfigFile	front/in_options.html#optSkipSystemConfigFile	TGlobalOption.optSkipSystemConfigFile	
 optSkipProjConfigFile	front/in_options.html#optSkipProjConfigFile	TGlobalOption.optSkipProjConfigFile	
 optSkipUserConfigFile	front/in_options.html#optSkipUserConfigFile	TGlobalOption.optSkipUserConfigFile	
@@ -28,7 +27,6 @@ optTlsEmulation	front/in_options.html#optTlsEmulation	TGlobalOption.optTlsEmulat
 optGenIndex	front/in_options.html#optGenIndex	TGlobalOption.optGenIndex	
 optEmbedOrigSrc	front/in_options.html#optEmbedOrigSrc	TGlobalOption.optEmbedOrigSrc	
 optIdeDebug	front/in_options.html#optIdeDebug	TGlobalOption.optIdeDebug	
-optIdeTerse	front/in_options.html#optIdeTerse	TGlobalOption.optIdeTerse	
 optExcessiveStackTrace	front/in_options.html#optExcessiveStackTrace	TGlobalOption.optExcessiveStackTrace	
 optShowAllMismatches	front/in_options.html#optShowAllMismatches	TGlobalOption.optShowAllMismatches	
 optWholeProject	front/in_options.html#optWholeProject	TGlobalOption.optWholeProject	
@@ -37,7 +35,6 @@ optDeclaredLocs	front/in_options.html#optDeclaredLocs	TGlobalOption.optDeclaredL
 optNoNimblePath	front/in_options.html#optNoNimblePath	TGlobalOption.optNoNimblePath	
 optDynlibOverrideAll	front/in_options.html#optDynlibOverrideAll	TGlobalOption.optDynlibOverrideAll	
 optSeqDestructors	front/in_options.html#optSeqDestructors	TGlobalOption.optSeqDestructors	
-optTinyRtti	front/in_options.html#optTinyRtti	TGlobalOption.optTinyRtti	
 optMultiMethods	front/in_options.html#optMultiMethods	TGlobalOption.optMultiMethods	
 optBenchmarkVM	front/in_options.html#optBenchmarkVM	TGlobalOption.optBenchmarkVM	
 optProduceAsm	front/in_options.html#optProduceAsm	TGlobalOption.optProduceAsm	
@@ -45,19 +42,13 @@ optPanics	front/in_options.html#optPanics	TGlobalOption.optPanics
 optSourcemap	front/in_options.html#optSourcemap	TGlobalOption.optSourcemap	
 optProfileVM	front/in_options.html#optProfileVM	TGlobalOption.optProfileVM	
 optEnableDeepCopy	front/in_options.html#optEnableDeepCopy	TGlobalOption.optEnableDeepCopy	
+optCmdExitGcStats	front/in_options.html#optCmdExitGcStats	TGlobalOption.optCmdExitGcStats	
 TGlobalOption	front/in_options.html#TGlobalOption	in_options: TGlobalOption	
 TGlobalOptions	front/in_options.html#TGlobalOptions	in_options: TGlobalOptions	
 gcUnselected	front/in_options.html#gcUnselected	TGCMode.gcUnselected	
-gcNone	front/in_options.html#gcNone	TGCMode.gcNone	
-gcBoehm	front/in_options.html#gcBoehm	TGCMode.gcBoehm	
-gcRegions	front/in_options.html#gcRegions	TGCMode.gcRegions	
+gcNative	front/in_options.html#gcNative	TGCMode.gcNative	
 gcArc	front/in_options.html#gcArc	TGCMode.gcArc	
 gcOrc	front/in_options.html#gcOrc	TGCMode.gcOrc	
-gcMarkAndSweep	front/in_options.html#gcMarkAndSweep	TGCMode.gcMarkAndSweep	
-gcHooks	front/in_options.html#gcHooks	TGCMode.gcHooks	
-gcRefc	front/in_options.html#gcRefc	TGCMode.gcRefc	
-gcV2	front/in_options.html#gcV2	TGCMode.gcV2	
-gcGo	front/in_options.html#gcGo	TGCMode.gcGo	
 TGCMode	front/in_options.html#TGCMode	in_options: TGCMode	
 optNone	front/in_options.html#optNone	TOption.optNone	
 optObjCheck	front/in_options.html#optObjCheck	TOption.optObjCheck	
@@ -88,11 +79,6 @@ optCursorInference	front/in_options.html#optCursorInference	TOption.optCursorInf
 optImportHidden	front/in_options.html#optImportHidden	TOption.optImportHidden	
 TOption	front/in_options.html#TOption	in_options: TOption	
 TOptions	front/in_options.html#TOptions	in_options: TOptions	
-backendInvalid	front/in_options.html#backendInvalid	TBackend.backendInvalid	
-backendC	front/in_options.html#backendC	TBackend.backendC	
-backendJs	front/in_options.html#backendJs	TBackend.backendJs	
-backendNimVm	front/in_options.html#backendNimVm	TBackend.backendNimVm	
-TBackend	front/in_options.html#TBackend	in_options: TBackend	
 cmdNone	front/in_options.html#cmdNone	Command.cmdNone	
 cmdUnknown	front/in_options.html#cmdUnknown	Command.cmdUnknown	
 cmdCompileToC	front/in_options.html#cmdCompileToC	Command.cmdCompileToC	
@@ -127,19 +113,6 @@ foLegacyRelProj	front/in_options.html#foLegacyRelProj	FilenameOption.foLegacyRel
 foName	front/in_options.html#foName	FilenameOption.foName	
 foStacktrace	front/in_options.html#foStacktrace	FilenameOption.foStacktrace	
 FilenameOption	front/in_options.html#FilenameOption	in_options: FilenameOption	
-implicitDeref	front/in_options.html#implicitDeref	Feature.implicitDeref	
-dotOperators	front/in_options.html#dotOperators	Feature.dotOperators	
-callOperator	front/in_options.html#callOperator	Feature.callOperator	
-destructor	front/in_options.html#destructor	Feature.destructor	
-notnil	front/in_options.html#notnil	Feature.notnil	
-vmopsDanger	front/in_options.html#vmopsDanger	Feature.vmopsDanger	
-strictFuncs	front/in_options.html#strictFuncs	Feature.strictFuncs	
-views	front/in_options.html#views	Feature.views	
-strictNotNil	front/in_options.html#strictNotNil	Feature.strictNotNil	
-overloadableEnums	front/in_options.html#overloadableEnums	Feature.overloadableEnums	
-strictEffects	front/in_options.html#strictEffects	Feature.strictEffects	
-unicodeOperators	front/in_options.html#unicodeOperators	Feature.unicodeOperators	
-Feature	front/in_options.html#Feature	in_options: Feature	
 ccNone	front/in_options.html#ccNone	TSystemCC.ccNone	
 ccGcc	front/in_options.html#ccGcc	TSystemCC.ccGcc	
 ccNintendoSwitch	front/in_options.html#ccNintendoSwitch	TSystemCC.ccNintendoSwitch	
@@ -154,10 +127,8 @@ ccIcc	front/in_options.html#ccIcc	TSystemCC.ccIcc
 ccClangCl	front/in_options.html#ccClangCl	TSystemCC.ccClangCl	
 TSystemCC	front/in_options.html#TSystemCC	in_options: TSystemCC	
 excNone	front/in_options.html#excNone	ExceptionSystem.excNone	
-excSetjmp	front/in_options.html#excSetjmp	ExceptionSystem.excSetjmp	
 excNative	front/in_options.html#excNative	ExceptionSystem.excNative	
 excGoto	front/in_options.html#excGoto	ExceptionSystem.excGoto	
-excQuirky	front/in_options.html#excQuirky	ExceptionSystem.excQuirky	
 ExceptionSystem	front/in_options.html#ExceptionSystem	in_options: ExceptionSystem	
 disabledSf	front/in_options.html#disabledSf	SymbolFilesOption.disabledSf	
 writeOnlySf	front/in_options.html#writeOnlySf	SymbolFilesOption.writeOnlySf	
@@ -165,6 +136,30 @@ readOnlySf	front/in_options.html#readOnlySf	SymbolFilesOption.readOnlySf
 v2Sf	front/in_options.html#v2Sf	SymbolFilesOption.v2Sf	
 stressTest	front/in_options.html#stressTest	SymbolFilesOption.stressTest	
 SymbolFilesOption	front/in_options.html#SymbolFilesOption	in_options: SymbolFilesOption	
+backendInvalid	front/in_options.html#backendInvalid	TBackend.backendInvalid	
+backendC	front/in_options.html#backendC	TBackend.backendC	
+backendJs	front/in_options.html#backendJs	TBackend.backendJs	
+backendNimVm	front/in_options.html#backendNimVm	TBackend.backendNimVm	
+TBackend	front/in_options.html#TBackend	in_options: TBackend	
+TValidBackend	front/in_options.html#TValidBackend	in_options: TValidBackend	
+validBackends	front/in_options.html#validBackends	in_options: validBackends	
+msgFormatText	front/in_options.html#msgFormatText	MsgFormatKind.msgFormatText	
+msgFormatSexp	front/in_options.html#msgFormatSexp	MsgFormatKind.msgFormatSexp	
+MsgFormatKind	front/in_options.html#MsgFormatKind	in_options: MsgFormatKind	
+implicitDeref	front/in_options.html#implicitDeref	Feature.implicitDeref	
+dotOperators	front/in_options.html#dotOperators	Feature.dotOperators	
+callOperator	front/in_options.html#callOperator	Feature.callOperator	
+destructor	front/in_options.html#destructor	Feature.destructor	
+notnil	front/in_options.html#notnil	Feature.notnil	
+vmopsDanger	front/in_options.html#vmopsDanger	Feature.vmopsDanger	
+strictFuncs	front/in_options.html#strictFuncs	Feature.strictFuncs	
+views	front/in_options.html#views	Feature.views	
+strictNotNil	front/in_options.html#strictNotNil	Feature.strictNotNil	
+overloadableEnums	front/in_options.html#overloadableEnums	Feature.overloadableEnums	
+strictEffects	front/in_options.html#strictEffects	Feature.strictEffects	
+unicodeOperators	front/in_options.html#unicodeOperators	Feature.unicodeOperators	
+Feature	front/in_options.html#Feature	in_options: Feature	
+experimentalFeatures	front/in_options.html#experimentalFeatures	in_options: experimentalFeatures	
 cnCurrent	front/in_options.html#cnCurrent	ConfNoteSet.cnCurrent	
 cnMainPackage	front/in_options.html#cnMainPackage	ConfNoteSet.cnMainPackage	
 cnForeign	front/in_options.html#cnForeign	ConfNoteSet.cnForeign	

@@ -121,6 +121,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="transformBody(g: ModuleGraph; idgen: IdGenerator; prc: PSym; cache: bool): PNode">transformBody(g: ModuleGraph; idgen: IdGenerator; prc: PSym; cache: bool): PNode</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">transformBodyWithCache
+      <li><a class="reference" href="#transformBodyWithCache%2CModuleGraph%2CIdGenerator%2CPSym"
+    title="transformBodyWithCache(g: ModuleGraph; idgen: IdGenerator; prc: PSym): PNode">transformBodyWithCache(g: ModuleGraph; idgen: IdGenerator; prc: PSym): PNode</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">transformExpr
       <li><a class="reference" href="#transformExpr%2CModuleGraph%2CIdGenerator%2CPSym%2CPNode"
     title="transformExpr(g: ModuleGraph; idgen: IdGenerator; module: PSym; n: PNode): PNode">transformExpr(g: ModuleGraph; idgen: IdGenerator; module: PSym; n: PNode): PNode</a></li>
@@ -139,7 +144,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -147,8 +152,6 @@ class="link-seesrc" target="_blank">Source</a>
   <div id="tocRoot"></div>
   
   <p class="module-desc">This module implements the transformator. It transforms the syntax tree to ease the work of the code generators. Does some transformations:<ul class="simple"><li>inlines iterators</li>
-<li>inlines constants</li>
-<li>performs constant folding</li>
 <li>converts &quot;continue&quot; to &quot;break&quot;; disambiguates &quot;break&quot;</li>
 <li>introduces method dispatchers</li>
 <li>performs lambda lifting for closure support</li>
@@ -158,7 +161,7 @@ class="link-seesrc" target="_blank">Source</a>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="../ast/ast.html">../ast/ast</a>, <a class="reference external" href="../ast/astalgo.html">../ast/astalgo</a>, <a class="reference external" href="../ast/trees.html">../ast/trees</a>, <a class="reference external" href="../ast/idents.html">../ast/idents</a>, <a class="reference external" href="../ast/renderer.html">../ast/renderer</a>, <a class="reference external" href="../ast/types.html">../ast/types</a>, <a class="reference external" href="../ast/lineinfos.html">../ast/lineinfos</a>, <a class="reference external" href="../modules/magicsys.html">../modules/magicsys</a>, <a class="reference external" href="../modules/modulegraphs.html">../modules/modulegraphs</a>, <a class="reference external" href="../front/options.html">../front/options</a>, <a class="reference external" href="../front/msgs.html">../front/msgs</a>, <a class="reference external" href="semfold.html">semfold</a>, <a class="reference external" href="lowerings.html">lowerings</a>, <a class="reference external" href="../backend/cgmeth.html">../backend/cgmeth</a>, <a class="reference external" href="../utils/idioms.html">../utils/idioms</a>, <a class="reference external" href="closureiters.html">closureiters</a>, <a class="reference external" href="lambdalifting.html">lambdalifting</a>
+<a class="reference external" href="../ast/ast.html">../ast/ast</a>, <a class="reference external" href="../ast/astalgo.html">../ast/astalgo</a>, <a class="reference external" href="../ast/trees.html">../ast/trees</a>, <a class="reference external" href="../ast/idents.html">../ast/idents</a>, <a class="reference external" href="../ast/renderer.html">../ast/renderer</a>, <a class="reference external" href="../ast/types.html">../ast/types</a>, <a class="reference external" href="../ast/lineinfos.html">../ast/lineinfos</a>, <a class="reference external" href="../modules/magicsys.html">../modules/magicsys</a>, <a class="reference external" href="../modules/modulegraphs.html">../modules/modulegraphs</a>, <a class="reference external" href="../front/options.html">../front/options</a>, <a class="reference external" href="../front/msgs.html">../front/msgs</a>, <a class="reference external" href="ast_analysis.html">ast_analysis</a>, <a class="reference external" href="closureiters.html">closureiters</a>, <a class="reference external" href="semfold.html">semfold</a>, <a class="reference external" href="lambdalifting.html">lambdalifting</a>, <a class="reference external" href="lowerings.html">lowerings</a>, <a class="reference external" href="../backend/cgmeth.html">../backend/cgmeth</a>, <a class="reference external" href="../utils/idioms.html">../utils/idioms</a>, <a class="reference external" href="semdata.html">semdata</a>
 </dl></div>
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#12">Procs</a></h1>
@@ -171,9 +174,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L908"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1075"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L908" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1075" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -182,70 +185,91 @@ class="link-seesrc" target="_blank">Source</a>
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Searches for all <tt class="docutils literal"><span class="pre">nkIdentDefs</span></tt> defining a global, appends them to <tt class="docutils literal"><span class="pre"><span class="Identifier">output</span></span></tt> in the order they appear in the input AST, and removes the nodes from <tt class="docutils literal"><span class="pre"><span class="Identifier">body</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">isNimVm</span></span></tt> signals which branch to select for <tt class="docutils literal"><span class="pre">when nimvm</span></tt> statements/expressions.<dl class="docutils"><dt>XXX: this can't happen as part of <tt class="docutils literal"><span class="pre">transformBody</span></tt>, as <tt class="docutils literal"><span class="pre">transformBody</span></tt></dt>
+Searches for all <tt class="docutils literal"><span class="pre">nkIdentDefs</span></tt> defining a global that's not owned by a module, appends them to <tt class="docutils literal"><span class="pre"><span class="Identifier">output</span></span></tt> in the order they appear in the input AST, and removes the nodes from <tt class="docutils literal"><span class="pre"><span class="Identifier">body</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">isNimVm</span></span></tt> signals which branch to select for <tt class="docutils literal"><span class="pre">when nimvm</span></tt> statements/expressions.<dl class="docutils"><dt>XXX: this can't happen as part of <tt class="docutils literal"><span class="pre">transformBody</span></tt>, as <tt class="docutils literal"><span class="pre">transformBody</span></tt></dt>
 <dd>is reentrant because of <tt class="docutils literal"><span class="pre">lambdalifting</span></tt> and it's thus not easily possible to collect something from the body of a single procedure only. There's also the problem that extracting the globals is not wanted when transformation happens for a procedure that's invoked during CTFE and used in normal code. Eventually, <tt class="docutils literal"><span class="pre">transformBody</span></tt> will no longer use the current caching mechanism and only produce the transformed version of the input AST, but until then, <tt class="docutils literal"><span class="pre">collectGlobals</span></tt> works good enough</dd>
 </dl>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L1214"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1385"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1214" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1385" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="transformBody,ModuleGraph,IdGenerator,PSym,PNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#transformBody%2CModuleGraph%2CIdGenerator%2CPSym%2CPNode"><span class="Identifier">transformBody</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="../modules/modulegraphs.html#ModuleGraph"><span class="Identifier">ModuleGraph</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">;</span> <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">body</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Applies the various transformations to <tt class="docutils literal"><span class="pre"><span class="Identifier">body</span></span></tt> and returns the result. This step is not indempotent, and since no caching is performed, it must not be performed more than once for a procedure and its body.
+<p>Applies the various transformations to <tt class="docutils literal"><span class="pre"><span class="Identifier">body</span></span></tt> and returns the result. This step is not indempotent, and since no caching is performed, it must not be performed more than once for a routine and its body.</p>
+<p>The transformations are:</p>
+<ol class="simple"><li>the <tt class="docutils literal"><span class="pre">lambdalifting</span></tt> transformation</li>
+<li>general lowerings -- these are the ones implemented here in <tt class="docutils literal"><span class="pre">transf</span></tt></li>
+<li>the <tt class="docutils literal"><span class="pre">closureiters</span></tt> transformation</li>
+</ol>
+<p>Application always happens in that exact order.</p>
+
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L1160"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1309"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1160" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1309" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="transformBody,ModuleGraph,IdGenerator,PSym,bool">
 <dt><pre><span class="Keyword">proc</span> <a href="#transformBody%2CModuleGraph%2CIdGenerator%2CPSym%2Cbool"><span class="Identifier">transformBody</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="../modules/modulegraphs.html#ModuleGraph"><span class="Identifier">ModuleGraph</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">;</span> <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">cache</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L1174"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1334"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1174" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1334" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="transformBodyWithCache,ModuleGraph,IdGenerator,PSym">
+<dt><pre><span class="Keyword">proc</span> <a href="#transformBodyWithCache%2CModuleGraph%2CIdGenerator%2CPSym"><span class="Identifier">transformBodyWithCache</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="../modules/modulegraphs.html#ModuleGraph"><span class="Identifier">ModuleGraph</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">;</span> <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Fetches the cached transformed body of <tt class="docutils literal"><span class="pre"><span class="Identifier">prc</span></span></tt>, transforming it if not available, new transforms are not cached
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1350"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1350" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="transformExpr,ModuleGraph,IdGenerator,PSym,PNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#transformExpr%2CModuleGraph%2CIdGenerator%2CPSym%2CPNode"><span class="Identifier">transformExpr</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="../modules/modulegraphs.html#ModuleGraph"><span class="Identifier">ModuleGraph</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">;</span> <span class="Identifier">module</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L1203"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1374"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1203" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1374" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="transformStmt,ModuleGraph,IdGenerator,PSym,PNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#transformStmt%2CModuleGraph%2CIdGenerator%2CPSym%2CPNode"><span class="Identifier">transformStmt</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="../modules/modulegraphs.html#ModuleGraph"><span class="Identifier">ModuleGraph</span></a><span class="Other">;</span> <span class="Identifier">idgen</span><span class="Other">:</span> <a href="../ast/ast_idgen.html#IdGenerator"><span class="Identifier">IdGenerator</span></a><span class="Other">;</span> <span class="Identifier">module</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/transf.nim#L1193"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/transf.nim#L1364"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1193" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/transf.nim#L1364" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -259,7 +283,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

@@ -102,16 +102,15 @@ window.addEventListener('DOMContentLoaded', main);
     title="BackendReportKind = range[rbackCannotWriteScript .. rbackLinking]">BackendReportKind</a></li>
   <li><a class="reference" href="#CmdReportKind"
     title="CmdReportKind = range[rcmdFailedExecution .. rcmdRunnableExamplesSuccess]">CmdReportKind</a></li>
-  <li><a class="reference" href="#DbgTraceReportKind"
-    title="DbgTraceReportKind = range[rdbgTraceDefined .. rdbgTraceEnd]">DbgTraceReportKind</a></li>
   <li><a class="reference" href="#DebugReportKind"
     title="DebugReportKind = range[rdbgVmExecTraceFull .. rdbgOptionsPop]">DebugReportKind</a></li>
   <li><a class="reference" href="#ExternalReportKind"
-    title="ExternalReportKind = range[rextUnknownCCompiler .. rextPath]">ExternalReportKind</a></li>
+    title="ExternalReportKind = range[rextCmdRequiresFile .. rextPath]">ExternalReportKind</a></li>
   <li><a class="reference" href="#InternalReportKind"
-    title="InternalReportKind = range[rintUnknown .. rintEchoMessage]">InternalReportKind</a></li>
+    title="InternalReportKind = range[rintUnreachable .. rintEchoMessage]">InternalReportKind</a></li>
   <li><a class="reference" href="#LexerReportKind"
-    title="LexerReportKind = range[rlexMalformedUnderscores .. rlexSourceCodeFilterOutput]">LexerReportKind</a></li>
+    title="LexerReportKind = range[rlexMalformedNumUnderscores ..
+    rlexSourceCodeFilterOutput]">LexerReportKind</a></li>
   <li><a class="reference" href="#ParserReportKind"
     title="ParserReportKind = range[rparInvalidIndentation .. rparEnablePreviewDotOps]">ParserReportKind</a></li>
   <li><a class="reference" href="#ReportCategory"
@@ -123,61 +122,34 @@ window.addEventListener('DOMContentLoaded', main);
   repCmd = &quot;Cmd&quot;, ## Report related to execution of the external command -
                    ## start of the command, execution failure, succes and so on.
   repVM = &quot;VM&quot;,             ## Report related to embedded virtual machine
-  repDbgTrace = &quot;Trace&quot;,    ## compiler execution expansion traces for debugging
-                             ## or understaning the compiler
   repDebug = &quot;Debug&quot;,       ## Side channel for the compiler debug report. Helper
                              ## messages designed specifically to aid development of the compiler
   repInternal = &quot;Internal&quot;, ## Reports constructed during handling of
                              ## internal compilation errors. Separate from debugging reports since
                              ## they always exist - ICE, internal fatal errors etc.
   repBackend = &quot;Backend&quot;,   ## Backend-specific reports.
-  repExternal = &quot;External&quot;   ## Report constructed during handling of the
-                             ## external configuration, command-line flags, packages, modules.">ReportCategory</a></li>
+  repExternal = &quot;External&quot;   ## Report constructed during handling of
+                             ## configuration, packages, modules.">ReportCategory</a></li>
   <li><a class="reference" href="#ReportKind"
     title="ReportKind = enum
-  repNone, rintUnknown,     ## Unknown internal report kind
-  rintFatal,                ## Explicitly fatal compiler error
-  rintUnreachable,          ## State in the compiler code that must not be reached
+  repNone, rintUnreachable, ## State in the compiler code that must not be reached
   rintAssert,               ## Failed internal assert in the compiler
-  rintIce,                  ## Internal compilation error
   rintCannotOpenFile, rintUsingLeanCompiler, rintNotUsingNimcore,
   rintNotImplemented, rintWarnCannotOpenFile, rintUnexpected,
   rintWarnFileChanged, rintSource = &quot;Source&quot;, ## Show source in the report
   rintMsgOrigin = &quot;MsgOrigin&quot;, rintErrKind = &quot;ErrKind&quot;, ## Show report kind in error messages
-  rintGCStats = &quot;GCStats&quot;,  ## Print GC statistics for the compiler run
   rintQuitCalled = &quot;QuitCalled&quot;, ## `quit()` called by the macro code
                                   ## compilation error handling and similar
   rintMissingStackTrace,    ## Stack trace would've been generated in the
                              ## debug compiler build
-  rintSuccessX = &quot;SuccessX&quot;, ## Succesfull compilation
+  rintSuccessX = &quot;SuccessX&quot;, ## Successful compilation, only used as a &quot;note&quot;,
+                              ## it's not a hint either
   rintStackTrace = &quot;StackTrace&quot;, ## Stack trace during internal
-  rintNimconfWrite, rintListWarnings, rintListHints, rintCliHelp,
-  rintCliFullHelp, rintCliVersion, rintCliAdvancedUsage, rintDumpState,
-  rintEchoMessage, rextUnknownCCompiler, rextInvalidHint, rextInvalidWarning, rextInvalidCommandLineOption, ## Invalid command-line option passed to
-                                                                                                             ## the compiler
-  rextOnlyAllOffSupported, ## Only `all:off` is supported for mass
-                            ## hint/warning modification. Separate diagnostics must be enabled on
-                            ## one-by-one basis.
-  rextExpectedOnOrOff,      ## Command-line option expected 'on' or 'off' value
-  rextExpectedOnOrOffOrList, ## Command-line option expected 'on', 'off'
-                              ## or 'list' value.
-  rextExpectedCmdArgument,  ## Command-line option expected argument
-  rextExpectedNoCmdArgument, ## Command-line option expected no arguments
-  rextCmdDisallowsAdditionalArguments, ## command disallows additional args
-  rextInvalidNumber,        ## Command-line switch expected a number
-  rextInvalidValue, rextUnexpectedValue, ## Command-line argument had value, but it did not
-                                          ## match with any expected.
-  rextExpectedCbackendForRun, rextExpectedTinyCForRun, rextInvalidCommand,
-  rextCommandMissing, rextExpectedRunOptForArgs, rextUnexpectedRunOpt, rextInvalidPath, ## Invalid path for a command-line argument
-  rextInvalidPackageName, ## When adding packages from the `--nimbleDir`
-                           ## (or it's default value), names are validated. This error is
-                           ## generated if package name is not correct.
-  rextDeprecated, ## Report about use of the deprecated feature that is
-                   ## not in the semantic pass. Things like deprecated flags, compiler
-                   ## commands and so on.
-  rextConf = &quot;Conf&quot;,        ## Processing user configutation file
-  rextPath = &quot;Path&quot;,        ## Add nimble path
-  rlexMalformedUnderscores, rlexMalformedTrailingUnderscre, rlexInvalidToken,
+  rintListWarnings, rintListHints, rintEchoMessage, rextCmdRequiresFile, ## fatal error, user failed to provide a file
+  rextConf = &quot;Conf&quot;,        ## Processed user configutation file; not a &quot;report&quot;
+  rextPath = &quot;Path&quot;,        ## Add nimble path; xxx: this isn't a &quot;report&quot;
+  rlexMalformedNumUnderscores, rlexMalformedIdentUnderscores,
+  rlexMalformedTrailingUnderscre, rlexInvalidToken,
   rlexInvalidTokenSpaceBetweenNumAndIdent, rlexNoTabs,
   rlexInvalidIntegerLiteralOctalPrefix, rlexInvalidIntegerSuffix,
   rlexNumberNotInRange, rlexExpectedHex, rlexInvalidIntegerLiteral,
@@ -186,9 +158,9 @@ window.addEventListener('DOMContentLoaded', main);
   rlexInvalidCharLiteralUnicodeCodepoint, rlexMissingClosingApostrophe,
   rlexInvalidUnicodeCodepointEmpty,
   rlexInvalidUnicodeCodepointGreaterThan0x10FFFF, rlexUnclosedTripleString,
-  rlexUnclosedSingleString, rlexExpectedToken, rlexCfgInvalidDirective,
-  rlexUnclosedComment, rlexDeprecatedOctalPrefix = &quot;OctalEscape&quot;,
-  rlexLineTooLong = &quot;LineTooLong&quot;, rlexLinterReport = &quot;Name&quot;,
+  rlexUnclosedSingleString, rlexUnclosedComment,
+  rlexDeprecatedOctalPrefix = &quot;OctalEscape&quot;, rlexLineTooLong = &quot;LineTooLong&quot;,
+  rlexLinterReport = &quot;Name&quot;,
   rlexSourceCodeFilterOutput = &quot;SourceCodeFilterOutput&quot;, rparInvalidIndentation,
   rparInvalidIndentationWithForgotEqualSignHint,
   rparNestableRequiresIndentation, rparIdentExpected,
@@ -199,21 +171,20 @@ window.addEventListener('DOMContentLoaded', main);
   rparTemplMissingEndClose, rparTemplInvalidExpression, rparInvalidFilter,
   rparInconsistentSpacing = &quot;Spacing&quot;, rparPragmaNotFollowingTypeName,
   rparEnablePreviewDotOps = &quot;DotLikeOps&quot;, rvmOpcParseExpectedExpression,
-  rvmTooManyRegistersRequired, rvmMissingImportcCompleteStruct,
-  rvmCannotFindBreakTarget, rvmNotUnused, rvmUserError, rvmNotAFieldSymbol,
-  rvmTooLargetOffset, rvmUnhandledException, rvmCannotGenerateCode,
-  rvmCannotCast, rvmGlobalError, ## Error report that was declared as 'global' in the
-                                  ## VM - with current 'globalError-is-a-control-flow-mechanism' approach
-                                  ## this report is largely meaningless, and used only to raise exception.
-  rvmBadExpandToAst, rvmCannotEvaluateAtComptime, rvmCannotImportc,
-  rvmInvalidObjectConstructor, rvmCannotCallMethod, rvmCallingNonRoutine,
-  rvmCannotModifyTypechecked, rvmNilAccess, rvmAccessOutOfBounds,
-  rvmAccessTypeMismatch, rvmAccessNoLocation, rvmErrInternal, rvmIndexError,
-  rvmOutOfRange, rvmOverOrUnderflow, rvmDivisionByConstZero, rvmNodeNotASymbol,
-  rvmNodeNotAProcSymbol, rvmIllegalConv, rvmIllegalConvFromXToY,
-  rvmMissingCacheKey, rvmCacheKeyAlreadyExists, rvmFieldNotFound,
-  rvmFieldInavailable, rvmCannotSetChild, rvmCannotAddChild, rvmCannotGetChild,
-  rvmNoType, rvmNotAField, rvmUnsupportedNonNil, rvmQuit, rvmTooManyIterations,
+  rvmTooManyRegistersRequired, rvmMissingImportcCompleteStruct, rvmNotUnused,
+  rvmUserError, rvmTooLargetOffset, rvmUnhandledException,
+  rvmCannotGenerateCode, rvmCannotCast, rvmGlobalError, ## Error report that was declared as 'global' in the
+                                                         ## VM - with current 'globalError-is-a-control-flow-mechanism' approach
+                                                         ## this report is largely meaningless, and used only to raise exception.
+  rvmCannotEvaluateAtComptime, rvmCannotImportc, rvmCannotCallMethod,
+  rvmCallingNonRoutine, rvmCannotModifyTypechecked, rvmNilAccess,
+  rvmAccessOutOfBounds, rvmAccessTypeMismatch, rvmAccessNoLocation,
+  rvmErrInternal, rvmIndexError, rvmOutOfRange, rvmOverOrUnderflow,
+  rvmDivisionByConstZero, rvmNodeNotASymbol, rvmNodeNotAProcSymbol,
+  rvmIllegalConv, rvmIllegalConvFromXToY, rvmMissingCacheKey,
+  rvmCacheKeyAlreadyExists, rvmFieldNotFound, rvmFieldInavailable,
+  rvmCannotSetChild, rvmCannotAddChild, rvmCannotGetChild, rvmNoType,
+  rvmNotAField, rvmUnsupportedNonNil, rvmQuit, rvmTooManyIterations,
   rvmStackTrace, rsemFatalError, rsemUserError = &quot;UserError&quot;, ## `{.error: }`
   rsemUsageIsError, rsemCompilesHasSideEffects, ## lightweight to avoid heavy diagnostic
                                                  ## querying for compiles context
@@ -226,18 +197,18 @@ window.addEventListener('DOMContentLoaded', main);
                                                                                              ## &quot;graceful&quot; abort of this compilation run, used by `errorreporting` to
                                                                                              ## bridge into the existing `msgs.liMessage` and `msgs.handleError`.
   rsemSystemNeeds, rsemInvalidModulePath, rsemInvalidModuleName,
-  rsemCannotImportItself, rsemRecursiveInclude, rsemRecursiveImport,
-  rsemCannotOpenFile, rsemExportRequiresToplevel,
-  rsemExperimentalRequiresToplevel, rsemMethodRequiresToplevel,
-  rsemPackageRequiresToplevel, rsemConverterRequiresToplevel,
-  rsemImportRequiresToplevel, rsemUnexpectedToplevelDefer,
-  rsemUsingRequiresToplevel, rsemInvalidVisibility, rsemUnknownPackageName,
-  rsemUnexpectedInfixInInclude, rsemConflictingExportnims,
-  rsemNoMagicEqualsForType, rsemCantConvertLiteralToType,
-  rsemCantConvertLiteralToRange, rsemCantComputeOffsetof, rsemStaticOutOfBounds, ## Error generated when semfold or static bound
-                                                                                  ## checking sees and out-of-bounds index error.
+  rsemCannotImportItself, rsemRecursiveInclude, rsemCannotOpenFile,
+  rsemExportRequiresToplevel, rsemExperimentalRequiresToplevel,
+  rsemMethodRequiresToplevel, rsemPackageRequiresToplevel,
+  rsemConverterRequiresToplevel, rsemImportRequiresToplevel,
+  rsemUnexpectedToplevelDefer, rsemUsingRequiresToplevel, rsemInvalidVisibility,
+  rsemUnknownPackageName, rsemUnexpectedInfixInInclude,
+  rsemConflictingExportnims, rsemNoMagicEqualsForType,
+  rsemCantConvertLiteralToType, rsemCantConvertLiteralToRange,
+  rsemCantComputeOffsetof, rsemStaticOutOfBounds, ## Error generated when semfold or static bound
+                                                   ## checking sees and out-of-bounds index error.
   rsemStaticFieldNotFound, rsemSemfoldOverflow, rsemSemfoldDivByZero,
-  rsemSemfoldInvalidConversion, rsemInvalidIntdefine, rsemInvalidBooldefine, rsemCaseInUnion, ## `{.union.}` type cannot use `case:` statements
+  rsemInvalidIntdefine, rsemInvalidBooldefine, rsemCaseInUnion, ## `{.union.}` type cannot use `case:` statements
   rsemOffsetInUnion, ## `{.union.}` type cannot use inheritance and any
                       ## other features that add implicit chunk of data before the actually
                       ## listed fields.
@@ -247,11 +218,11 @@ window.addEventListener('DOMContentLoaded', main);
   rsemInvalidOrderInEnum, rsemSetTooBig, rsemTIsNotAConcreteType,
   rsemProcIsNotAConcreteType, rsemRangeIsEmpty, rsemCannotInstantiate,
   rsemCannotInstantiateWithParameter, rsemCannotGenerateGenericDestructor,
-  rsemUndeclaredField, rsemInheritanceOnlyWorksWithAnEnum, rsemExpectedOrdinal,
-  rsemExpectedOrdinalOrFloat, rsemExpectedUnholyEnum,
-  rsemExpectedLow0Discriminant, rsemExpectedHighCappedDiscriminant,
-  rsemMissingCaseBranches, rsemRangeDoesNotSupportNan, rsemRangeRequiresDotDot,
-  rsemExpectedRange, rsemArrayExpectsPositiveRange, rsemExpectObjectForBase,
+  rsemUndeclaredField, rsemExpectedOrdinal, rsemExpectedOrdinalOrFloat,
+  rsemExpectedUnholyEnum, rsemExpectedLow0Discriminant,
+  rsemExpectedHighCappedDiscriminant, rsemMissingCaseBranches,
+  rsemRangeDoesNotSupportNan, rsemRangeRequiresDotDot, rsemExpectedRange,
+  rsemArrayExpectsPositiveRange, rsemExpectObjectForBase,
   rsemExpectNonFinalForBase, rsemTVoidNotAllowed, rsemExpectedObjectForRegion,
   rsemUnexpectedVoidType, rsemUnexpectedArrayAssignForCstring,
   rsemMacroBodyDependsOnGenericTypes, rsemMalformedNotNilType,
@@ -284,11 +255,11 @@ window.addEventListener('DOMContentLoaded', main);
   rsemMacroInstantiationTooNested, rsemGenericInstantiationTooNested,
   rsemInvalidMethodDeclarationOrder, rsemParameterNotPointerToPartial,
   rsemDiscardingVoid, rsemDiscardingProc, rsemInvalidControlFlow,
-  rsemContinueCannotHaveLabel, rsemUseOrDiscard, rsemUseOrDiscardExpr,
-  rsemCannotBeRaised, rsemCannotRaiseNonException, rsemExceptionAlreadyHandled,
-  rsemCannotExceptNativeAndImported, rsemExpectedSingleFinally,
-  rsemExpectedSingleGeneralExcept, rsemCannotConvertToRange,
-  rsemUsingRequiresType, rsemUsingDisallowsAssign,
+  rsemExpectedLabel, rsemContinueCannotHaveLabel, rsemUseOrDiscard,
+  rsemUseOrDiscardExpr, rsemCannotBeRaised, rsemCannotRaiseNonException,
+  rsemExceptionAlreadyHandled, rsemCannotExceptNativeAndImported,
+  rsemExpectedSingleFinally, rsemExpectedSingleGeneralExcept,
+  rsemCannotConvertToRange, rsemUsingRequiresType, rsemUsingDisallowsAssign,
   rsemDifferentTypeForReintroducedSymbol, rsemCannotInferTypeOfLiteral,
   rsemCannotInferTypeOfParameter, rsemProcHasNoConcreteType,
   rsemThreadvarCannotInit, rsemLetNeedsInit, rsemConstExpressionExpected,
@@ -313,12 +284,27 @@ window.addEventListener('DOMContentLoaded', main);
   rsemExpectedObjectForOf, rsemCannotBeOfSubtype, rsemQuantifierInRangeExpected,
   rsemOldTakesParameterName, rsemOldDoesNotBelongTo, rsemCannotFindPlugin,
   rsemCannotIsolate, rsemRecursiveDependencyIterator, rsemIllegalNimvmContext,
-  rsemDisallowedNilDeref, rsemInvalidTupleSubscript, rsemLocalEscapesStackFrame,
-  rsemImplicitAddrIsNotFirstParam, rsemCannotAssignTo, rsemNoReturnTypeDeclared,
-  rsemReturnNotAllowed, rsemCannotInferReturnType, rsemExpectedValueForYield,
-  rsemUnexpectedYield, rsemYieldExpectedTupleConstr, ## a literal tuple constructor is required when the iterator returns a
-                                                      ## 
-                                                      ## tuple containing a view
+  rsemDisallowedNilDeref, rsemCannotDeref, rsemInvalidTupleSubscript,
+  rsemLocalEscapesStackFrame, rsemImplicitAddrIsNotFirstParam,
+  rsemCannotAssignTo, rsemNoReturnTypeDeclared, rsemReturnNotAllowed,
+  rsemIllegalCompileTimeAccess, rsemCannotInferReturnType,
+  rsemExpectedValueForYield, rsemUnexpectedYield, rsemYieldExpectedTupleConstr, ## 
+                                                                                 ## a 
+                                                                                 ## literal 
+                                                                                 ## tuple 
+                                                                                 ## constructor 
+                                                                                 ## is 
+                                                                                 ## required 
+                                                                                 ## when 
+                                                                                 ## the 
+                                                                                 ## iterator 
+                                                                                 ## returns 
+                                                                                 ## a
+                                                                                 ## 
+                                                                                 ## tuple 
+                                                                                 ## containing 
+                                                                                 ## a 
+                                                                                 ## view
   rsemCannotReturnTypeless, rsemExpectedMacroOrTemplate, rsemAmbiguousGetAst,
   rsemExpectedTemplateWithNArgs, rsemExpectedCallForGetAst,
   rsemWrongNumberOfQuoteArguments, rsemNamedExprExpected,
@@ -328,22 +314,20 @@ window.addEventListener('DOMContentLoaded', main);
   rsemConflictingDiscriminantValues, rsemRuntimeDiscriminantInitCap,
   rsemRuntimeDiscriminantMustBeImmutable, rsemRuntimeDiscriminantRequiresElif,
   rsemObjectRequiresFieldInit, rsemObjectRequiresFieldInitNoDefault,
-  rsemDistinctDoesNotHaveDefaultValue, rsemExpectedModuleNameForImportExcept,
-  rsemCannotExport, rsemCannotMixTypesAndValuesInTuple,
-  rsemExpectedTypelessDeferBody, rsemInvalidBindContext,
-  rsemCannotCreateImplicitOpenarray,
+  rsemObjectDoesNotHaveDefaultValue, rsemDistinctDoesNotHaveDefaultValue,
+  rsemExpectedModuleNameForImportExcept, rsemCannotExport,
+  rsemCannotMixTypesAndValuesInTuple, rsemExpectedTypelessDeferBody,
+  rsemInvalidBindContext, rsemCannotCreateImplicitOpenarray,
   rsemCannotAssignToDiscriminantWithCustomDestructor, rsemUnavailableTypeBound,
-  rsemUndeclaredIdentifier, rsemExpectedIdentifier,
+  rsemUnavailableLocation, rsemUndeclaredIdentifier, rsemExpectedIdentifier,
   rsemExpectedIdentifierQuoteLimit, rsemExpectedIdentifierInExpr,
   rsemExpectedIdentifierWithExprContext, rsemModuleAliasMustBeIdentifier,
   rsemOnlyDeclaredIdentifierFoundIsError, rsemFieldNotAccessible, ## object field is not accessible
   rsemFieldAssignmentInvalid, ## object field assignment invalid syntax
   rsemFieldAssignmentInvalidNeedSpace, ## object field assignment invalid syntax, need space after colon
-  rsemFieldOkButAssignedValueInvalid, ## object field assignment, where the field name is ok, but value is not
-  rsemObjectConstructorIncorrect, ## one or more issues encountered with object constructor
   rsemExpressionHasNoType,  ## an expression has not type or is ambiguous
-  rsemRawTypeMismatch, rsemCannotConvertTypes, rsemUnresolvedGenericParameter,
-  rsemCannotCreateFlowVarOfType, rsemTypeNotAllowed, rsemIntLiteralExpected, ## int literal node was expected, but got something else
+  rsemRawTypeMismatch, rsemCannotConvertTypes, rsemCannotCreateFlowVarOfType,
+  rsemTypeNotAllowed, rsemIntLiteralExpected, ## int literal node was expected, but got something else
   rsemStringLiteralExpected, ## string literal node was expected, but got something else
   rsemOnOrOffExpected, rsemCallconvExpected, rsemUnknownExperimental,
   rsemDuplicateCaseLabel, rsemExpressionIsNotAPath, rsemResultMustBorrowFirst,
@@ -355,9 +339,9 @@ window.addEventListener('DOMContentLoaded', main);
   rsemExpectedLow0ForComputedGoto, rsemExpectedCaseForComputedGoto,
   rsemDisallowedRangeForComputedGoto, rsemExpectedParameterForJsPattern,
   rsemExpectedLiteralForGoto, rsemRequiresDeepCopyEnabled,
-  rsemDisallowedOfForPureObjects, rsemDisallowedReprForNewruntime,
-  rsemCannotCodegenCompiletimeProc, rsemInvalidPragma, ## suplied pragma is invalid
+  rsemDisallowedOfForPureObjects, rsemCannotCodegenCompiletimeProc, rsemInvalidPragma, ## suplied pragma is invalid
   rsemUnexpectedPragma, rsemPropositionExpected, rsemIllegalCustomPragma, ## supplied pragma is not a legal custom pragma, and cannot be attached
+  rsemExternalLocalNotAllowed, ## a local is specified to be part of an external interface
   rsemNoReturnHasReturn,    ## a routine marked as no return, has a return type
   rsemImplicitPragmaError, ## a symbol encountered an error when processing implicit pragmas, this
                             ## 
@@ -377,34 +361,37 @@ window.addEventListener('DOMContentLoaded', main);
   rsemIllegalCompileTime, ## when used on variables, the ``.compileTime`` pragma must only be
                            ## applied to locals inside compile-time procedures or to globals
   rsemSymbolKindMismatch, rsemIllformedAst, rsemInitHereNotAllowed,
-  rsemTypeExpected, rsemGenericTypeExpected, rsemTypeInvalid, rsemWrongIdent,
-  rsemPragmaOptionExpected, rsemUnexpectedPushArgument, rsemCannotPushCast,
-  rsemCastRequiresStatement, rsemDynlibRequiresExportc, rsemImportjsRequiresJs,
-  rsemBitsizeRequires1248, rsemBitsizeRequiresPositive,
-  rsemAlignRequiresPowerOfTwo, rsemPragmaRecursiveDependency,
-  rsemMisplacedDeprecation, rsemNoUnionForJs, rsemThisPragmaRequires01Args,
-  rsemMismatchedPopPush, rsemExcessiveCompilePragmaArgs,
-  rsemLinePragmaExpectsTuple, rsemRaisesPragmaExpectsObject,
-  rsemLocksPragmaExpectsList, rsemLocksPragmaBadLevel, rsemLocksRequiresArgs,
+  rsemTypeExpected, rsemSinkIsNotATypeClass, rsemGenericTypeExpected,
+  rsemTypeInvalid, rsemWrongIdent, rsemPragmaOptionExpected,
+  rsemUnexpectedPushArgument, rsemCannotPushCast, rsemCastRequiresStatement,
+  rsemDynlibRequiresExportc, rsemImportjsRequiresJs, rsemBitsizeRequires1248,
+  rsemBitsizeRequiresPositive, rsemAlignRequiresPowerOfTwo,
+  rsemPragmaRecursiveDependency, rsemMisplacedDeprecation, rsemNoUnionForJs,
+  rsemThisPragmaRequires01Args, rsemMismatchedPopPush,
+  rsemExcessiveCompilePragmaArgs, rsemLinePragmaExpectsTuple,
+  rsemRaisesPragmaExpectsObject, rsemCompilerOptionInvalid,
+  rsemCompilerOptionArgInvalid, rsemLocksPragmaExpectsList,
+  rsemLocksPragmaBadLevel, rsemLocksRequiresArgs,
   rsemMultilockRequiresSameLevel, rsemInvalidNestedLocking, rsemUnguardedAccess,
   rsemInvalidGuardField, rsemStaticIndexLeqUnprovable,
   rsemStaticIndexGeProvable, rsemErrGcUnsafeListing, rsemBorrowPragmaNonDot,
   rsemInvalidExtern, rsemInvalidPragmaBlock, rsemMisplacedEffectsOf,
   rsemMissingPragmaArg, rsemErrGcUnsafe, rsemEmptyAsm, rsemUserWarning = &quot;User&quot;, ## `{.warning: }`
   rsemUnknownMagic = &quot;UnknownMagic&quot;, rsemUnusedImport = &quot;UnusedImport&quot;,
-  rsemDeprecated = &quot;Deprecated&quot;, rsemLockLevelMismatch = &quot;LockLevel&quot;,
-  rsemTypelessParam = &quot;TypelessParam&quot;, rsemOwnedTypeDeprecated, rsemWarnUnlistedRaises = &quot;Effect&quot;, ## `sempass2.checkRaisesSpec` had
-                                                                                                    ## `emitWarnings: bool` parameter which was supposedly used to control
-                                                                                                    ## whether `strictEffects` warnings actually generated an error, or
-                                                                                                    ## just a warning. But all four uses of this proc had constant `false`
-                                                                                                    ## written to this field, so for now it does not mean anything and all
-                                                                                                    ## mismatched raises are routed as errors.
+  rsemDeprecated = &quot;Deprecated&quot;, rsemDeprecatedCompilerOpt = &quot;Deprecated&quot;,
+  rsemDeprecatedCompilerOptArg = &quot;Deprecated&quot;,
+  rsemLockLevelMismatch = &quot;LockLevel&quot;, rsemTypelessParam = &quot;TypelessParam&quot;,
+  rsemOwnedTypeDeprecated, rsemWarnUnlistedRaises = &quot;Effect&quot;, ## `sempass2.checkRaisesSpec` had
+                                                               ## `emitWarnings: bool` parameter which was supposedly used to control
+                                                               ## whether `strictEffects` warnings actually generated an error, or
+                                                               ## just a warning. But all four uses of this proc had constant `false`
+                                                               ## written to this field, so for now it does not mean anything and all
+                                                               ## mismatched raises are routed as errors.
   rsemDotForModuleImport, rsemProveField = &quot;ProveField&quot;,
   rsemStrictNotNilExpr = &quot;StrictNotNil&quot;,
   rsemStrictNotNilResult = &quot;StrictNotNil&quot;, rsemWarnGcUnsafe = &quot;GcUnsafe&quot;,
   rsemWarnGcUnsafeListing = &quot;GcUnsafe2&quot;, rsemProveInit = &quot;ProveInit&quot;,
-  rsemUninit = &quot;Uninit&quot;, rsemWarnUnsafeCode = &quot;UnsafeCode&quot;,
-  rsemImplicitCstringConvert = &quot;CStringConv&quot;,
+  rsemUninit = &quot;Uninit&quot;, rsemImplicitCstringConvert = &quot;CStringConv&quot;,
   rsemHoleEnumConvert = &quot;HoleEnumConv&quot;, rsemAnyEnumConvert = &quot;AnyEnumConv&quot;,
   rsemMethodLockMismatch, rsemUseBase = &quot;UseBase&quot;,
   rsemUnreachableElse = &quot;UnreachableElse&quot;,
@@ -414,10 +401,11 @@ window.addEventListener('DOMContentLoaded', main);
   rsemResultShadowed = &quot;ResultShadowed&quot;, rsemResultUsed = &quot;ResultUsed&quot;,
   rsemGenericMethodsDeprecated, rsemSuspiciousEnumConv = &quot;EnumConv&quot;,
   rsemUnsafeSetLen = &quot;UnsafeSetLen&quot;, rsemUnsafeDefault = &quot;UnsafeDefault&quot;,
-  rsemBindDeprecated, rsemObservableStores = &quot;ObservableStores&quot;,
-  rsemCaseTransition = &quot;CaseTransition&quot;, rsemUseOfGc = &quot;GcMem&quot;, rsemUserHint = &quot;User&quot;, ## `{.hint: .}` pragma encountereed
+  rsemUntypedParamsFollwedByMoreSpecificType, rsemBindDeprecated,
+  rsemObservableStores = &quot;ObservableStores&quot;, rsemUseOfGc = &quot;GcMem&quot;, rsemUserHint = &quot;User&quot;, ## `{.hint: .}` pragma encountereed
   rsemLinterReport = &quot;Name&quot;, rsemLinterReportUse = &quot;Name&quot;,
-  rsemHintLibDependency, rsemXDeclaredButNotUsed = &quot;XDeclaredButNotUsed&quot;,
+  rsemHintLibDependency = &quot;Dependency&quot;,
+  rsemXDeclaredButNotUsed = &quot;XDeclaredButNotUsed&quot;,
   rsemDuplicateModuleImport = &quot;DuplicateModuleImport&quot;,
   rsemXCannotRaiseY = &quot;XCannotRaiseY&quot;,
   rsemConvToBaseNotNeeded = &quot;ConvToBaseNotNeeded&quot;,
@@ -435,16 +423,13 @@ window.addEventListener('DOMContentLoaded', main);
                              ## due to control flow in the code
   rsemGlobalVar = &quot;GlobalVar&quot;, ## Track global variable declarations?
   rsemEffectsListingHint, rsemExpandMacro = &quot;ExpandMacro&quot;, ## Trace macro expansion progress
-  rsemExpandArc = &quot;ExpandArc&quot;, rsemCompilesReport, rsemNonMatchingCandidates, rsemExtendedContext = &quot;ExtendedContext&quot;, ## Extended contextual
-                                                                                                                        ## information. Used in `ccgstmts.genStmts()` and
-                                                                                                                        ## `semexprs.semExprNoType()`
+  rsemCompilesReport, rsemNonMatchingCandidates, rsemExtendedContext = &quot;ExtendedContext&quot;, ## Extended contextual
+                                                                                           ## information. Used in `ccgstmts.genStmts()` and
+                                                                                           ## `semexprs.semExprNoType()`
   rsemDiagnostics, rsemImplicitObjConv = &quot;ImplicitObjConv&quot;, rcmdFailedExecution,
   rcmdCompiling = &quot;CC&quot;, rcmdLinking = &quot;Link&quot;, rcmdExecuting = &quot;Exec&quot;,
-  rcmdRunnableExamplesSuccess, rdbgTraceDefined, rdbgTraceUndefined,
-  rdbgTraceStart, rdbgTraceStep, rdbgTraceLine, rdbgTraceEnd,
-  rdbgVmExecTraceFull, rdbgVmExecTraceMinimal, rdbgVmCodeListing,
-  rdbgStartingConfRead, rdbgFinishedConfRead, rdbgCfgTrace, rdbgOptionsPush,
-  rdbgOptionsPop, rbackCannotWriteScript, ## Cannot write build script to a cache file
+  rcmdRunnableExamplesSuccess = &quot;Success&quot;, rdbgVmExecTraceFull,
+  rdbgVmExecTraceMinimal, rdbgOptionsPush, rdbgOptionsPop, rbackCannotWriteScript, ## Cannot write build script to a cache file
   rbackCannotWriteMappingFile, ## Cannot write module compilation mapping
                                 ## file to cache directory
   rbackTargetNotSupported,  ## C compiler does not support requested target
@@ -504,20 +489,18 @@ window.addEventListener('DOMContentLoaded', main);
     title="repCmdKinds = {rcmdFailedExecution..rcmdRunnableExamplesSuccess}">repCmdKinds</a></li>
   <li><a class="reference" href="#repDataPassKinds"
     title="repDataPassKinds: ReportKinds = {rintStackTrace..rintEchoMessage}">repDataPassKinds</a></li>
-  <li><a class="reference" href="#repDbgTraceKinds"
-    title="repDbgTraceKinds = {rdbgTraceDefined..rdbgTraceEnd}">repDbgTraceKinds</a></li>
   <li><a class="reference" href="#repDebugKinds"
     title="repDebugKinds = {rdbgVmExecTraceFull..rdbgOptionsPop}">repDebugKinds</a></li>
   <li><a class="reference" href="#repErrorKinds"
     title="repErrorKinds: ReportKinds = {rintCannotOpenFile..rintNotImplemented,
-                              rextUnknownCCompiler..rextInvalidPackageName,
-                              rlexMalformedUnderscores..rlexUnclosedComment,
+                              rextCmdRequiresFile,
+                              rlexMalformedNumUnderscores..rlexUnclosedComment,
                               rparInvalidIndentation..rparInvalidFilter, rvmOpcParseExpectedExpression..rvmTooManyIterations,
                               rsemUserError..rsemEmptyAsm, rcmdFailedExecution, rbackCannotWriteScript..rbackCannotProduceAssembly}">repErrorKinds</a></li>
   <li><a class="reference" href="#repExternalKinds"
-    title="repExternalKinds = {rextUnknownCCompiler..rextPath}">repExternalKinds</a></li>
+    title="repExternalKinds = {rextCmdRequiresFile..rextPath}">repExternalKinds</a></li>
   <li><a class="reference" href="#repFatalKinds"
-    title="repFatalKinds: ReportKinds = {rintUnknown..rintIce, rsemFatalError}">repFatalKinds</a></li>
+    title="repFatalKinds: ReportKinds = {rintUnreachable..rintAssert, rsemFatalError}">repFatalKinds</a></li>
   <li><a class="reference" href="#repHintGroups"
     title="repHintGroups = [(&quot;all&quot;, {rintSource..rintSuccessX, rextConf..rextPath,
                           rlexLineTooLong..rlexSourceCodeFilterOutput,
@@ -534,9 +517,9 @@ window.addEventListener('DOMContentLoaded', main);
                              rcmdCompiling..rcmdRunnableExamplesSuccess,
                              rbackProducedAssembly..rbackLinking}">repHintKinds</a></li>
   <li><a class="reference" href="#repInternalKinds"
-    title="repInternalKinds: ReportKinds = {rintUnknown..rintEchoMessage}">repInternalKinds</a></li>
+    title="repInternalKinds: ReportKinds = {rintUnreachable..rintEchoMessage}">repInternalKinds</a></li>
   <li><a class="reference" href="#repLexerKinds"
-    title="repLexerKinds = {rlexMalformedUnderscores..rlexSourceCodeFilterOutput}">repLexerKinds</a></li>
+    title="repLexerKinds = {rlexMalformedNumUnderscores..rlexSourceCodeFilterOutput}">repLexerKinds</a></li>
   <li><a class="reference" href="#repLinkingHints"
     title="repLinkingHints = {rbackLinking, rcmdLinking}">repLinkingHints</a></li>
   <li><a class="reference" href="#repLinterKinds"
@@ -553,41 +536,37 @@ window.addEventListener('DOMContentLoaded', main);
     title="repStrictNotNilWarnings = {rsemStrictNotNilExpr, rsemStrictNotNilResult}">repStrictNotNilWarnings</a></li>
   <li><a class="reference" href="#repTraceKinds"
     title="repTraceKinds: ReportKinds = {rintStackTrace, rvmStackTrace,
-                              rdbgTraceDefined..rdbgOptionsPop}">repTraceKinds</a></li>
+                              rdbgVmExecTraceFull..rdbgOptionsPop}">repTraceKinds</a></li>
   <li><a class="reference" href="#repVMKinds"
     title="repVMKinds = {rvmOpcParseExpectedExpression..rvmStackTrace}">repVMKinds</a></li>
   <li><a class="reference" href="#repWarningGroups"
     title="repWarningGroups = [(&quot;all&quot;, {rintWarnCannotOpenFile..rintWarnFileChanged,
-                             rextDeprecated, rlexDeprecatedOctalPrefix,
+                             rlexDeprecatedOctalPrefix,
                              rparInconsistentSpacing..rparEnablePreviewDotOps,
                              rsemUserWarning..rsemUseOfGc,
                              rbackRstTestUnsupported..rbackRstRstStyle}), (
     &quot;StrictNotNil&quot;, {rsemStrictNotNilExpr, rsemStrictNotNilResult})]">repWarningGroups</a></li>
   <li><a class="reference" href="#repWarningKinds"
     title="repWarningKinds: ReportKinds = {rintWarnCannotOpenFile..rintWarnFileChanged,
-                                rextDeprecated, rlexDeprecatedOctalPrefix, rparInconsistentSpacing..rparEnablePreviewDotOps,
+                                rlexDeprecatedOctalPrefix, rparInconsistentSpacing..rparEnablePreviewDotOps,
                                 rsemUserWarning..rsemUseOfGc,
                                 rbackRstTestUnsupported..rbackRstRstStyle}">repWarningKinds</a></li>
   <li><a class="reference" href="#rextErrorKinds"
-    title="rextErrorKinds = {rextUnknownCCompiler..rextInvalidPackageName}">rextErrorKinds</a></li>
+    title="rextErrorKinds = {rextCmdRequiresFile..rextCmdRequiresFile}">rextErrorKinds</a></li>
   <li><a class="reference" href="#rextHintKinds"
     title="rextHintKinds = {rextConf..rextPath}">rextHintKinds</a></li>
-  <li><a class="reference" href="#rextWarningKinds"
-    title="rextWarningKinds = {rextDeprecated}">rextWarningKinds</a></li>
-  <li><a class="reference" href="#rintCliKinds"
-    title="rintCliKinds = {rintCliHelp..rintCliAdvancedUsage}">rintCliKinds</a></li>
   <li><a class="reference" href="#rintDataPassKinds"
     title="rintDataPassKinds = {rintStackTrace..rintEchoMessage}">rintDataPassKinds</a></li>
   <li><a class="reference" href="#rintErrorKinds"
     title="rintErrorKinds = {rintCannotOpenFile..rintNotImplemented}">rintErrorKinds</a></li>
   <li><a class="reference" href="#rintFatalKinds"
-    title="rintFatalKinds = {rintUnknown..rintIce}">rintFatalKinds</a></li>
+    title="rintFatalKinds = {rintUnreachable..rintAssert}">rintFatalKinds</a></li>
   <li><a class="reference" href="#rintHintKinds"
     title="rintHintKinds = {rintSource..rintSuccessX}">rintHintKinds</a></li>
   <li><a class="reference" href="#rintWarningKinds"
     title="rintWarningKinds = {rintWarnCannotOpenFile..rintWarnFileChanged}">rintWarningKinds</a></li>
   <li><a class="reference" href="#rlexErrorKinds"
-    title="rlexErrorKinds = {rlexMalformedUnderscores..rlexUnclosedComment}">rlexErrorKinds</a></li>
+    title="rlexErrorKinds = {rlexMalformedNumUnderscores..rlexUnclosedComment}">rlexErrorKinds</a></li>
   <li><a class="reference" href="#rlexHintKinds"
     title="rlexHintKinds = {rlexLineTooLong..rlexSourceCodeFilterOutput}">rlexHintKinds</a></li>
   <li><a class="reference" href="#rlexWarningKinds"
@@ -645,7 +624,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -662,9 +641,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L982"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L906"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L982" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L906" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -674,21 +653,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L976"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L902"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L976" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="DbgTraceReportKind">
-<dt><pre><a href="report_enums.html#DbgTraceReportKind"><span class="Identifier">DbgTraceReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rdbgTraceDefined</span> <span class="Operator">..</span> <span class="Identifier">rdbgTraceEnd</span><span class="Other">]</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L978"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L978" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L902" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -698,45 +665,46 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L980"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L904"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L980" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L904" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="ExternalReportKind">
-<dt><pre><a href="report_enums.html#ExternalReportKind"><span class="Identifier">ExternalReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rextUnknownCCompiler</span> <span class="Operator">..</span> <span class="Identifier">rextPath</span><span class="Other">]</span></pre></dt>
+<dt><pre><a href="report_enums.html#ExternalReportKind"><span class="Identifier">ExternalReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rextCmdRequiresFile</span> <span class="Operator">..</span> <span class="Identifier">rextPath</span><span class="Other">]</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L984"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L908"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L984" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L908" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="InternalReportKind">
-<dt><pre><a href="report_enums.html#InternalReportKind"><span class="Identifier">InternalReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rintUnknown</span> <span class="Operator">..</span> <span class="Identifier">rintEchoMessage</span><span class="Other">]</span></pre></dt>
+<dt><pre><a href="report_enums.html#InternalReportKind"><span class="Identifier">InternalReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rintUnreachable</span> <span class="Operator">..</span> <span class="Identifier">rintEchoMessage</span><span class="Other">]</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L986"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L910"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L986" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L910" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="LexerReportKind">
-<dt><pre><a href="report_enums.html#LexerReportKind"><span class="Identifier">LexerReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rlexMalformedUnderscores</span> <span class="Operator">..</span> <span class="Identifier">rlexSourceCodeFilterOutput</span><span class="Other">]</span></pre></dt>
+<dt><pre><a href="report_enums.html#LexerReportKind"><span class="Identifier">LexerReportKind</span></a> <span class="Other">=</span> <span class="Identifier">range</span><span class="Other">[</span><span class="Identifier">rlexMalformedNumUnderscores</span> <span class="Operator">..</span>
+    <span class="Identifier">rlexSourceCodeFilterOutput</span><span class="Other">]</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L966"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L892"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L966" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L892" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -746,9 +714,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L969"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L895"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L969" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L895" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -761,21 +729,19 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">repCmd</span> <span class="Other">=</span> <span class="StringLit">&quot;Cmd&quot;</span><span class="Other">,</span> <span class="Comment">## Report related to execution of the external command -</span>
                    <span class="Comment">## start of the command, execution failure, succes and so on.</span>
   <span class="Identifier">repVM</span> <span class="Other">=</span> <span class="StringLit">&quot;VM&quot;</span><span class="Other">,</span>             <span class="Comment">## Report related to embedded virtual machine</span>
-  <span class="Identifier">repDbgTrace</span> <span class="Other">=</span> <span class="StringLit">&quot;Trace&quot;</span><span class="Other">,</span>    <span class="Comment">## compiler execution expansion traces for debugging</span>
-                             <span class="Comment">## or understaning the compiler</span>
   <span class="Identifier">repDebug</span> <span class="Other">=</span> <span class="StringLit">&quot;Debug&quot;</span><span class="Other">,</span>       <span class="Comment">## Side channel for the compiler debug report. Helper</span>
                              <span class="Comment">## messages designed specifically to aid development of the compiler</span>
   <span class="Identifier">repInternal</span> <span class="Other">=</span> <span class="StringLit">&quot;Internal&quot;</span><span class="Other">,</span> <span class="Comment">## Reports constructed during handling of</span>
                              <span class="Comment">## internal compilation errors. Separate from debugging reports since</span>
                              <span class="Comment">## they always exist - ICE, internal fatal errors etc.</span>
   <span class="Identifier">repBackend</span> <span class="Other">=</span> <span class="StringLit">&quot;Backend&quot;</span><span class="Other">,</span>   <span class="Comment">## Backend-specific reports.</span>
-  <span class="Identifier">repExternal</span> <span class="Other">=</span> <span class="StringLit">&quot;External&quot;</span>   <span class="Comment">## Report constructed during handling of the</span>
-                             <span class="Comment">## external configuration, command-line flags, packages, modules.</span></pre></dt>
+  <span class="Identifier">repExternal</span> <span class="Other">=</span> <span class="StringLit">&quot;External&quot;</span>   <span class="Comment">## Report constructed during handling of</span>
+                             <span class="Comment">## configuration, packages, modules.</span></pre></dt>
 <dd>
 
 Kinds of the toplevel reports. Only dispatches on report topics, such as sem, parse, macro (for <tt class="docutils literal"><span class="pre"><span class="Identifier">echo</span></span></tt> in compile-time code) and so on. Subdivision is based on different phases of the compiler operation, and not on report's state itself, as those are completely orthogonal to each other (lexer might provide errors and hints, parser can provide errors, hints and warnings)
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L4"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L4"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L4" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -783,49 +749,24 @@ class="link-seesrc" target="_blank">Source</a>
 </div>
 <div id="ReportKind">
 <dt><pre><a href="report_enums.html#ReportKind"><span class="Identifier">ReportKind</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
-  <span class="Identifier">repNone</span><span class="Other">,</span> <span class="Identifier">rintUnknown</span><span class="Other">,</span>     <span class="Comment">## Unknown internal report kind</span>
-  <span class="Identifier">rintFatal</span><span class="Other">,</span>                <span class="Comment">## Explicitly fatal compiler error</span>
-  <span class="Identifier">rintUnreachable</span><span class="Other">,</span>          <span class="Comment">## State in the compiler code that must not be reached</span>
+  <span class="Identifier">repNone</span><span class="Other">,</span> <span class="Identifier">rintUnreachable</span><span class="Other">,</span> <span class="Comment">## State in the compiler code that must not be reached</span>
   <span class="Identifier">rintAssert</span><span class="Other">,</span>               <span class="Comment">## Failed internal assert in the compiler</span>
-  <span class="Identifier">rintIce</span><span class="Other">,</span>                  <span class="Comment">## Internal compilation error</span>
   <span class="Identifier">rintCannotOpenFile</span><span class="Other">,</span> <span class="Identifier">rintUsingLeanCompiler</span><span class="Other">,</span> <span class="Identifier">rintNotUsingNimcore</span><span class="Other">,</span>
   <span class="Identifier">rintNotImplemented</span><span class="Other">,</span> <span class="Identifier">rintWarnCannotOpenFile</span><span class="Other">,</span> <span class="Identifier">rintUnexpected</span><span class="Other">,</span>
   <span class="Identifier">rintWarnFileChanged</span><span class="Other">,</span> <span class="Identifier">rintSource</span> <span class="Other">=</span> <span class="StringLit">&quot;Source&quot;</span><span class="Other">,</span> <span class="Comment">## Show source in the report</span>
   <span class="Identifier">rintMsgOrigin</span> <span class="Other">=</span> <span class="StringLit">&quot;MsgOrigin&quot;</span><span class="Other">,</span> <span class="Identifier">rintErrKind</span> <span class="Other">=</span> <span class="StringLit">&quot;ErrKind&quot;</span><span class="Other">,</span> <span class="Comment">## Show report kind in error messages</span>
-  <span class="Identifier">rintGCStats</span> <span class="Other">=</span> <span class="StringLit">&quot;GCStats&quot;</span><span class="Other">,</span>  <span class="Comment">## Print GC statistics for the compiler run</span>
   <span class="Identifier">rintQuitCalled</span> <span class="Other">=</span> <span class="StringLit">&quot;QuitCalled&quot;</span><span class="Other">,</span> <span class="Comment">## `quit()` called by the macro code</span>
                                   <span class="Comment">## compilation error handling and similar</span>
   <span class="Identifier">rintMissingStackTrace</span><span class="Other">,</span>    <span class="Comment">## Stack trace would've been generated in the</span>
                              <span class="Comment">## debug compiler build</span>
-  <span class="Identifier">rintSuccessX</span> <span class="Other">=</span> <span class="StringLit">&quot;SuccessX&quot;</span><span class="Other">,</span> <span class="Comment">## Succesfull compilation</span>
+  <span class="Identifier">rintSuccessX</span> <span class="Other">=</span> <span class="StringLit">&quot;SuccessX&quot;</span><span class="Other">,</span> <span class="Comment">## Successful compilation, only used as a &quot;note&quot;,</span>
+                              <span class="Comment">## it's not a hint either</span>
   <span class="Identifier">rintStackTrace</span> <span class="Other">=</span> <span class="StringLit">&quot;StackTrace&quot;</span><span class="Other">,</span> <span class="Comment">## Stack trace during internal</span>
-  <span class="Identifier">rintNimconfWrite</span><span class="Other">,</span> <span class="Identifier">rintListWarnings</span><span class="Other">,</span> <span class="Identifier">rintListHints</span><span class="Other">,</span> <span class="Identifier">rintCliHelp</span><span class="Other">,</span>
-  <span class="Identifier">rintCliFullHelp</span><span class="Other">,</span> <span class="Identifier">rintCliVersion</span><span class="Other">,</span> <span class="Identifier">rintCliAdvancedUsage</span><span class="Other">,</span> <span class="Identifier">rintDumpState</span><span class="Other">,</span>
-  <span class="Identifier">rintEchoMessage</span><span class="Other">,</span> <span class="Identifier">rextUnknownCCompiler</span><span class="Other">,</span> <span class="Identifier">rextInvalidHint</span><span class="Other">,</span> <span class="Identifier">rextInvalidWarning</span><span class="Other">,</span> <span class="Identifier">rextInvalidCommandLineOption</span><span class="Other">,</span> <span class="Comment">## Invalid command-line option passed to</span>
-                                                                                                             <span class="Comment">## the compiler</span>
-  <span class="Identifier">rextOnlyAllOffSupported</span><span class="Other">,</span> <span class="Comment">## Only `all:off` is supported for mass</span>
-                            <span class="Comment">## hint/warning modification. Separate diagnostics must be enabled on</span>
-                            <span class="Comment">## one-by-one basis.</span>
-  <span class="Identifier">rextExpectedOnOrOff</span><span class="Other">,</span>      <span class="Comment">## Command-line option expected 'on' or 'off' value</span>
-  <span class="Identifier">rextExpectedOnOrOffOrList</span><span class="Other">,</span> <span class="Comment">## Command-line option expected 'on', 'off'</span>
-                              <span class="Comment">## or 'list' value.</span>
-  <span class="Identifier">rextExpectedCmdArgument</span><span class="Other">,</span>  <span class="Comment">## Command-line option expected argument</span>
-  <span class="Identifier">rextExpectedNoCmdArgument</span><span class="Other">,</span> <span class="Comment">## Command-line option expected no arguments</span>
-  <span class="Identifier">rextCmdDisallowsAdditionalArguments</span><span class="Other">,</span> <span class="Comment">## command disallows additional args</span>
-  <span class="Identifier">rextInvalidNumber</span><span class="Other">,</span>        <span class="Comment">## Command-line switch expected a number</span>
-  <span class="Identifier">rextInvalidValue</span><span class="Other">,</span> <span class="Identifier">rextUnexpectedValue</span><span class="Other">,</span> <span class="Comment">## Command-line argument had value, but it did not</span>
-                                          <span class="Comment">## match with any expected.</span>
-  <span class="Identifier">rextExpectedCbackendForRun</span><span class="Other">,</span> <span class="Identifier">rextExpectedTinyCForRun</span><span class="Other">,</span> <span class="Identifier">rextInvalidCommand</span><span class="Other">,</span>
-  <span class="Identifier">rextCommandMissing</span><span class="Other">,</span> <span class="Identifier">rextExpectedRunOptForArgs</span><span class="Other">,</span> <span class="Identifier">rextUnexpectedRunOpt</span><span class="Other">,</span> <span class="Identifier">rextInvalidPath</span><span class="Other">,</span> <span class="Comment">## Invalid path for a command-line argument</span>
-  <span class="Identifier">rextInvalidPackageName</span><span class="Other">,</span> <span class="Comment">## When adding packages from the `--nimbleDir`</span>
-                           <span class="Comment">## (or it's default value), names are validated. This error is</span>
-                           <span class="Comment">## generated if package name is not correct.</span>
-  <span class="Identifier">rextDeprecated</span><span class="Other">,</span> <span class="Comment">## Report about use of the deprecated feature that is</span>
-                   <span class="Comment">## not in the semantic pass. Things like deprecated flags, compiler</span>
-                   <span class="Comment">## commands and so on.</span>
-  <span class="Identifier">rextConf</span> <span class="Other">=</span> <span class="StringLit">&quot;Conf&quot;</span><span class="Other">,</span>        <span class="Comment">## Processing user configutation file</span>
-  <span class="Identifier">rextPath</span> <span class="Other">=</span> <span class="StringLit">&quot;Path&quot;</span><span class="Other">,</span>        <span class="Comment">## Add nimble path</span>
-  <span class="Identifier">rlexMalformedUnderscores</span><span class="Other">,</span> <span class="Identifier">rlexMalformedTrailingUnderscre</span><span class="Other">,</span> <span class="Identifier">rlexInvalidToken</span><span class="Other">,</span>
+  <span class="Identifier">rintListWarnings</span><span class="Other">,</span> <span class="Identifier">rintListHints</span><span class="Other">,</span> <span class="Identifier">rintEchoMessage</span><span class="Other">,</span> <span class="Identifier">rextCmdRequiresFile</span><span class="Other">,</span> <span class="Comment">## fatal error, user failed to provide a file</span>
+  <span class="Identifier">rextConf</span> <span class="Other">=</span> <span class="StringLit">&quot;Conf&quot;</span><span class="Other">,</span>        <span class="Comment">## Processed user configutation file; not a &quot;report&quot;</span>
+  <span class="Identifier">rextPath</span> <span class="Other">=</span> <span class="StringLit">&quot;Path&quot;</span><span class="Other">,</span>        <span class="Comment">## Add nimble path; xxx: this isn't a &quot;report&quot;</span>
+  <span class="Identifier">rlexMalformedNumUnderscores</span><span class="Other">,</span> <span class="Identifier">rlexMalformedIdentUnderscores</span><span class="Other">,</span>
+  <span class="Identifier">rlexMalformedTrailingUnderscre</span><span class="Other">,</span> <span class="Identifier">rlexInvalidToken</span><span class="Other">,</span>
   <span class="Identifier">rlexInvalidTokenSpaceBetweenNumAndIdent</span><span class="Other">,</span> <span class="Identifier">rlexNoTabs</span><span class="Other">,</span>
   <span class="Identifier">rlexInvalidIntegerLiteralOctalPrefix</span><span class="Other">,</span> <span class="Identifier">rlexInvalidIntegerSuffix</span><span class="Other">,</span>
   <span class="Identifier">rlexNumberNotInRange</span><span class="Other">,</span> <span class="Identifier">rlexExpectedHex</span><span class="Other">,</span> <span class="Identifier">rlexInvalidIntegerLiteral</span><span class="Other">,</span>
@@ -834,9 +775,9 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rlexInvalidCharLiteralUnicodeCodepoint</span><span class="Other">,</span> <span class="Identifier">rlexMissingClosingApostrophe</span><span class="Other">,</span>
   <span class="Identifier">rlexInvalidUnicodeCodepointEmpty</span><span class="Other">,</span>
   <span class="Identifier">rlexInvalidUnicodeCodepointGreaterThan0x10FFFF</span><span class="Other">,</span> <span class="Identifier">rlexUnclosedTripleString</span><span class="Other">,</span>
-  <span class="Identifier">rlexUnclosedSingleString</span><span class="Other">,</span> <span class="Identifier">rlexExpectedToken</span><span class="Other">,</span> <span class="Identifier">rlexCfgInvalidDirective</span><span class="Other">,</span>
-  <span class="Identifier">rlexUnclosedComment</span><span class="Other">,</span> <span class="Identifier">rlexDeprecatedOctalPrefix</span> <span class="Other">=</span> <span class="StringLit">&quot;OctalEscape&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rlexLineTooLong</span> <span class="Other">=</span> <span class="StringLit">&quot;LineTooLong&quot;</span><span class="Other">,</span> <span class="Identifier">rlexLinterReport</span> <span class="Other">=</span> <span class="StringLit">&quot;Name&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rlexUnclosedSingleString</span><span class="Other">,</span> <span class="Identifier">rlexUnclosedComment</span><span class="Other">,</span>
+  <span class="Identifier">rlexDeprecatedOctalPrefix</span> <span class="Other">=</span> <span class="StringLit">&quot;OctalEscape&quot;</span><span class="Other">,</span> <span class="Identifier">rlexLineTooLong</span> <span class="Other">=</span> <span class="StringLit">&quot;LineTooLong&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rlexLinterReport</span> <span class="Other">=</span> <span class="StringLit">&quot;Name&quot;</span><span class="Other">,</span>
   <span class="Identifier">rlexSourceCodeFilterOutput</span> <span class="Other">=</span> <span class="StringLit">&quot;SourceCodeFilterOutput&quot;</span><span class="Other">,</span> <span class="Identifier">rparInvalidIndentation</span><span class="Other">,</span>
   <span class="Identifier">rparInvalidIndentationWithForgotEqualSignHint</span><span class="Other">,</span>
   <span class="Identifier">rparNestableRequiresIndentation</span><span class="Other">,</span> <span class="Identifier">rparIdentExpected</span><span class="Other">,</span>
@@ -847,21 +788,20 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rparTemplMissingEndClose</span><span class="Other">,</span> <span class="Identifier">rparTemplInvalidExpression</span><span class="Other">,</span> <span class="Identifier">rparInvalidFilter</span><span class="Other">,</span>
   <span class="Identifier">rparInconsistentSpacing</span> <span class="Other">=</span> <span class="StringLit">&quot;Spacing&quot;</span><span class="Other">,</span> <span class="Identifier">rparPragmaNotFollowingTypeName</span><span class="Other">,</span>
   <span class="Identifier">rparEnablePreviewDotOps</span> <span class="Other">=</span> <span class="StringLit">&quot;DotLikeOps&quot;</span><span class="Other">,</span> <span class="Identifier">rvmOpcParseExpectedExpression</span><span class="Other">,</span>
-  <span class="Identifier">rvmTooManyRegistersRequired</span><span class="Other">,</span> <span class="Identifier">rvmMissingImportcCompleteStruct</span><span class="Other">,</span>
-  <span class="Identifier">rvmCannotFindBreakTarget</span><span class="Other">,</span> <span class="Identifier">rvmNotUnused</span><span class="Other">,</span> <span class="Identifier">rvmUserError</span><span class="Other">,</span> <span class="Identifier">rvmNotAFieldSymbol</span><span class="Other">,</span>
-  <span class="Identifier">rvmTooLargetOffset</span><span class="Other">,</span> <span class="Identifier">rvmUnhandledException</span><span class="Other">,</span> <span class="Identifier">rvmCannotGenerateCode</span><span class="Other">,</span>
-  <span class="Identifier">rvmCannotCast</span><span class="Other">,</span> <span class="Identifier">rvmGlobalError</span><span class="Other">,</span> <span class="Comment">## Error report that was declared as 'global' in the</span>
-                                  <span class="Comment">## VM - with current 'globalError-is-a-control-flow-mechanism' approach</span>
-                                  <span class="Comment">## this report is largely meaningless, and used only to raise exception.</span>
-  <span class="Identifier">rvmBadExpandToAst</span><span class="Other">,</span> <span class="Identifier">rvmCannotEvaluateAtComptime</span><span class="Other">,</span> <span class="Identifier">rvmCannotImportc</span><span class="Other">,</span>
-  <span class="Identifier">rvmInvalidObjectConstructor</span><span class="Other">,</span> <span class="Identifier">rvmCannotCallMethod</span><span class="Other">,</span> <span class="Identifier">rvmCallingNonRoutine</span><span class="Other">,</span>
-  <span class="Identifier">rvmCannotModifyTypechecked</span><span class="Other">,</span> <span class="Identifier">rvmNilAccess</span><span class="Other">,</span> <span class="Identifier">rvmAccessOutOfBounds</span><span class="Other">,</span>
-  <span class="Identifier">rvmAccessTypeMismatch</span><span class="Other">,</span> <span class="Identifier">rvmAccessNoLocation</span><span class="Other">,</span> <span class="Identifier">rvmErrInternal</span><span class="Other">,</span> <span class="Identifier">rvmIndexError</span><span class="Other">,</span>
-  <span class="Identifier">rvmOutOfRange</span><span class="Other">,</span> <span class="Identifier">rvmOverOrUnderflow</span><span class="Other">,</span> <span class="Identifier">rvmDivisionByConstZero</span><span class="Other">,</span> <span class="Identifier">rvmNodeNotASymbol</span><span class="Other">,</span>
-  <span class="Identifier">rvmNodeNotAProcSymbol</span><span class="Other">,</span> <span class="Identifier">rvmIllegalConv</span><span class="Other">,</span> <span class="Identifier">rvmIllegalConvFromXToY</span><span class="Other">,</span>
-  <span class="Identifier">rvmMissingCacheKey</span><span class="Other">,</span> <span class="Identifier">rvmCacheKeyAlreadyExists</span><span class="Other">,</span> <span class="Identifier">rvmFieldNotFound</span><span class="Other">,</span>
-  <span class="Identifier">rvmFieldInavailable</span><span class="Other">,</span> <span class="Identifier">rvmCannotSetChild</span><span class="Other">,</span> <span class="Identifier">rvmCannotAddChild</span><span class="Other">,</span> <span class="Identifier">rvmCannotGetChild</span><span class="Other">,</span>
-  <span class="Identifier">rvmNoType</span><span class="Other">,</span> <span class="Identifier">rvmNotAField</span><span class="Other">,</span> <span class="Identifier">rvmUnsupportedNonNil</span><span class="Other">,</span> <span class="Identifier">rvmQuit</span><span class="Other">,</span> <span class="Identifier">rvmTooManyIterations</span><span class="Other">,</span>
+  <span class="Identifier">rvmTooManyRegistersRequired</span><span class="Other">,</span> <span class="Identifier">rvmMissingImportcCompleteStruct</span><span class="Other">,</span> <span class="Identifier">rvmNotUnused</span><span class="Other">,</span>
+  <span class="Identifier">rvmUserError</span><span class="Other">,</span> <span class="Identifier">rvmTooLargetOffset</span><span class="Other">,</span> <span class="Identifier">rvmUnhandledException</span><span class="Other">,</span>
+  <span class="Identifier">rvmCannotGenerateCode</span><span class="Other">,</span> <span class="Identifier">rvmCannotCast</span><span class="Other">,</span> <span class="Identifier">rvmGlobalError</span><span class="Other">,</span> <span class="Comment">## Error report that was declared as 'global' in the</span>
+                                                         <span class="Comment">## VM - with current 'globalError-is-a-control-flow-mechanism' approach</span>
+                                                         <span class="Comment">## this report is largely meaningless, and used only to raise exception.</span>
+  <span class="Identifier">rvmCannotEvaluateAtComptime</span><span class="Other">,</span> <span class="Identifier">rvmCannotImportc</span><span class="Other">,</span> <span class="Identifier">rvmCannotCallMethod</span><span class="Other">,</span>
+  <span class="Identifier">rvmCallingNonRoutine</span><span class="Other">,</span> <span class="Identifier">rvmCannotModifyTypechecked</span><span class="Other">,</span> <span class="Identifier">rvmNilAccess</span><span class="Other">,</span>
+  <span class="Identifier">rvmAccessOutOfBounds</span><span class="Other">,</span> <span class="Identifier">rvmAccessTypeMismatch</span><span class="Other">,</span> <span class="Identifier">rvmAccessNoLocation</span><span class="Other">,</span>
+  <span class="Identifier">rvmErrInternal</span><span class="Other">,</span> <span class="Identifier">rvmIndexError</span><span class="Other">,</span> <span class="Identifier">rvmOutOfRange</span><span class="Other">,</span> <span class="Identifier">rvmOverOrUnderflow</span><span class="Other">,</span>
+  <span class="Identifier">rvmDivisionByConstZero</span><span class="Other">,</span> <span class="Identifier">rvmNodeNotASymbol</span><span class="Other">,</span> <span class="Identifier">rvmNodeNotAProcSymbol</span><span class="Other">,</span>
+  <span class="Identifier">rvmIllegalConv</span><span class="Other">,</span> <span class="Identifier">rvmIllegalConvFromXToY</span><span class="Other">,</span> <span class="Identifier">rvmMissingCacheKey</span><span class="Other">,</span>
+  <span class="Identifier">rvmCacheKeyAlreadyExists</span><span class="Other">,</span> <span class="Identifier">rvmFieldNotFound</span><span class="Other">,</span> <span class="Identifier">rvmFieldInavailable</span><span class="Other">,</span>
+  <span class="Identifier">rvmCannotSetChild</span><span class="Other">,</span> <span class="Identifier">rvmCannotAddChild</span><span class="Other">,</span> <span class="Identifier">rvmCannotGetChild</span><span class="Other">,</span> <span class="Identifier">rvmNoType</span><span class="Other">,</span>
+  <span class="Identifier">rvmNotAField</span><span class="Other">,</span> <span class="Identifier">rvmUnsupportedNonNil</span><span class="Other">,</span> <span class="Identifier">rvmQuit</span><span class="Other">,</span> <span class="Identifier">rvmTooManyIterations</span><span class="Other">,</span>
   <span class="Identifier">rvmStackTrace</span><span class="Other">,</span> <span class="Identifier">rsemFatalError</span><span class="Other">,</span> <span class="Identifier">rsemUserError</span> <span class="Other">=</span> <span class="StringLit">&quot;UserError&quot;</span><span class="Other">,</span> <span class="Comment">## `{.error: }`</span>
   <span class="Identifier">rsemUsageIsError</span><span class="Other">,</span> <span class="Identifier">rsemCompilesHasSideEffects</span><span class="Other">,</span> <span class="Comment">## lightweight to avoid heavy diagnostic</span>
                                                  <span class="Comment">## querying for compiles context</span>
@@ -874,18 +814,18 @@ class="link-seesrc" target="_blank">Source</a>
                                                                                              <span class="Comment">## &quot;graceful&quot; abort of this compilation run, used by `errorreporting` to</span>
                                                                                              <span class="Comment">## bridge into the existing `msgs.liMessage` and `msgs.handleError`.</span>
   <span class="Identifier">rsemSystemNeeds</span><span class="Other">,</span> <span class="Identifier">rsemInvalidModulePath</span><span class="Other">,</span> <span class="Identifier">rsemInvalidModuleName</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotImportItself</span><span class="Other">,</span> <span class="Identifier">rsemRecursiveInclude</span><span class="Other">,</span> <span class="Identifier">rsemRecursiveImport</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotOpenFile</span><span class="Other">,</span> <span class="Identifier">rsemExportRequiresToplevel</span><span class="Other">,</span>
-  <span class="Identifier">rsemExperimentalRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemMethodRequiresToplevel</span><span class="Other">,</span>
-  <span class="Identifier">rsemPackageRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemConverterRequiresToplevel</span><span class="Other">,</span>
-  <span class="Identifier">rsemImportRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemUnexpectedToplevelDefer</span><span class="Other">,</span>
-  <span class="Identifier">rsemUsingRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemInvalidVisibility</span><span class="Other">,</span> <span class="Identifier">rsemUnknownPackageName</span><span class="Other">,</span>
-  <span class="Identifier">rsemUnexpectedInfixInInclude</span><span class="Other">,</span> <span class="Identifier">rsemConflictingExportnims</span><span class="Other">,</span>
-  <span class="Identifier">rsemNoMagicEqualsForType</span><span class="Other">,</span> <span class="Identifier">rsemCantConvertLiteralToType</span><span class="Other">,</span>
-  <span class="Identifier">rsemCantConvertLiteralToRange</span><span class="Other">,</span> <span class="Identifier">rsemCantComputeOffsetof</span><span class="Other">,</span> <span class="Identifier">rsemStaticOutOfBounds</span><span class="Other">,</span> <span class="Comment">## Error generated when semfold or static bound</span>
-                                                                                  <span class="Comment">## checking sees and out-of-bounds index error.</span>
+  <span class="Identifier">rsemCannotImportItself</span><span class="Other">,</span> <span class="Identifier">rsemRecursiveInclude</span><span class="Other">,</span> <span class="Identifier">rsemCannotOpenFile</span><span class="Other">,</span>
+  <span class="Identifier">rsemExportRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemExperimentalRequiresToplevel</span><span class="Other">,</span>
+  <span class="Identifier">rsemMethodRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemPackageRequiresToplevel</span><span class="Other">,</span>
+  <span class="Identifier">rsemConverterRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemImportRequiresToplevel</span><span class="Other">,</span>
+  <span class="Identifier">rsemUnexpectedToplevelDefer</span><span class="Other">,</span> <span class="Identifier">rsemUsingRequiresToplevel</span><span class="Other">,</span> <span class="Identifier">rsemInvalidVisibility</span><span class="Other">,</span>
+  <span class="Identifier">rsemUnknownPackageName</span><span class="Other">,</span> <span class="Identifier">rsemUnexpectedInfixInInclude</span><span class="Other">,</span>
+  <span class="Identifier">rsemConflictingExportnims</span><span class="Other">,</span> <span class="Identifier">rsemNoMagicEqualsForType</span><span class="Other">,</span>
+  <span class="Identifier">rsemCantConvertLiteralToType</span><span class="Other">,</span> <span class="Identifier">rsemCantConvertLiteralToRange</span><span class="Other">,</span>
+  <span class="Identifier">rsemCantComputeOffsetof</span><span class="Other">,</span> <span class="Identifier">rsemStaticOutOfBounds</span><span class="Other">,</span> <span class="Comment">## Error generated when semfold or static bound</span>
+                                                   <span class="Comment">## checking sees and out-of-bounds index error.</span>
   <span class="Identifier">rsemStaticFieldNotFound</span><span class="Other">,</span> <span class="Identifier">rsemSemfoldOverflow</span><span class="Other">,</span> <span class="Identifier">rsemSemfoldDivByZero</span><span class="Other">,</span>
-  <span class="Identifier">rsemSemfoldInvalidConversion</span><span class="Other">,</span> <span class="Identifier">rsemInvalidIntdefine</span><span class="Other">,</span> <span class="Identifier">rsemInvalidBooldefine</span><span class="Other">,</span> <span class="Identifier">rsemCaseInUnion</span><span class="Other">,</span> <span class="Comment">## `{.union.}` type cannot use `case:` statements</span>
+  <span class="Identifier">rsemInvalidIntdefine</span><span class="Other">,</span> <span class="Identifier">rsemInvalidBooldefine</span><span class="Other">,</span> <span class="Identifier">rsemCaseInUnion</span><span class="Other">,</span> <span class="Comment">## `{.union.}` type cannot use `case:` statements</span>
   <span class="Identifier">rsemOffsetInUnion</span><span class="Other">,</span> <span class="Comment">## `{.union.}` type cannot use inheritance and any</span>
                       <span class="Comment">## other features that add implicit chunk of data before the actually</span>
                       <span class="Comment">## listed fields.</span>
@@ -895,11 +835,11 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemInvalidOrderInEnum</span><span class="Other">,</span> <span class="Identifier">rsemSetTooBig</span><span class="Other">,</span> <span class="Identifier">rsemTIsNotAConcreteType</span><span class="Other">,</span>
   <span class="Identifier">rsemProcIsNotAConcreteType</span><span class="Other">,</span> <span class="Identifier">rsemRangeIsEmpty</span><span class="Other">,</span> <span class="Identifier">rsemCannotInstantiate</span><span class="Other">,</span>
   <span class="Identifier">rsemCannotInstantiateWithParameter</span><span class="Other">,</span> <span class="Identifier">rsemCannotGenerateGenericDestructor</span><span class="Other">,</span>
-  <span class="Identifier">rsemUndeclaredField</span><span class="Other">,</span> <span class="Identifier">rsemInheritanceOnlyWorksWithAnEnum</span><span class="Other">,</span> <span class="Identifier">rsemExpectedOrdinal</span><span class="Other">,</span>
-  <span class="Identifier">rsemExpectedOrdinalOrFloat</span><span class="Other">,</span> <span class="Identifier">rsemExpectedUnholyEnum</span><span class="Other">,</span>
-  <span class="Identifier">rsemExpectedLow0Discriminant</span><span class="Other">,</span> <span class="Identifier">rsemExpectedHighCappedDiscriminant</span><span class="Other">,</span>
-  <span class="Identifier">rsemMissingCaseBranches</span><span class="Other">,</span> <span class="Identifier">rsemRangeDoesNotSupportNan</span><span class="Other">,</span> <span class="Identifier">rsemRangeRequiresDotDot</span><span class="Other">,</span>
-  <span class="Identifier">rsemExpectedRange</span><span class="Other">,</span> <span class="Identifier">rsemArrayExpectsPositiveRange</span><span class="Other">,</span> <span class="Identifier">rsemExpectObjectForBase</span><span class="Other">,</span>
+  <span class="Identifier">rsemUndeclaredField</span><span class="Other">,</span> <span class="Identifier">rsemExpectedOrdinal</span><span class="Other">,</span> <span class="Identifier">rsemExpectedOrdinalOrFloat</span><span class="Other">,</span>
+  <span class="Identifier">rsemExpectedUnholyEnum</span><span class="Other">,</span> <span class="Identifier">rsemExpectedLow0Discriminant</span><span class="Other">,</span>
+  <span class="Identifier">rsemExpectedHighCappedDiscriminant</span><span class="Other">,</span> <span class="Identifier">rsemMissingCaseBranches</span><span class="Other">,</span>
+  <span class="Identifier">rsemRangeDoesNotSupportNan</span><span class="Other">,</span> <span class="Identifier">rsemRangeRequiresDotDot</span><span class="Other">,</span> <span class="Identifier">rsemExpectedRange</span><span class="Other">,</span>
+  <span class="Identifier">rsemArrayExpectsPositiveRange</span><span class="Other">,</span> <span class="Identifier">rsemExpectObjectForBase</span><span class="Other">,</span>
   <span class="Identifier">rsemExpectNonFinalForBase</span><span class="Other">,</span> <span class="Identifier">rsemTVoidNotAllowed</span><span class="Other">,</span> <span class="Identifier">rsemExpectedObjectForRegion</span><span class="Other">,</span>
   <span class="Identifier">rsemUnexpectedVoidType</span><span class="Other">,</span> <span class="Identifier">rsemUnexpectedArrayAssignForCstring</span><span class="Other">,</span>
   <span class="Identifier">rsemMacroBodyDependsOnGenericTypes</span><span class="Other">,</span> <span class="Identifier">rsemMalformedNotNilType</span><span class="Other">,</span>
@@ -932,11 +872,11 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemMacroInstantiationTooNested</span><span class="Other">,</span> <span class="Identifier">rsemGenericInstantiationTooNested</span><span class="Other">,</span>
   <span class="Identifier">rsemInvalidMethodDeclarationOrder</span><span class="Other">,</span> <span class="Identifier">rsemParameterNotPointerToPartial</span><span class="Other">,</span>
   <span class="Identifier">rsemDiscardingVoid</span><span class="Other">,</span> <span class="Identifier">rsemDiscardingProc</span><span class="Other">,</span> <span class="Identifier">rsemInvalidControlFlow</span><span class="Other">,</span>
-  <span class="Identifier">rsemContinueCannotHaveLabel</span><span class="Other">,</span> <span class="Identifier">rsemUseOrDiscard</span><span class="Other">,</span> <span class="Identifier">rsemUseOrDiscardExpr</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotBeRaised</span><span class="Other">,</span> <span class="Identifier">rsemCannotRaiseNonException</span><span class="Other">,</span> <span class="Identifier">rsemExceptionAlreadyHandled</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotExceptNativeAndImported</span><span class="Other">,</span> <span class="Identifier">rsemExpectedSingleFinally</span><span class="Other">,</span>
-  <span class="Identifier">rsemExpectedSingleGeneralExcept</span><span class="Other">,</span> <span class="Identifier">rsemCannotConvertToRange</span><span class="Other">,</span>
-  <span class="Identifier">rsemUsingRequiresType</span><span class="Other">,</span> <span class="Identifier">rsemUsingDisallowsAssign</span><span class="Other">,</span>
+  <span class="Identifier">rsemExpectedLabel</span><span class="Other">,</span> <span class="Identifier">rsemContinueCannotHaveLabel</span><span class="Other">,</span> <span class="Identifier">rsemUseOrDiscard</span><span class="Other">,</span>
+  <span class="Identifier">rsemUseOrDiscardExpr</span><span class="Other">,</span> <span class="Identifier">rsemCannotBeRaised</span><span class="Other">,</span> <span class="Identifier">rsemCannotRaiseNonException</span><span class="Other">,</span>
+  <span class="Identifier">rsemExceptionAlreadyHandled</span><span class="Other">,</span> <span class="Identifier">rsemCannotExceptNativeAndImported</span><span class="Other">,</span>
+  <span class="Identifier">rsemExpectedSingleFinally</span><span class="Other">,</span> <span class="Identifier">rsemExpectedSingleGeneralExcept</span><span class="Other">,</span>
+  <span class="Identifier">rsemCannotConvertToRange</span><span class="Other">,</span> <span class="Identifier">rsemUsingRequiresType</span><span class="Other">,</span> <span class="Identifier">rsemUsingDisallowsAssign</span><span class="Other">,</span>
   <span class="Identifier">rsemDifferentTypeForReintroducedSymbol</span><span class="Other">,</span> <span class="Identifier">rsemCannotInferTypeOfLiteral</span><span class="Other">,</span>
   <span class="Identifier">rsemCannotInferTypeOfParameter</span><span class="Other">,</span> <span class="Identifier">rsemProcHasNoConcreteType</span><span class="Other">,</span>
   <span class="Identifier">rsemThreadvarCannotInit</span><span class="Other">,</span> <span class="Identifier">rsemLetNeedsInit</span><span class="Other">,</span> <span class="Identifier">rsemConstExpressionExpected</span><span class="Other">,</span>
@@ -961,12 +901,27 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemExpectedObjectForOf</span><span class="Other">,</span> <span class="Identifier">rsemCannotBeOfSubtype</span><span class="Other">,</span> <span class="Identifier">rsemQuantifierInRangeExpected</span><span class="Other">,</span>
   <span class="Identifier">rsemOldTakesParameterName</span><span class="Other">,</span> <span class="Identifier">rsemOldDoesNotBelongTo</span><span class="Other">,</span> <span class="Identifier">rsemCannotFindPlugin</span><span class="Other">,</span>
   <span class="Identifier">rsemCannotIsolate</span><span class="Other">,</span> <span class="Identifier">rsemRecursiveDependencyIterator</span><span class="Other">,</span> <span class="Identifier">rsemIllegalNimvmContext</span><span class="Other">,</span>
-  <span class="Identifier">rsemDisallowedNilDeref</span><span class="Other">,</span> <span class="Identifier">rsemInvalidTupleSubscript</span><span class="Other">,</span> <span class="Identifier">rsemLocalEscapesStackFrame</span><span class="Other">,</span>
-  <span class="Identifier">rsemImplicitAddrIsNotFirstParam</span><span class="Other">,</span> <span class="Identifier">rsemCannotAssignTo</span><span class="Other">,</span> <span class="Identifier">rsemNoReturnTypeDeclared</span><span class="Other">,</span>
-  <span class="Identifier">rsemReturnNotAllowed</span><span class="Other">,</span> <span class="Identifier">rsemCannotInferReturnType</span><span class="Other">,</span> <span class="Identifier">rsemExpectedValueForYield</span><span class="Other">,</span>
-  <span class="Identifier">rsemUnexpectedYield</span><span class="Other">,</span> <span class="Identifier">rsemYieldExpectedTupleConstr</span><span class="Other">,</span> <span class="Comment">## a literal tuple constructor is required when the iterator returns a</span>
-                                                      <span class="Comment">## </span>
-                                                      <span class="Comment">## tuple containing a view</span>
+  <span class="Identifier">rsemDisallowedNilDeref</span><span class="Other">,</span> <span class="Identifier">rsemCannotDeref</span><span class="Other">,</span> <span class="Identifier">rsemInvalidTupleSubscript</span><span class="Other">,</span>
+  <span class="Identifier">rsemLocalEscapesStackFrame</span><span class="Other">,</span> <span class="Identifier">rsemImplicitAddrIsNotFirstParam</span><span class="Other">,</span>
+  <span class="Identifier">rsemCannotAssignTo</span><span class="Other">,</span> <span class="Identifier">rsemNoReturnTypeDeclared</span><span class="Other">,</span> <span class="Identifier">rsemReturnNotAllowed</span><span class="Other">,</span>
+  <span class="Identifier">rsemIllegalCompileTimeAccess</span><span class="Other">,</span> <span class="Identifier">rsemCannotInferReturnType</span><span class="Other">,</span>
+  <span class="Identifier">rsemExpectedValueForYield</span><span class="Other">,</span> <span class="Identifier">rsemUnexpectedYield</span><span class="Other">,</span> <span class="Identifier">rsemYieldExpectedTupleConstr</span><span class="Other">,</span> <span class="Comment">## </span>
+                                                                                 <span class="Comment">## a </span>
+                                                                                 <span class="Comment">## literal </span>
+                                                                                 <span class="Comment">## tuple </span>
+                                                                                 <span class="Comment">## constructor </span>
+                                                                                 <span class="Comment">## is </span>
+                                                                                 <span class="Comment">## required </span>
+                                                                                 <span class="Comment">## when </span>
+                                                                                 <span class="Comment">## the </span>
+                                                                                 <span class="Comment">## iterator </span>
+                                                                                 <span class="Comment">## returns </span>
+                                                                                 <span class="Comment">## a</span>
+                                                                                 <span class="Comment">## </span>
+                                                                                 <span class="Comment">## tuple </span>
+                                                                                 <span class="Comment">## containing </span>
+                                                                                 <span class="Comment">## a </span>
+                                                                                 <span class="Comment">## view</span>
   <span class="Identifier">rsemCannotReturnTypeless</span><span class="Other">,</span> <span class="Identifier">rsemExpectedMacroOrTemplate</span><span class="Other">,</span> <span class="Identifier">rsemAmbiguousGetAst</span><span class="Other">,</span>
   <span class="Identifier">rsemExpectedTemplateWithNArgs</span><span class="Other">,</span> <span class="Identifier">rsemExpectedCallForGetAst</span><span class="Other">,</span>
   <span class="Identifier">rsemWrongNumberOfQuoteArguments</span><span class="Other">,</span> <span class="Identifier">rsemNamedExprExpected</span><span class="Other">,</span>
@@ -976,22 +931,20 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemConflictingDiscriminantValues</span><span class="Other">,</span> <span class="Identifier">rsemRuntimeDiscriminantInitCap</span><span class="Other">,</span>
   <span class="Identifier">rsemRuntimeDiscriminantMustBeImmutable</span><span class="Other">,</span> <span class="Identifier">rsemRuntimeDiscriminantRequiresElif</span><span class="Other">,</span>
   <span class="Identifier">rsemObjectRequiresFieldInit</span><span class="Other">,</span> <span class="Identifier">rsemObjectRequiresFieldInitNoDefault</span><span class="Other">,</span>
-  <span class="Identifier">rsemDistinctDoesNotHaveDefaultValue</span><span class="Other">,</span> <span class="Identifier">rsemExpectedModuleNameForImportExcept</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotExport</span><span class="Other">,</span> <span class="Identifier">rsemCannotMixTypesAndValuesInTuple</span><span class="Other">,</span>
-  <span class="Identifier">rsemExpectedTypelessDeferBody</span><span class="Other">,</span> <span class="Identifier">rsemInvalidBindContext</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotCreateImplicitOpenarray</span><span class="Other">,</span>
+  <span class="Identifier">rsemObjectDoesNotHaveDefaultValue</span><span class="Other">,</span> <span class="Identifier">rsemDistinctDoesNotHaveDefaultValue</span><span class="Other">,</span>
+  <span class="Identifier">rsemExpectedModuleNameForImportExcept</span><span class="Other">,</span> <span class="Identifier">rsemCannotExport</span><span class="Other">,</span>
+  <span class="Identifier">rsemCannotMixTypesAndValuesInTuple</span><span class="Other">,</span> <span class="Identifier">rsemExpectedTypelessDeferBody</span><span class="Other">,</span>
+  <span class="Identifier">rsemInvalidBindContext</span><span class="Other">,</span> <span class="Identifier">rsemCannotCreateImplicitOpenarray</span><span class="Other">,</span>
   <span class="Identifier">rsemCannotAssignToDiscriminantWithCustomDestructor</span><span class="Other">,</span> <span class="Identifier">rsemUnavailableTypeBound</span><span class="Other">,</span>
-  <span class="Identifier">rsemUndeclaredIdentifier</span><span class="Other">,</span> <span class="Identifier">rsemExpectedIdentifier</span><span class="Other">,</span>
+  <span class="Identifier">rsemUnavailableLocation</span><span class="Other">,</span> <span class="Identifier">rsemUndeclaredIdentifier</span><span class="Other">,</span> <span class="Identifier">rsemExpectedIdentifier</span><span class="Other">,</span>
   <span class="Identifier">rsemExpectedIdentifierQuoteLimit</span><span class="Other">,</span> <span class="Identifier">rsemExpectedIdentifierInExpr</span><span class="Other">,</span>
   <span class="Identifier">rsemExpectedIdentifierWithExprContext</span><span class="Other">,</span> <span class="Identifier">rsemModuleAliasMustBeIdentifier</span><span class="Other">,</span>
   <span class="Identifier">rsemOnlyDeclaredIdentifierFoundIsError</span><span class="Other">,</span> <span class="Identifier">rsemFieldNotAccessible</span><span class="Other">,</span> <span class="Comment">## object field is not accessible</span>
   <span class="Identifier">rsemFieldAssignmentInvalid</span><span class="Other">,</span> <span class="Comment">## object field assignment invalid syntax</span>
   <span class="Identifier">rsemFieldAssignmentInvalidNeedSpace</span><span class="Other">,</span> <span class="Comment">## object field assignment invalid syntax, need space after colon</span>
-  <span class="Identifier">rsemFieldOkButAssignedValueInvalid</span><span class="Other">,</span> <span class="Comment">## object field assignment, where the field name is ok, but value is not</span>
-  <span class="Identifier">rsemObjectConstructorIncorrect</span><span class="Other">,</span> <span class="Comment">## one or more issues encountered with object constructor</span>
   <span class="Identifier">rsemExpressionHasNoType</span><span class="Other">,</span>  <span class="Comment">## an expression has not type or is ambiguous</span>
-  <span class="Identifier">rsemRawTypeMismatch</span><span class="Other">,</span> <span class="Identifier">rsemCannotConvertTypes</span><span class="Other">,</span> <span class="Identifier">rsemUnresolvedGenericParameter</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotCreateFlowVarOfType</span><span class="Other">,</span> <span class="Identifier">rsemTypeNotAllowed</span><span class="Other">,</span> <span class="Identifier">rsemIntLiteralExpected</span><span class="Other">,</span> <span class="Comment">## int literal node was expected, but got something else</span>
+  <span class="Identifier">rsemRawTypeMismatch</span><span class="Other">,</span> <span class="Identifier">rsemCannotConvertTypes</span><span class="Other">,</span> <span class="Identifier">rsemCannotCreateFlowVarOfType</span><span class="Other">,</span>
+  <span class="Identifier">rsemTypeNotAllowed</span><span class="Other">,</span> <span class="Identifier">rsemIntLiteralExpected</span><span class="Other">,</span> <span class="Comment">## int literal node was expected, but got something else</span>
   <span class="Identifier">rsemStringLiteralExpected</span><span class="Other">,</span> <span class="Comment">## string literal node was expected, but got something else</span>
   <span class="Identifier">rsemOnOrOffExpected</span><span class="Other">,</span> <span class="Identifier">rsemCallconvExpected</span><span class="Other">,</span> <span class="Identifier">rsemUnknownExperimental</span><span class="Other">,</span>
   <span class="Identifier">rsemDuplicateCaseLabel</span><span class="Other">,</span> <span class="Identifier">rsemExpressionIsNotAPath</span><span class="Other">,</span> <span class="Identifier">rsemResultMustBorrowFirst</span><span class="Other">,</span>
@@ -1003,9 +956,9 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemExpectedLow0ForComputedGoto</span><span class="Other">,</span> <span class="Identifier">rsemExpectedCaseForComputedGoto</span><span class="Other">,</span>
   <span class="Identifier">rsemDisallowedRangeForComputedGoto</span><span class="Other">,</span> <span class="Identifier">rsemExpectedParameterForJsPattern</span><span class="Other">,</span>
   <span class="Identifier">rsemExpectedLiteralForGoto</span><span class="Other">,</span> <span class="Identifier">rsemRequiresDeepCopyEnabled</span><span class="Other">,</span>
-  <span class="Identifier">rsemDisallowedOfForPureObjects</span><span class="Other">,</span> <span class="Identifier">rsemDisallowedReprForNewruntime</span><span class="Other">,</span>
-  <span class="Identifier">rsemCannotCodegenCompiletimeProc</span><span class="Other">,</span> <span class="Identifier">rsemInvalidPragma</span><span class="Other">,</span> <span class="Comment">## suplied pragma is invalid</span>
+  <span class="Identifier">rsemDisallowedOfForPureObjects</span><span class="Other">,</span> <span class="Identifier">rsemCannotCodegenCompiletimeProc</span><span class="Other">,</span> <span class="Identifier">rsemInvalidPragma</span><span class="Other">,</span> <span class="Comment">## suplied pragma is invalid</span>
   <span class="Identifier">rsemUnexpectedPragma</span><span class="Other">,</span> <span class="Identifier">rsemPropositionExpected</span><span class="Other">,</span> <span class="Identifier">rsemIllegalCustomPragma</span><span class="Other">,</span> <span class="Comment">## supplied pragma is not a legal custom pragma, and cannot be attached</span>
+  <span class="Identifier">rsemExternalLocalNotAllowed</span><span class="Other">,</span> <span class="Comment">## a local is specified to be part of an external interface</span>
   <span class="Identifier">rsemNoReturnHasReturn</span><span class="Other">,</span>    <span class="Comment">## a routine marked as no return, has a return type</span>
   <span class="Identifier">rsemImplicitPragmaError</span><span class="Other">,</span> <span class="Comment">## a symbol encountered an error when processing implicit pragmas, this</span>
                             <span class="Comment">## </span>
@@ -1025,34 +978,37 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemIllegalCompileTime</span><span class="Other">,</span> <span class="Comment">## when used on variables, the ``.compileTime`` pragma must only be</span>
                            <span class="Comment">## applied to locals inside compile-time procedures or to globals</span>
   <span class="Identifier">rsemSymbolKindMismatch</span><span class="Other">,</span> <span class="Identifier">rsemIllformedAst</span><span class="Other">,</span> <span class="Identifier">rsemInitHereNotAllowed</span><span class="Other">,</span>
-  <span class="Identifier">rsemTypeExpected</span><span class="Other">,</span> <span class="Identifier">rsemGenericTypeExpected</span><span class="Other">,</span> <span class="Identifier">rsemTypeInvalid</span><span class="Other">,</span> <span class="Identifier">rsemWrongIdent</span><span class="Other">,</span>
-  <span class="Identifier">rsemPragmaOptionExpected</span><span class="Other">,</span> <span class="Identifier">rsemUnexpectedPushArgument</span><span class="Other">,</span> <span class="Identifier">rsemCannotPushCast</span><span class="Other">,</span>
-  <span class="Identifier">rsemCastRequiresStatement</span><span class="Other">,</span> <span class="Identifier">rsemDynlibRequiresExportc</span><span class="Other">,</span> <span class="Identifier">rsemImportjsRequiresJs</span><span class="Other">,</span>
-  <span class="Identifier">rsemBitsizeRequires1248</span><span class="Other">,</span> <span class="Identifier">rsemBitsizeRequiresPositive</span><span class="Other">,</span>
-  <span class="Identifier">rsemAlignRequiresPowerOfTwo</span><span class="Other">,</span> <span class="Identifier">rsemPragmaRecursiveDependency</span><span class="Other">,</span>
-  <span class="Identifier">rsemMisplacedDeprecation</span><span class="Other">,</span> <span class="Identifier">rsemNoUnionForJs</span><span class="Other">,</span> <span class="Identifier">rsemThisPragmaRequires01Args</span><span class="Other">,</span>
-  <span class="Identifier">rsemMismatchedPopPush</span><span class="Other">,</span> <span class="Identifier">rsemExcessiveCompilePragmaArgs</span><span class="Other">,</span>
-  <span class="Identifier">rsemLinePragmaExpectsTuple</span><span class="Other">,</span> <span class="Identifier">rsemRaisesPragmaExpectsObject</span><span class="Other">,</span>
-  <span class="Identifier">rsemLocksPragmaExpectsList</span><span class="Other">,</span> <span class="Identifier">rsemLocksPragmaBadLevel</span><span class="Other">,</span> <span class="Identifier">rsemLocksRequiresArgs</span><span class="Other">,</span>
+  <span class="Identifier">rsemTypeExpected</span><span class="Other">,</span> <span class="Identifier">rsemSinkIsNotATypeClass</span><span class="Other">,</span> <span class="Identifier">rsemGenericTypeExpected</span><span class="Other">,</span>
+  <span class="Identifier">rsemTypeInvalid</span><span class="Other">,</span> <span class="Identifier">rsemWrongIdent</span><span class="Other">,</span> <span class="Identifier">rsemPragmaOptionExpected</span><span class="Other">,</span>
+  <span class="Identifier">rsemUnexpectedPushArgument</span><span class="Other">,</span> <span class="Identifier">rsemCannotPushCast</span><span class="Other">,</span> <span class="Identifier">rsemCastRequiresStatement</span><span class="Other">,</span>
+  <span class="Identifier">rsemDynlibRequiresExportc</span><span class="Other">,</span> <span class="Identifier">rsemImportjsRequiresJs</span><span class="Other">,</span> <span class="Identifier">rsemBitsizeRequires1248</span><span class="Other">,</span>
+  <span class="Identifier">rsemBitsizeRequiresPositive</span><span class="Other">,</span> <span class="Identifier">rsemAlignRequiresPowerOfTwo</span><span class="Other">,</span>
+  <span class="Identifier">rsemPragmaRecursiveDependency</span><span class="Other">,</span> <span class="Identifier">rsemMisplacedDeprecation</span><span class="Other">,</span> <span class="Identifier">rsemNoUnionForJs</span><span class="Other">,</span>
+  <span class="Identifier">rsemThisPragmaRequires01Args</span><span class="Other">,</span> <span class="Identifier">rsemMismatchedPopPush</span><span class="Other">,</span>
+  <span class="Identifier">rsemExcessiveCompilePragmaArgs</span><span class="Other">,</span> <span class="Identifier">rsemLinePragmaExpectsTuple</span><span class="Other">,</span>
+  <span class="Identifier">rsemRaisesPragmaExpectsObject</span><span class="Other">,</span> <span class="Identifier">rsemCompilerOptionInvalid</span><span class="Other">,</span>
+  <span class="Identifier">rsemCompilerOptionArgInvalid</span><span class="Other">,</span> <span class="Identifier">rsemLocksPragmaExpectsList</span><span class="Other">,</span>
+  <span class="Identifier">rsemLocksPragmaBadLevel</span><span class="Other">,</span> <span class="Identifier">rsemLocksRequiresArgs</span><span class="Other">,</span>
   <span class="Identifier">rsemMultilockRequiresSameLevel</span><span class="Other">,</span> <span class="Identifier">rsemInvalidNestedLocking</span><span class="Other">,</span> <span class="Identifier">rsemUnguardedAccess</span><span class="Other">,</span>
   <span class="Identifier">rsemInvalidGuardField</span><span class="Other">,</span> <span class="Identifier">rsemStaticIndexLeqUnprovable</span><span class="Other">,</span>
   <span class="Identifier">rsemStaticIndexGeProvable</span><span class="Other">,</span> <span class="Identifier">rsemErrGcUnsafeListing</span><span class="Other">,</span> <span class="Identifier">rsemBorrowPragmaNonDot</span><span class="Other">,</span>
   <span class="Identifier">rsemInvalidExtern</span><span class="Other">,</span> <span class="Identifier">rsemInvalidPragmaBlock</span><span class="Other">,</span> <span class="Identifier">rsemMisplacedEffectsOf</span><span class="Other">,</span>
   <span class="Identifier">rsemMissingPragmaArg</span><span class="Other">,</span> <span class="Identifier">rsemErrGcUnsafe</span><span class="Other">,</span> <span class="Identifier">rsemEmptyAsm</span><span class="Other">,</span> <span class="Identifier">rsemUserWarning</span> <span class="Other">=</span> <span class="StringLit">&quot;User&quot;</span><span class="Other">,</span> <span class="Comment">## `{.warning: }`</span>
   <span class="Identifier">rsemUnknownMagic</span> <span class="Other">=</span> <span class="StringLit">&quot;UnknownMagic&quot;</span><span class="Other">,</span> <span class="Identifier">rsemUnusedImport</span> <span class="Other">=</span> <span class="StringLit">&quot;UnusedImport&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemDeprecated</span> <span class="Other">=</span> <span class="StringLit">&quot;Deprecated&quot;</span><span class="Other">,</span> <span class="Identifier">rsemLockLevelMismatch</span> <span class="Other">=</span> <span class="StringLit">&quot;LockLevel&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemTypelessParam</span> <span class="Other">=</span> <span class="StringLit">&quot;TypelessParam&quot;</span><span class="Other">,</span> <span class="Identifier">rsemOwnedTypeDeprecated</span><span class="Other">,</span> <span class="Identifier">rsemWarnUnlistedRaises</span> <span class="Other">=</span> <span class="StringLit">&quot;Effect&quot;</span><span class="Other">,</span> <span class="Comment">## `sempass2.checkRaisesSpec` had</span>
-                                                                                                    <span class="Comment">## `emitWarnings: bool` parameter which was supposedly used to control</span>
-                                                                                                    <span class="Comment">## whether `strictEffects` warnings actually generated an error, or</span>
-                                                                                                    <span class="Comment">## just a warning. But all four uses of this proc had constant `false`</span>
-                                                                                                    <span class="Comment">## written to this field, so for now it does not mean anything and all</span>
-                                                                                                    <span class="Comment">## mismatched raises are routed as errors.</span>
+  <span class="Identifier">rsemDeprecated</span> <span class="Other">=</span> <span class="StringLit">&quot;Deprecated&quot;</span><span class="Other">,</span> <span class="Identifier">rsemDeprecatedCompilerOpt</span> <span class="Other">=</span> <span class="StringLit">&quot;Deprecated&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rsemDeprecatedCompilerOptArg</span> <span class="Other">=</span> <span class="StringLit">&quot;Deprecated&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rsemLockLevelMismatch</span> <span class="Other">=</span> <span class="StringLit">&quot;LockLevel&quot;</span><span class="Other">,</span> <span class="Identifier">rsemTypelessParam</span> <span class="Other">=</span> <span class="StringLit">&quot;TypelessParam&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rsemOwnedTypeDeprecated</span><span class="Other">,</span> <span class="Identifier">rsemWarnUnlistedRaises</span> <span class="Other">=</span> <span class="StringLit">&quot;Effect&quot;</span><span class="Other">,</span> <span class="Comment">## `sempass2.checkRaisesSpec` had</span>
+                                                               <span class="Comment">## `emitWarnings: bool` parameter which was supposedly used to control</span>
+                                                               <span class="Comment">## whether `strictEffects` warnings actually generated an error, or</span>
+                                                               <span class="Comment">## just a warning. But all four uses of this proc had constant `false`</span>
+                                                               <span class="Comment">## written to this field, so for now it does not mean anything and all</span>
+                                                               <span class="Comment">## mismatched raises are routed as errors.</span>
   <span class="Identifier">rsemDotForModuleImport</span><span class="Other">,</span> <span class="Identifier">rsemProveField</span> <span class="Other">=</span> <span class="StringLit">&quot;ProveField&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemStrictNotNilExpr</span> <span class="Other">=</span> <span class="StringLit">&quot;StrictNotNil&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemStrictNotNilResult</span> <span class="Other">=</span> <span class="StringLit">&quot;StrictNotNil&quot;</span><span class="Other">,</span> <span class="Identifier">rsemWarnGcUnsafe</span> <span class="Other">=</span> <span class="StringLit">&quot;GcUnsafe&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemWarnGcUnsafeListing</span> <span class="Other">=</span> <span class="StringLit">&quot;GcUnsafe2&quot;</span><span class="Other">,</span> <span class="Identifier">rsemProveInit</span> <span class="Other">=</span> <span class="StringLit">&quot;ProveInit&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemUninit</span> <span class="Other">=</span> <span class="StringLit">&quot;Uninit&quot;</span><span class="Other">,</span> <span class="Identifier">rsemWarnUnsafeCode</span> <span class="Other">=</span> <span class="StringLit">&quot;UnsafeCode&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemImplicitCstringConvert</span> <span class="Other">=</span> <span class="StringLit">&quot;CStringConv&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rsemUninit</span> <span class="Other">=</span> <span class="StringLit">&quot;Uninit&quot;</span><span class="Other">,</span> <span class="Identifier">rsemImplicitCstringConvert</span> <span class="Other">=</span> <span class="StringLit">&quot;CStringConv&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemHoleEnumConvert</span> <span class="Other">=</span> <span class="StringLit">&quot;HoleEnumConv&quot;</span><span class="Other">,</span> <span class="Identifier">rsemAnyEnumConvert</span> <span class="Other">=</span> <span class="StringLit">&quot;AnyEnumConv&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemMethodLockMismatch</span><span class="Other">,</span> <span class="Identifier">rsemUseBase</span> <span class="Other">=</span> <span class="StringLit">&quot;UseBase&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemUnreachableElse</span> <span class="Other">=</span> <span class="StringLit">&quot;UnreachableElse&quot;</span><span class="Other">,</span>
@@ -1062,10 +1018,11 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">rsemResultShadowed</span> <span class="Other">=</span> <span class="StringLit">&quot;ResultShadowed&quot;</span><span class="Other">,</span> <span class="Identifier">rsemResultUsed</span> <span class="Other">=</span> <span class="StringLit">&quot;ResultUsed&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemGenericMethodsDeprecated</span><span class="Other">,</span> <span class="Identifier">rsemSuspiciousEnumConv</span> <span class="Other">=</span> <span class="StringLit">&quot;EnumConv&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemUnsafeSetLen</span> <span class="Other">=</span> <span class="StringLit">&quot;UnsafeSetLen&quot;</span><span class="Other">,</span> <span class="Identifier">rsemUnsafeDefault</span> <span class="Other">=</span> <span class="StringLit">&quot;UnsafeDefault&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemBindDeprecated</span><span class="Other">,</span> <span class="Identifier">rsemObservableStores</span> <span class="Other">=</span> <span class="StringLit">&quot;ObservableStores&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemCaseTransition</span> <span class="Other">=</span> <span class="StringLit">&quot;CaseTransition&quot;</span><span class="Other">,</span> <span class="Identifier">rsemUseOfGc</span> <span class="Other">=</span> <span class="StringLit">&quot;GcMem&quot;</span><span class="Other">,</span> <span class="Identifier">rsemUserHint</span> <span class="Other">=</span> <span class="StringLit">&quot;User&quot;</span><span class="Other">,</span> <span class="Comment">## `{.hint: .}` pragma encountereed</span>
+  <span class="Identifier">rsemUntypedParamsFollwedByMoreSpecificType</span><span class="Other">,</span> <span class="Identifier">rsemBindDeprecated</span><span class="Other">,</span>
+  <span class="Identifier">rsemObservableStores</span> <span class="Other">=</span> <span class="StringLit">&quot;ObservableStores&quot;</span><span class="Other">,</span> <span class="Identifier">rsemUseOfGc</span> <span class="Other">=</span> <span class="StringLit">&quot;GcMem&quot;</span><span class="Other">,</span> <span class="Identifier">rsemUserHint</span> <span class="Other">=</span> <span class="StringLit">&quot;User&quot;</span><span class="Other">,</span> <span class="Comment">## `{.hint: .}` pragma encountereed</span>
   <span class="Identifier">rsemLinterReport</span> <span class="Other">=</span> <span class="StringLit">&quot;Name&quot;</span><span class="Other">,</span> <span class="Identifier">rsemLinterReportUse</span> <span class="Other">=</span> <span class="StringLit">&quot;Name&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rsemHintLibDependency</span><span class="Other">,</span> <span class="Identifier">rsemXDeclaredButNotUsed</span> <span class="Other">=</span> <span class="StringLit">&quot;XDeclaredButNotUsed&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rsemHintLibDependency</span> <span class="Other">=</span> <span class="StringLit">&quot;Dependency&quot;</span><span class="Other">,</span>
+  <span class="Identifier">rsemXDeclaredButNotUsed</span> <span class="Other">=</span> <span class="StringLit">&quot;XDeclaredButNotUsed&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemDuplicateModuleImport</span> <span class="Other">=</span> <span class="StringLit">&quot;DuplicateModuleImport&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemXCannotRaiseY</span> <span class="Other">=</span> <span class="StringLit">&quot;XCannotRaiseY&quot;</span><span class="Other">,</span>
   <span class="Identifier">rsemConvToBaseNotNeeded</span> <span class="Other">=</span> <span class="StringLit">&quot;ConvToBaseNotNeeded&quot;</span><span class="Other">,</span>
@@ -1083,16 +1040,13 @@ class="link-seesrc" target="_blank">Source</a>
                              <span class="Comment">## due to control flow in the code</span>
   <span class="Identifier">rsemGlobalVar</span> <span class="Other">=</span> <span class="StringLit">&quot;GlobalVar&quot;</span><span class="Other">,</span> <span class="Comment">## Track global variable declarations?</span>
   <span class="Identifier">rsemEffectsListingHint</span><span class="Other">,</span> <span class="Identifier">rsemExpandMacro</span> <span class="Other">=</span> <span class="StringLit">&quot;ExpandMacro&quot;</span><span class="Other">,</span> <span class="Comment">## Trace macro expansion progress</span>
-  <span class="Identifier">rsemExpandArc</span> <span class="Other">=</span> <span class="StringLit">&quot;ExpandArc&quot;</span><span class="Other">,</span> <span class="Identifier">rsemCompilesReport</span><span class="Other">,</span> <span class="Identifier">rsemNonMatchingCandidates</span><span class="Other">,</span> <span class="Identifier">rsemExtendedContext</span> <span class="Other">=</span> <span class="StringLit">&quot;ExtendedContext&quot;</span><span class="Other">,</span> <span class="Comment">## Extended contextual</span>
-                                                                                                                        <span class="Comment">## information. Used in `ccgstmts.genStmts()` and</span>
-                                                                                                                        <span class="Comment">## `semexprs.semExprNoType()`</span>
+  <span class="Identifier">rsemCompilesReport</span><span class="Other">,</span> <span class="Identifier">rsemNonMatchingCandidates</span><span class="Other">,</span> <span class="Identifier">rsemExtendedContext</span> <span class="Other">=</span> <span class="StringLit">&quot;ExtendedContext&quot;</span><span class="Other">,</span> <span class="Comment">## Extended contextual</span>
+                                                                                           <span class="Comment">## information. Used in `ccgstmts.genStmts()` and</span>
+                                                                                           <span class="Comment">## `semexprs.semExprNoType()`</span>
   <span class="Identifier">rsemDiagnostics</span><span class="Other">,</span> <span class="Identifier">rsemImplicitObjConv</span> <span class="Other">=</span> <span class="StringLit">&quot;ImplicitObjConv&quot;</span><span class="Other">,</span> <span class="Identifier">rcmdFailedExecution</span><span class="Other">,</span>
   <span class="Identifier">rcmdCompiling</span> <span class="Other">=</span> <span class="StringLit">&quot;CC&quot;</span><span class="Other">,</span> <span class="Identifier">rcmdLinking</span> <span class="Other">=</span> <span class="StringLit">&quot;Link&quot;</span><span class="Other">,</span> <span class="Identifier">rcmdExecuting</span> <span class="Other">=</span> <span class="StringLit">&quot;Exec&quot;</span><span class="Other">,</span>
-  <span class="Identifier">rcmdRunnableExamplesSuccess</span><span class="Other">,</span> <span class="Identifier">rdbgTraceDefined</span><span class="Other">,</span> <span class="Identifier">rdbgTraceUndefined</span><span class="Other">,</span>
-  <span class="Identifier">rdbgTraceStart</span><span class="Other">,</span> <span class="Identifier">rdbgTraceStep</span><span class="Other">,</span> <span class="Identifier">rdbgTraceLine</span><span class="Other">,</span> <span class="Identifier">rdbgTraceEnd</span><span class="Other">,</span>
-  <span class="Identifier">rdbgVmExecTraceFull</span><span class="Other">,</span> <span class="Identifier">rdbgVmExecTraceMinimal</span><span class="Other">,</span> <span class="Identifier">rdbgVmCodeListing</span><span class="Other">,</span>
-  <span class="Identifier">rdbgStartingConfRead</span><span class="Other">,</span> <span class="Identifier">rdbgFinishedConfRead</span><span class="Other">,</span> <span class="Identifier">rdbgCfgTrace</span><span class="Other">,</span> <span class="Identifier">rdbgOptionsPush</span><span class="Other">,</span>
-  <span class="Identifier">rdbgOptionsPop</span><span class="Other">,</span> <span class="Identifier">rbackCannotWriteScript</span><span class="Other">,</span> <span class="Comment">## Cannot write build script to a cache file</span>
+  <span class="Identifier">rcmdRunnableExamplesSuccess</span> <span class="Other">=</span> <span class="StringLit">&quot;Success&quot;</span><span class="Other">,</span> <span class="Identifier">rdbgVmExecTraceFull</span><span class="Other">,</span>
+  <span class="Identifier">rdbgVmExecTraceMinimal</span><span class="Other">,</span> <span class="Identifier">rdbgOptionsPush</span><span class="Other">,</span> <span class="Identifier">rdbgOptionsPop</span><span class="Other">,</span> <span class="Identifier">rbackCannotWriteScript</span><span class="Other">,</span> <span class="Comment">## Cannot write build script to a cache file</span>
   <span class="Identifier">rbackCannotWriteMappingFile</span><span class="Other">,</span> <span class="Comment">## Cannot write module compilation mapping</span>
                                 <span class="Comment">## file to cache directory</span>
   <span class="Identifier">rbackTargetNotSupported</span><span class="Other">,</span>  <span class="Comment">## C compiler does not support requested target</span>
@@ -1114,9 +1068,9 @@ class="link-seesrc" target="_blank">Source</a>
 <p>Different naming scheme is used for a reports with different categories - this enum exists only to make it easier to work with different report kinds, without having to manage seven different enum types.</p>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L63"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L60"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L63" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L60" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1126,9 +1080,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L960"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L886"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L960" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L886" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1144,9 +1098,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L49"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L46"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L49" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L46" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1156,9 +1110,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L972"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L898"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L972" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L898" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1168,9 +1122,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L974"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L900"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L974" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L900" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1180,9 +1134,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L971"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L897"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L971" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L897" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1192,9 +1146,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L970"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L896"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L970" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L896" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1209,9 +1163,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1038"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L959"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1038" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L959" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1221,9 +1175,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1040"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L961"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1040" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L961" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1233,9 +1187,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1039"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L960"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1039" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L960" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1245,9 +1199,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1026"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L950"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1026" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L950" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1257,9 +1211,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1028"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L952"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1028" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L952" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1269,9 +1223,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1027"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L951"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1027" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L951" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1281,9 +1235,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1102"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1019"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1102" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1019" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1293,9 +1247,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1037"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L958"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1037" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L958" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1305,9 +1259,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1025"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L949"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1025" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L949" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1317,21 +1271,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1098"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1015"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1098" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="repDbgTraceKinds">
-<dt><pre><a href="report_enums.html#repDbgTraceKinds"><span class="Identifier">repDbgTraceKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rdbgTraceDefined</span><span class="Other">..</span><span class="DecNumber">rdbgTraceEnd</span><span class="Other">}</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1031"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1031" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1015" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1341,49 +1283,49 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1034"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L955"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1034" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L955" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repErrorKinds">
 <dt><pre><a href="report_enums.html#repErrorKinds"><span class="Identifier">repErrorKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintCannotOpenFile</span><span class="Other">..</span><span class="DecNumber">rintNotImplemented</span><span class="Other">,</span>
-                              <span class="DecNumber">rextUnknownCCompiler</span><span class="Other">..</span><span class="DecNumber">rextInvalidPackageName</span><span class="Other">,</span>
-                              <span class="DecNumber">rlexMalformedUnderscores</span><span class="Other">..</span><span class="DecNumber">rlexUnclosedComment</span><span class="Other">,</span>
+                              <span class="DecNumber">rextCmdRequiresFile</span><span class="Other">,</span>
+                              <span class="DecNumber">rlexMalformedNumUnderscores</span><span class="Other">..</span><span class="DecNumber">rlexUnclosedComment</span><span class="Other">,</span>
                               <span class="DecNumber">rparInvalidIndentation</span><span class="Other">..</span><span class="DecNumber">rparInvalidFilter</span><span class="Other">,</span> <span class="DecNumber">rvmOpcParseExpectedExpression</span><span class="Other">..</span><span class="DecNumber">rvmTooManyIterations</span><span class="Other">,</span>
                               <span class="DecNumber">rsemUserError</span><span class="Other">..</span><span class="DecNumber">rsemEmptyAsm</span><span class="Other">,</span> <span class="DecNumber">rcmdFailedExecution</span><span class="Other">,</span> <span class="DecNumber">rbackCannotWriteScript</span><span class="Other">..</span><span class="DecNumber">rbackCannotProduceAssembly</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1088"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1005"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1088" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1005" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repExternalKinds">
-<dt><pre><a href="report_enums.html#repExternalKinds"><span class="Identifier">repExternalKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rextUnknownCCompiler</span><span class="Other">..</span><span class="DecNumber">rextPath</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#repExternalKinds"><span class="Identifier">repExternalKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rextCmdRequiresFile</span><span class="Other">..</span><span class="DecNumber">rextPath</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1043"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L964"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1043" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L964" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repFatalKinds">
-<dt><pre><a href="report_enums.html#repFatalKinds"><span class="Identifier">repFatalKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintUnknown</span><span class="Other">..</span><span class="DecNumber">rintIce</span><span class="Other">,</span> <span class="DecNumber">rsemFatalError</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#repFatalKinds"><span class="Identifier">repFatalKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintUnreachable</span><span class="Other">..</span><span class="DecNumber">rintAssert</span><span class="Other">,</span> <span class="DecNumber">rsemFatalError</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1101"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1018"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1101" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1018" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1400,9 +1342,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1204"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1120"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1204" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1120" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1416,33 +1358,33 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1078"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L995"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1078" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L995" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repInternalKinds">
-<dt><pre><a href="report_enums.html#repInternalKinds"><span class="Identifier">repInternalKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintUnknown</span><span class="Other">..</span><span class="DecNumber">rintEchoMessage</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#repInternalKinds"><span class="Identifier">repInternalKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintUnreachable</span><span class="Other">..</span><span class="DecNumber">rintEchoMessage</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1050"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L970"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1050" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L970" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repLexerKinds">
-<dt><pre><a href="report_enums.html#repLexerKinds"><span class="Identifier">repLexerKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rlexMalformedUnderscores</span><span class="Other">..</span><span class="DecNumber">rlexSourceCodeFilterOutput</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#repLexerKinds"><span class="Identifier">repLexerKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rlexMalformedNumUnderscores</span><span class="Other">..</span><span class="DecNumber">rlexSourceCodeFilterOutput</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L991"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L915"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L991" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L915" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1452,9 +1394,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1191"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1107"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1191" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1107" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1464,9 +1406,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1019"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L943"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1019" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L943" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1476,9 +1418,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1022"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L946"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1022" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L946" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1488,9 +1430,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L998"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L922"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L998" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L922" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1500,9 +1442,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1186"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1102"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1186" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1102" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1512,9 +1454,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1012"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L936"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1012" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L936" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1524,22 +1466,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1196"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1112"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1196" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1112" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repTraceKinds">
 <dt><pre><a href="report_enums.html#repTraceKinds"><span class="Identifier">repTraceKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintStackTrace</span><span class="Other">,</span> <span class="DecNumber">rvmStackTrace</span><span class="Other">,</span>
-                              <span class="DecNumber">rdbgTraceDefined</span><span class="Other">..</span><span class="DecNumber">rdbgOptionsPop</span><span class="Other">}</span></pre></dt>
+                              <span class="DecNumber">rdbgVmExecTraceFull</span><span class="Other">..</span><span class="DecNumber">rdbgOptionsPop</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1073"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L991"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1073" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L991" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1549,15 +1491,15 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1005"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L929"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1005" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L929" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repWarningGroups">
 <dt><pre><a href="report_enums.html#repWarningGroups"><span class="Identifier">repWarningGroups</span></a> <span class="Other">=</span> <span class="Other">[</span><span class="Other">(</span><span class="StringLit">&quot;all&quot;</span><span class="Other">,</span> <span class="Other">{</span><span class="DecNumber">rintWarnCannotOpenFile</span><span class="Other">..</span><span class="DecNumber">rintWarnFileChanged</span><span class="Other">,</span>
-                             <span class="DecNumber">rextDeprecated</span><span class="Other">,</span> <span class="DecNumber">rlexDeprecatedOctalPrefix</span><span class="Other">,</span>
+                             <span class="DecNumber">rlexDeprecatedOctalPrefix</span><span class="Other">,</span>
                              <span class="DecNumber">rparInconsistentSpacing</span><span class="Other">..</span><span class="DecNumber">rparEnablePreviewDotOps</span><span class="Other">,</span>
                              <span class="DecNumber">rsemUserWarning</span><span class="Other">..</span><span class="DecNumber">rsemUseOfGc</span><span class="Other">,</span>
                              <span class="DecNumber">rbackRstTestUnsupported</span><span class="Other">..</span><span class="DecNumber">rbackRstRstStyle</span><span class="Other">}</span><span class="Other">)</span><span class="Other">,</span> <span class="Other">(</span>
@@ -1566,36 +1508,36 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1211"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1127"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1211" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1127" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="repWarningKinds">
 <dt><pre><a href="report_enums.html#repWarningKinds"><span class="Identifier">repWarningKinds</span></a><span class="Other">:</span> <a href="report_enums.html#ReportKinds"><span class="Identifier">ReportKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintWarnCannotOpenFile</span><span class="Other">..</span><span class="DecNumber">rintWarnFileChanged</span><span class="Other">,</span>
-                                <span class="DecNumber">rextDeprecated</span><span class="Other">,</span> <span class="DecNumber">rlexDeprecatedOctalPrefix</span><span class="Other">,</span> <span class="DecNumber">rparInconsistentSpacing</span><span class="Other">..</span><span class="DecNumber">rparEnablePreviewDotOps</span><span class="Other">,</span>
+                                <span class="DecNumber">rlexDeprecatedOctalPrefix</span><span class="Other">,</span> <span class="DecNumber">rparInconsistentSpacing</span><span class="Other">..</span><span class="DecNumber">rparEnablePreviewDotOps</span><span class="Other">,</span>
                                 <span class="DecNumber">rsemUserWarning</span><span class="Other">..</span><span class="DecNumber">rsemUseOfGc</span><span class="Other">,</span>
                                 <span class="DecNumber">rbackRstTestUnsupported</span><span class="Other">..</span><span class="DecNumber">rbackRstRstStyle</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1063"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L982"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1063" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L982" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="rextErrorKinds">
-<dt><pre><a href="report_enums.html#rextErrorKinds"><span class="Identifier">rextErrorKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rextUnknownCCompiler</span><span class="Other">..</span><span class="DecNumber">rextInvalidPackageName</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#rextErrorKinds"><span class="Identifier">rextErrorKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rextCmdRequiresFile</span><span class="Other">..</span><span class="DecNumber">rextCmdRequiresFile</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1044"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L965"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1044" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L965" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1605,33 +1547,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1046"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L966"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1046" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="rextWarningKinds">
-<dt><pre><a href="report_enums.html#rextWarningKinds"><span class="Identifier">rextWarningKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rextDeprecated</span><span class="Other">}</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1045"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1045" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="rintCliKinds">
-<dt><pre><a href="report_enums.html#rintCliKinds"><span class="Identifier">rintCliKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintCliHelp</span><span class="Other">..</span><span class="DecNumber">rintCliAdvancedUsage</span><span class="Other">}</span></pre></dt>
-<dd>
-
-
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1059"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1059" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L966" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1641,9 +1559,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1058"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L978"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1058" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L978" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1653,21 +1571,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1055"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L975"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1055" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L975" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="rintFatalKinds">
-<dt><pre><a href="report_enums.html#rintFatalKinds"><span class="Identifier">rintFatalKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintUnknown</span><span class="Other">..</span><span class="DecNumber">rintIce</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#rintFatalKinds"><span class="Identifier">rintFatalKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rintUnreachable</span><span class="Other">..</span><span class="DecNumber">rintAssert</span><span class="Other">}</span></pre></dt>
 <dd>
 
 Fatal internal compilation reports
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1053"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L973"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1053" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L973" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1677,9 +1595,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1057"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L977"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1057" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L977" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1689,21 +1607,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1056"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L976"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1056" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L976" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="rlexErrorKinds">
-<dt><pre><a href="report_enums.html#rlexErrorKinds"><span class="Identifier">rlexErrorKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rlexMalformedUnderscores</span><span class="Other">..</span><span class="DecNumber">rlexUnclosedComment</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="report_enums.html#rlexErrorKinds"><span class="Identifier">rlexErrorKinds</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">rlexMalformedNumUnderscores</span><span class="Other">..</span><span class="DecNumber">rlexUnclosedComment</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L994"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L918"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L994" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L918" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1713,9 +1631,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L992"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L916"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L992" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L916" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1725,9 +1643,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L993"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L917"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L993" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L917" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1737,9 +1655,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1000"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L924"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1000" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L924" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1749,9 +1667,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L999"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L923"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L999" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L923" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1761,9 +1679,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1001"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L925"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1001" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L925" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1773,9 +1691,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1013"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L937"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1013" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L937" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1785,9 +1703,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1015"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L939"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1015" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L939" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1798,9 +1716,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1180"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1096"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1180" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1096" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1816,9 +1734,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1167"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1083"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1167" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1083" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1830,9 +1748,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1160"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1076"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1160" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1076" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1843,9 +1761,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1152"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1068"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1152" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1068" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1858,9 +1776,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1142"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L1058"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1142" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1058" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1870,9 +1788,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1014"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L938"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1014" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L938" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1882,9 +1800,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L963"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L889"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L963" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L889" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1894,9 +1812,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1009"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L933"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1009" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L933" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1906,9 +1824,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1006"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L930"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1006" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L930" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1918,9 +1836,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1007"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L931"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1007" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L931" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1930,9 +1848,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ast/report_enums.nim#L1008"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ast/report_enums.nim#L932"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L1008" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ast/report_enums.nim#L932" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1946,7 +1864,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

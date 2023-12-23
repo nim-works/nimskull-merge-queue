@@ -110,8 +110,8 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">findMatchingBranch
-      <li><a class="reference" href="#findMatchingBranch%2CPNode%2CPNode"
-    title="findMatchingBranch(recCase: PNode; lit: PNode): int">findMatchingBranch(recCase: PNode; lit: PNode): int</a></li>
+      <li><a class="reference" href="#findMatchingBranch%2CPNode%2CInt128"
+    title="findMatchingBranch(recCase: PNode; val: Int128): int">findMatchingBranch(recCase: PNode; val: Int128): int</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">findRecCase
@@ -127,21 +127,15 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">initProcEntry
       <li><a class="reference" href="#initProcEntry%2CTCtx%2CPSym"
     title="initProcEntry(c: var TCtx; prc: PSym): FuncTableEntry">initProcEntry(c: var TCtx; prc: PSym): FuncTableEntry</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">lookup
-      <li><a class="reference" href="#lookup%2Cseq%5BIdentPattern%5D%2CPSym"
-    title="lookup(patterns: seq[IdentPattern]; s: PSym): int">lookup(patterns: seq[IdentPattern]; s: PSym): int</a></li>
+  <li><a class="reference" href="#initProcEntry%2CLinkerData%2CConfigRef%2CTypeInfoCache%2CPSym"
+    title="initProcEntry(linker: LinkerData; config: ConfigRef; tc: var TypeInfoCache;
+              prc: PSym): FuncTableEntry">initProcEntry(linker: LinkerData; config: ConfigRef; tc: var TypeInfoCache;
+              prc: PSym): FuncTableEntry</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">lookupProc
       <li><a class="reference" href="#lookupProc%2CTCtx%2CPSym"
     title="lookupProc(c: var TCtx; prc: PSym): FunctionIndex">lookupProc(c: var TCtx; prc: PSym): FunctionIndex</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">registerProc
-      <li><a class="reference" href="#registerProc%2CTCtx%2CPSym"
-    title="registerProc(c: var TCtx; prc: PSym): FunctionIndex">registerProc(c: var TCtx; prc: PSym): FunctionIndex</a></li>
 
   </ul>
 
@@ -152,7 +146,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -163,7 +157,7 @@ class="link-seesrc" target="_blank">Source</a>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="../ast/ast_types.html">../ast/ast_types</a>, <a class="reference external" href="../ast/ast.html">../ast/ast</a>, <a class="reference external" href="../ast/types.html">../ast/types</a>, <a class="reference external" href="vmdef.html">vmdef</a>, <a class="reference external" href="vmtypegen.html">vmtypegen</a>, <a class="reference external" href="../ast/nimsets.html">../ast/nimsets</a>
+<a class="reference external" href="../ast/ast_types.html">../ast/ast_types</a>, <a class="reference external" href="../ast/ast.html">../ast/ast</a>, <a class="reference external" href="../ast/types.html">../ast/types</a>, <a class="reference external" href="../front/options.html">../front/options</a>, <a class="reference external" href="vmdef.html">vmdef</a>, <a class="reference external" href="vmlinker.html">vmlinker</a>, <a class="reference external" href="vmtypegen.html">vmtypegen</a>
 </dl></div>
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#12">Procs</a></h1>
@@ -175,22 +169,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 Sets the execution information of the function table entry to <tt class="docutils literal"><span class="pre"><span class="Identifier">info</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L137"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L122"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L137" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L122" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
-<div id="findMatchingBranch,PNode,PNode">
-<dt><pre><span class="Keyword">func</span> <a href="#findMatchingBranch%2CPNode%2CPNode"><span class="Identifier">findMatchingBranch</span></a><span class="Other">(</span><span class="Identifier">recCase</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span> <span class="Identifier">lit</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.
+<div id="findMatchingBranch,PNode,Int128">
+<dt><pre><span class="Keyword">func</span> <a href="#findMatchingBranch%2CPNode%2CInt128"><span class="Identifier">findMatchingBranch</span></a><span class="Other">(</span><span class="Identifier">recCase</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="../utils/int128.html#Int128"><span class="Identifier">Int128</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ERecoverableError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L75"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L54"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L75" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L54" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -200,9 +194,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Find the <tt class="docutils literal"><span class="pre"><span class="Identifier">nkRecCase</span></span></tt> node in <tt class="docutils literal"><span class="pre"><span class="Identifier">t</span></span></tt> or any of it's base types that has <tt class="docutils literal"><span class="pre"><span class="Identifier">d</span></span></tt> as the discriminator
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L68"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L47"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L68" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L47" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -212,34 +206,36 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return the symbol the hidden environment parameter, or <tt class="docutils literal"><span class="pre"><span class="Keyword">nil</span></span></tt> if there's none
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L96"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L80"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L96" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="initProcEntry,TCtx,PSym">
-<dt><pre><span class="Keyword">proc</span> <a href="#initProcEntry%2CTCtx%2CPSym"><span class="Identifier">initProcEntry</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vmdef.html#TCtx"><span class="Identifier">TCtx</span></a><span class="Other">;</span> <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="vmdef.html#FuncTableEntry"><span class="Identifier">FuncTableEntry</span></a> {.
+<dt><pre><span class="Keyword">proc</span> <a href="#initProcEntry%2CTCtx%2CPSym"><span class="Identifier">initProcEntry</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vmdef.html#TCtx"><span class="Identifier">TCtx</span></a><span class="Other">;</span> <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="vmdef.html#FuncTableEntry"><span class="Identifier">FuncTableEntry</span></a> {.<span class="Identifier">inline</span><span class="Other">,</span>
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Returns an initialized function table entry. Execution information (such as the bytecode offset and register count) for procedures not overriden by callbacks is initialized to a state that indicates &quot;missing&quot; and needs to be filled in separately via <tt class="docutils literal"><span class="pre"><span class="Identifier">fillProcEntry</span></span></tt>
+Convenience wrapper around <a class="reference external" href="#initProcEntry,LinkerData,ConfigRef,TypeInfoCache,PSym">initProcEntry</a>.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L104"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L117"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L104" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L117" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
-<div id="lookup,seq[IdentPattern],PSym">
-<dt><pre><span class="Keyword">func</span> <a href="#lookup%2Cseq%5BIdentPattern%5D%2CPSym"><span class="Identifier">lookup</span></a><span class="Other">(</span><span class="Identifier">patterns</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><a href="vmdef.html#IdentPattern"><span class="Identifier">IdentPattern</span></a><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">s</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="initProcEntry,LinkerData,ConfigRef,TypeInfoCache,PSym">
+<dt><pre><span class="Keyword">proc</span> <a href="#initProcEntry%2CLinkerData%2CConfigRef%2CTypeInfoCache%2CPSym"><span class="Identifier">initProcEntry</span></a><span class="Other">(</span><span class="Identifier">linker</span><span class="Other">:</span> <a href="vmlinker.html#LinkerData"><span class="Identifier">LinkerData</span></a><span class="Other">;</span> <span class="Identifier">config</span><span class="Other">:</span> <a href="../front/options.html#ConfigRef"><span class="Identifier">ConfigRef</span></a><span class="Other">;</span> <span class="Identifier">tc</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vmdef.html#TypeInfoCache"><span class="Identifier">TypeInfoCache</span></a><span class="Other">;</span>
+                   <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="vmdef.html#FuncTableEntry"><span class="Identifier">FuncTableEntry</span></a> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Tries to find and return the index of the pattern matching <tt class="docutils literal"><span class="pre"><span class="Identifier">s</span></span></tt>. If none is found, -1 is returned
+Returns an initialized function table entry. Execution information (such as the bytecode offset and register count) for procedures not overriden by callbacks is initialized to a state that indicates &quot;missing&quot;; it needs to be filled in separately via <tt class="docutils literal"><span class="pre"><span class="Identifier">fillProcEntry</span></span></tt>.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L35"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L88"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L35" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L88" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -250,22 +246,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Returns the function-table index corresponding to the provided <tt class="docutils literal"><span class="pre"><span class="Identifier">prc</span></span></tt> symbol. Behaviour is undefined if <tt class="docutils literal"><span class="pre"><span class="Identifier">prc</span></span></tt> has no corresponding function- table entry.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L154"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/vm/vmaux.nim#L127"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L154" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-<div id="registerProc,TCtx,PSym">
-<dt><pre><span class="Keyword">proc</span> <a href="#registerProc%2CTCtx%2CPSym"><span class="Identifier">registerProc</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="vmdef.html#TCtx"><span class="Identifier">TCtx</span></a><span class="Other">;</span> <span class="Identifier">prc</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="vmdef.html#FunctionIndex"><span class="Identifier">FunctionIndex</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-Registers the procedure in the function table if it wasn't already. In both cases, an index into the function table is returned. Whether a procedure will resolve to a callback is decided on it's addition to the function table
-&nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/vm/vmaux.nim#L142"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L142" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/vm/vmaux.nim#L127" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -279,7 +262,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

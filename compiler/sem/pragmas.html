@@ -105,27 +105,27 @@ window.addEventListener('DOMContentLoaded', main);
   <a class="reference reference-toplevel" href="#10" id="60">Consts</a>
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#allRoutinePragmas"
-    title="allRoutinePragmas = {wMagic..wThread, wEffectsOf, wDelegator,
+    title="allRoutinePragmas = {wMagic..wThread, wEffectsOf,
                      wImportCompilerProc..wExportNims, wNodecl,
-                     wSideEffect..wMerge, wDynlib..wUsed, wError,
+                     wSideEffect..wNosinks, wDynlib..wUsed, wError,
                      wStackTrace..wLineTrace, wDeprecated..wVarargs,
                      wNimcall..wNoconv, wRaises, wTags, wNoDestroy,
                      wCompileTime..wNoInit, wBorrow..wDiscardable,
                      wGensym..wInject, wAsmNoStackFrame, wCodegenDecl, wLocks,
-                     wEnforceNoRaises, wExtern}">allRoutinePragmas</a></li>
+                     wExtern}">allRoutinePragmas</a></li>
   <li><a class="reference" href="#constPragmas"
     title="constPragmas = {wMagic, wIntDefine..wBoolDefine, wImportc..wExportNims, wNodecl,
                 wHeader, wCompilerProc..wCore, wUsed, wError, wDeprecated,
                 wGensym..wInject, wExtern}">constPragmas</a></li>
   <li><a class="reference" href="#converterPragmas"
-    title="converterPragmas = {wMagic..wThread, wEffectsOf, wDelegator,
+    title="converterPragmas = {wMagic..wThread, wEffectsOf,
                     wImportCompilerProc..wExportNims, wNodecl,
-                    wSideEffect..wMerge, wDynlib..wProcVar, wUsed, wError,
+                    wSideEffect..wNosinks, wDynlib..wProcVar, wUsed, wError,
                     wStackTrace..wLineTrace, wDeprecated..wVarargs,
                     wNimcall..wNoconv, wRaises, wTags, wNoDestroy,
                     wCompileTime..wNoInit, wBorrow..wDiscardable,
                     wGensym..wInject, wAsmNoStackFrame, wCodegenDecl, wLocks,
-                    wEnforceNoRaises, wExtern}">converterPragmas</a></li>
+                    wExtern}">converterPragmas</a></li>
   <li><a class="reference" href="#enumFieldPragmas"
     title="enumFieldPragmas = {wDeprecated}">enumFieldPragmas</a></li>
   <li><a class="reference" href="#exprPragmas"
@@ -153,31 +153,28 @@ window.addEventListener('DOMContentLoaded', main);
   <li><a class="reference" href="#letPragmas"
     title="letPragmas = {wMagic, wCursor..wNoalias, wImportc..wExportNims, wAlign..wNodecl,
               wHeader, wDynlib..wCore, wUsed, wError, wDeprecated,
-              wCompileTime..wNoInit, wGensym..wInject, wThreadVar,
-              wGlobal..wCodegenDecl, wGuard, wExtern, wGoto, wRegister,
-              wVolatile}">letPragmas</a></li>
+              wCompileTime..wNoInit, wGensym..wInject, wThreadVar, wGlobal,
+              wGuard, wExtern, wGoto, wRegister, wVolatile}">letPragmas</a></li>
   <li><a class="reference" href="#macroPragmas"
-    title="macroPragmas = {wMagic, wDelegator, wImportc..wExportNims, wNodecl,
-                wNoSideEffect, wCompilerProc..wCore, wUsed, wError, wDeprecated,
+    title="macroPragmas = {wMagic, wImportc..wExportNims, wNodecl, wNoSideEffect,
+                wCompilerProc..wCore, wUsed, wError, wDeprecated,
                 wNimcall..wNoconv, wDiscardable, wGensym..wInject, wExtern}">macroPragmas</a></li>
   <li><a class="reference" href="#methodPragmas"
-    title="methodPragmas = {wMagic..wThread, wEffectsOf, wDelegator,
-                 wImportCompilerProc..wExportNims, wNodecl, wSideEffect..wMerge,
-                 wDynlib..wUsed, wError, wStackTrace..wLineTrace,
-                 wDeprecated..wVarargs, wNimcall..wNoconv, wRaises, wTags,
-                 wNoDestroy, wCompileTime..wNoInit, wBorrow..wDiscardable,
-                 wGensym..wInject, wAsmNoStackFrame, wCodegenDecl, wLocks,
-                 wEnforceNoRaises, wExtern}">methodPragmas</a></li>
+    title="methodPragmas = {wMagic..wThread, wEffectsOf, wImportCompilerProc..wExportNims,
+                 wNodecl, wSideEffect..wNosinks, wDynlib..wUsed, wError,
+                 wStackTrace..wLineTrace, wDeprecated..wVarargs,
+                 wNimcall..wNoconv, wRaises, wTags, wNoDestroy,
+                 wCompileTime..wNoInit, wBorrow..wDiscardable, wGensym..wInject,
+                 wAsmNoStackFrame, wCodegenDecl, wLocks, wExtern}">methodPragmas</a></li>
   <li><a class="reference" href="#paramPragmas"
     title="paramPragmas = {wNoalias, wInject, wGensym}">paramPragmas</a></li>
   <li><a class="reference" href="#procPragmas"
-    title="procPragmas = {wMagic..wThread, wEffectsOf, wDelegator,
-               wImportCompilerProc..wExportNims, wNodecl, wSideEffect..wMerge,
-               wDynlib..wProcVar, wUsed, wError, wStackTrace..wLineTrace,
-               wDeprecated..wVarargs, wNimcall..wNoconv, wRaises, wTags,
-               wNoDestroy, wCompileTime..wNoInit, wBorrow..wDiscardable,
-               wGensym..wInject, wAsmNoStackFrame, wCodegenDecl, wLocks,
-               wEnforceNoRaises, wExtern}">procPragmas</a></li>
+    title="procPragmas = {wMagic..wThread, wEffectsOf, wImportCompilerProc..wExportNims,
+               wNodecl, wSideEffect..wNosinks, wDynlib..wProcVar, wUsed, wError,
+               wStackTrace..wLineTrace, wDeprecated..wVarargs,
+               wNimcall..wNoconv, wRaises, wTags, wNoDestroy,
+               wCompileTime..wNoInit, wBorrow..wDiscardable, wGensym..wInject,
+               wAsmNoStackFrame, wCodegenDecl, wLocks, wExtern}">procPragmas</a></li>
   <li><a class="reference" href="#procTypePragmas"
     title="procTypePragmas = {wNimcall..wNoconv, wVarargs, wNoSideEffect, wThread, wRaises,
                    wEffectsOf, wLocks, wTags, wGcSafe}">procTypePragmas</a></li>
@@ -187,24 +184,22 @@ window.addEventListener('DOMContentLoaded', main);
                wAssertions, wWarnings, wHints, wLineDir, wStackTrace,
                wLineTrace, wOptimization, wHint, wWarning, wError, wFatal,
                wDefine, wUndef, wCompile, wLink, wPush, wPop, wPassl, wPassc,
-               wLocalPassc, wDeadCodeElimUnused, wDebugger, wProfiler,
-               wDeprecated, wFloatChecks, wInfChecks, wNanChecks, wPragma,
-               wEmit, wLinearScanEnd, wTrMacros, wEffects, wComputedGoto,
-               wExperimental, wUsed, wByRef, wCallconv}">stmtPragmas</a></li>
+               wLocalPassc, wDebugger, wProfiler, wDeprecated, wFloatChecks,
+               wInfChecks, wNanChecks, wPragma, wEmit, wTrMacros, wEffects,
+               wComputedGoto, wExperimental, wUsed, wByRef, wCallconv}">stmtPragmas</a></li>
   <li><a class="reference" href="#templatePragmas"
-    title="templatePragmas = {wDeprecated, wError, wGensym, wInject, wDirty, wDelegator,
-                   wExportNims, wUsed, wPragma}">templatePragmas</a></li>
+    title="templatePragmas = {wDeprecated, wError, wGensym, wInject, wDirty, wExportNims,
+                   wUsed, wPragma}">templatePragmas</a></li>
   <li><a class="reference" href="#typePragmas"
     title="typePragmas = {wMagic, wFinal, wImportc..wRequiresInit, wNodecl..wPure, wHeader,
                wGcSafe, wCompilerProc..wCore, wUsed, wError, wDeprecated, wSize,
-               wPackage, wBorrow, wAcyclic..wShallow, wGensym..wInject,
-               wInheritable, wExplain, wExtern, wUnion..wPacked, wByCopy..wByRef}">typePragmas</a></li>
+               wPackage, wBorrow, wAcyclic, wGensym..wInject, wInheritable,
+               wExplain, wExtern, wUnion..wPacked, wByCopy..wByRef}">typePragmas</a></li>
   <li><a class="reference" href="#varPragmas"
     title="varPragmas = {wMagic, wCursor..wNoalias, wImportc..wExportNims, wAlign..wNodecl,
               wHeader, wDynlib..wCore, wUsed, wError, wDeprecated,
-              wCompileTime..wNoInit, wGensym..wInject, wThreadVar,
-              wGlobal..wCodegenDecl, wGuard, wExtern, wGoto, wRegister,
-              wVolatile}">varPragmas</a></li>
+              wCompileTime..wNoInit, wGensym..wInject, wThreadVar, wGlobal,
+              wGuard, wExtern, wGoto, wRegister, wVolatile}">varPragmas</a></li>
 
   </ul>
 </li>
@@ -281,7 +276,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -292,25 +287,25 @@ class="link-seesrc" target="_blank">Source</a>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
-<a class="reference external" href="../ast/ast.html">../ast/ast</a>, <a class="reference external" href="../ast/astalgo.html">../ast/astalgo</a>, <a class="reference external" href="../ast/idents.html">../ast/idents</a>, <a class="reference external" href="../ast/renderer.html">../ast/renderer</a>, <a class="reference external" href="../ast/wordrecg.html">../ast/wordrecg</a>, <a class="reference external" href="../ast/trees.html">../ast/trees</a>, <a class="reference external" href="../ast/linter.html">../ast/linter</a>, <a class="reference external" href="../ast/errorhandling.html">../ast/errorhandling</a>, <a class="reference external" href="../ast/lineinfos.html">../ast/lineinfos</a>, <a class="reference external" href="../modules/magicsys.html">../modules/magicsys</a>, <a class="reference external" href="../front/msgs.html">../front/msgs</a>, <a class="reference external" href="../front/options.html">../front/options</a>, <a class="reference external" href="../utils/pathutils.html">../utils/pathutils</a>, <a class="reference external" href="../utils/debugutils.html">../utils/debugutils</a>, <a class="reference external" href="../utils/idioms.html">../utils/idioms</a>, <a class="reference external" href="semdata.html">semdata</a>, <a class="reference external" href="lookups.html">lookups</a>, <a class="reference external" href="../backend/extccomp.html">../backend/extccomp</a>, <a class="reference external" href="../ast/reports_sem.html">../ast/reports_sem</a>, <a class="reference external" href="../ast/reports_debug.html">../ast/reports_debug</a>, <a class="reference external" href="../ast/report_enums.html">../ast/report_enums</a>, <a class="reference external" href="../ic/ic.html">../ic/ic</a>
+<a class="reference external" href="../ast/ast.html">../ast/ast</a>, <a class="reference external" href="../ast/astalgo.html">../ast/astalgo</a>, <a class="reference external" href="../ast/idents.html">../ast/idents</a>, <a class="reference external" href="../ast/renderer.html">../ast/renderer</a>, <a class="reference external" href="../ast/wordrecg.html">../ast/wordrecg</a>, <a class="reference external" href="../ast/trees.html">../ast/trees</a>, <a class="reference external" href="../ast/linter.html">../ast/linter</a>, <a class="reference external" href="../ast/errorhandling.html">../ast/errorhandling</a>, <a class="reference external" href="../ast/lineinfos.html">../ast/lineinfos</a>, <a class="reference external" href="../modules/magicsys.html">../modules/magicsys</a>, <a class="reference external" href="../modules/modulegraphs.html">../modules/modulegraphs</a>, <a class="reference external" href="../front/msgs.html">../front/msgs</a>, <a class="reference external" href="../front/options.html">../front/options</a>, <a class="reference external" href="../utils/pathutils.html">../utils/pathutils</a>, <a class="reference external" href="../utils/debugutils.html">../utils/debugutils</a>, <a class="reference external" href="../utils/idioms.html">../utils/idioms</a>, <a class="reference external" href="semdata.html">semdata</a>, <a class="reference external" href="semfold.html">semfold</a>, <a class="reference external" href="lookups.html">lookups</a>, <a class="reference external" href="../backend/extccomp.html">../backend/extccomp</a>, <a class="reference external" href="../ast/reports_sem.html">../ast/reports_sem</a>, <a class="reference external" href="../ast/reports_debug.html">../ast/reports_debug</a>, <a class="reference external" href="../ast/report_enums.html">../ast/report_enums</a>, <a class="reference external" href="../ic/ic.html">../ic/ic</a>
 </dl></div>
 <div class="section" id="10">
 <h1><a class="toc-backref" href="#10">Consts</a></h1>
 <dl class="item">
 <div id="allRoutinePragmas">
-<dt><pre><a href="pragmas.html#allRoutinePragmas"><span class="Identifier">allRoutinePragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span> <span class="DecNumber">wDelegator</span><span class="Other">,</span>
+<dt><pre><a href="pragmas.html#allRoutinePragmas"><span class="Identifier">allRoutinePragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span>
                      <span class="DecNumber">wImportCompilerProc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">,</span>
-                     <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wMerge</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span>
+                     <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wNosinks</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span>
                      <span class="DecNumber">wStackTrace</span><span class="Other">..</span><span class="DecNumber">wLineTrace</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">..</span><span class="DecNumber">wVarargs</span><span class="Other">,</span>
                      <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wRaises</span><span class="Other">,</span> <span class="DecNumber">wTags</span><span class="Other">,</span> <span class="DecNumber">wNoDestroy</span><span class="Other">,</span>
                      <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">..</span><span class="DecNumber">wDiscardable</span><span class="Other">,</span>
                      <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wAsmNoStackFrame</span><span class="Other">,</span> <span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wLocks</span><span class="Other">,</span>
-                     <span class="DecNumber">wEnforceNoRaises</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
+                     <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L131"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L131"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -324,28 +319,28 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L123"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L123"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L123" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="converterPragmas">
-<dt><pre><a href="pragmas.html#converterPragmas"><span class="Identifier">converterPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span> <span class="DecNumber">wDelegator</span><span class="Other">,</span>
+<dt><pre><a href="pragmas.html#converterPragmas"><span class="Identifier">converterPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span>
                     <span class="DecNumber">wImportCompilerProc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">,</span>
-                    <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wMerge</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wProcVar</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span>
+                    <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wNosinks</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wProcVar</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span>
                     <span class="DecNumber">wStackTrace</span><span class="Other">..</span><span class="DecNumber">wLineTrace</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">..</span><span class="DecNumber">wVarargs</span><span class="Other">,</span>
                     <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wRaises</span><span class="Other">,</span> <span class="DecNumber">wTags</span><span class="Other">,</span> <span class="DecNumber">wNoDestroy</span><span class="Other">,</span>
                     <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">..</span><span class="DecNumber">wDiscardable</span><span class="Other">,</span>
                     <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wAsmNoStackFrame</span><span class="Other">,</span> <span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wLocks</span><span class="Other">,</span>
-                    <span class="DecNumber">wEnforceNoRaises</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
+                    <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L80"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L81"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -355,7 +350,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L132"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L132"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L132" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -367,9 +362,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L92"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L93"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L92" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L93" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -380,7 +375,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L116"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L116"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L116" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -392,9 +387,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L65"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L67"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L65" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L67" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -404,7 +399,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L130"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L130"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L130" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -420,9 +415,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L87"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L88"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L87" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L88" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -435,7 +430,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L106"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L106"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L106" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -447,57 +442,55 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L66"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L68"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L66" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L68" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="letPragmas">
 <dt><pre><a href="pragmas.html#letPragmas"><span class="Identifier">letPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">,</span> <span class="DecNumber">wCursor</span><span class="Other">..</span><span class="DecNumber">wNoalias</span><span class="Other">,</span> <span class="DecNumber">wImportc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wAlign</span><span class="Other">..</span><span class="DecNumber">wNodecl</span><span class="Other">,</span>
               <span class="DecNumber">wHeader</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wCore</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">,</span>
-              <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wThreadVar</span><span class="Other">,</span>
-              <span class="DecNumber">wGlobal</span><span class="Other">..</span><span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wGuard</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">,</span> <span class="DecNumber">wGoto</span><span class="Other">,</span> <span class="DecNumber">wRegister</span><span class="Other">,</span>
-              <span class="DecNumber">wVolatile</span><span class="Other">}</span></pre></dt>
+              <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wThreadVar</span><span class="Other">,</span> <span class="DecNumber">wGlobal</span><span class="Other">,</span>
+              <span class="DecNumber">wGuard</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">,</span> <span class="DecNumber">wGoto</span><span class="Other">,</span> <span class="DecNumber">wRegister</span><span class="Other">,</span> <span class="DecNumber">wVolatile</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L127"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L127"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L127" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="macroPragmas">
-<dt><pre><a href="pragmas.html#macroPragmas"><span class="Identifier">macroPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">,</span> <span class="DecNumber">wDelegator</span><span class="Other">,</span> <span class="DecNumber">wImportc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">,</span>
-                <span class="DecNumber">wNoSideEffect</span><span class="Other">,</span> <span class="DecNumber">wCompilerProc</span><span class="Other">..</span><span class="DecNumber">wCore</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">,</span>
+<dt><pre><a href="pragmas.html#macroPragmas"><span class="Identifier">macroPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">,</span> <span class="DecNumber">wImportc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">,</span> <span class="DecNumber">wNoSideEffect</span><span class="Other">,</span>
+                <span class="DecNumber">wCompilerProc</span><span class="Other">..</span><span class="DecNumber">wCore</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">,</span>
                 <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wDiscardable</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L84"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L85"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L84" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L85" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="methodPragmas">
-<dt><pre><a href="pragmas.html#methodPragmas"><span class="Identifier">methodPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span> <span class="DecNumber">wDelegator</span><span class="Other">,</span>
-                 <span class="DecNumber">wImportCompilerProc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">,</span> <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wMerge</span><span class="Other">,</span>
-                 <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wStackTrace</span><span class="Other">..</span><span class="DecNumber">wLineTrace</span><span class="Other">,</span>
-                 <span class="DecNumber">wDeprecated</span><span class="Other">..</span><span class="DecNumber">wVarargs</span><span class="Other">,</span> <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wRaises</span><span class="Other">,</span> <span class="DecNumber">wTags</span><span class="Other">,</span>
-                 <span class="DecNumber">wNoDestroy</span><span class="Other">,</span> <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">..</span><span class="DecNumber">wDiscardable</span><span class="Other">,</span>
-                 <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wAsmNoStackFrame</span><span class="Other">,</span> <span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wLocks</span><span class="Other">,</span>
-                 <span class="DecNumber">wEnforceNoRaises</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="pragmas.html#methodPragmas"><span class="Identifier">methodPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span> <span class="DecNumber">wImportCompilerProc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span>
+                 <span class="DecNumber">wNodecl</span><span class="Other">,</span> <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wNosinks</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span>
+                 <span class="DecNumber">wStackTrace</span><span class="Other">..</span><span class="DecNumber">wLineTrace</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">..</span><span class="DecNumber">wVarargs</span><span class="Other">,</span>
+                 <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wRaises</span><span class="Other">,</span> <span class="DecNumber">wTags</span><span class="Other">,</span> <span class="DecNumber">wNoDestroy</span><span class="Other">,</span>
+                 <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">..</span><span class="DecNumber">wDiscardable</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span>
+                 <span class="DecNumber">wAsmNoStackFrame</span><span class="Other">,</span> <span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wLocks</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L81"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L82"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -507,27 +500,26 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L126"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L126"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L126" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="procPragmas">
-<dt><pre><a href="pragmas.html#procPragmas"><span class="Identifier">procPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span> <span class="DecNumber">wDelegator</span><span class="Other">,</span>
-               <span class="DecNumber">wImportCompilerProc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">,</span> <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wMerge</span><span class="Other">,</span>
-               <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wProcVar</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wStackTrace</span><span class="Other">..</span><span class="DecNumber">wLineTrace</span><span class="Other">,</span>
-               <span class="DecNumber">wDeprecated</span><span class="Other">..</span><span class="DecNumber">wVarargs</span><span class="Other">,</span> <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wRaises</span><span class="Other">,</span> <span class="DecNumber">wTags</span><span class="Other">,</span>
-               <span class="DecNumber">wNoDestroy</span><span class="Other">,</span> <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">..</span><span class="DecNumber">wDiscardable</span><span class="Other">,</span>
-               <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wAsmNoStackFrame</span><span class="Other">,</span> <span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wLocks</span><span class="Other">,</span>
-               <span class="DecNumber">wEnforceNoRaises</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="pragmas.html#procPragmas"><span class="Identifier">procPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">..</span><span class="DecNumber">wThread</span><span class="Other">,</span> <span class="DecNumber">wEffectsOf</span><span class="Other">,</span> <span class="DecNumber">wImportCompilerProc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span>
+               <span class="DecNumber">wNodecl</span><span class="Other">,</span> <span class="DecNumber">wSideEffect</span><span class="Other">..</span><span class="DecNumber">wNosinks</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wProcVar</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span>
+               <span class="DecNumber">wStackTrace</span><span class="Other">..</span><span class="DecNumber">wLineTrace</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">..</span><span class="DecNumber">wVarargs</span><span class="Other">,</span>
+               <span class="DecNumber">wNimcall</span><span class="Other">..</span><span class="DecNumber">wNoconv</span><span class="Other">,</span> <span class="DecNumber">wRaises</span><span class="Other">,</span> <span class="DecNumber">wTags</span><span class="Other">,</span> <span class="DecNumber">wNoDestroy</span><span class="Other">,</span>
+               <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">..</span><span class="DecNumber">wDiscardable</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span>
+               <span class="DecNumber">wAsmNoStackFrame</span><span class="Other">,</span> <span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wLocks</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L72"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L74"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L72" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L74" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -538,7 +530,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L128"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L128"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L128" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -550,43 +542,42 @@ class="link-seesrc" target="_blank">Source</a>
                <span class="DecNumber">wAssertions</span><span class="Other">,</span> <span class="DecNumber">wWarnings</span><span class="Other">,</span> <span class="DecNumber">wHints</span><span class="Other">,</span> <span class="DecNumber">wLineDir</span><span class="Other">,</span> <span class="DecNumber">wStackTrace</span><span class="Other">,</span>
                <span class="DecNumber">wLineTrace</span><span class="Other">,</span> <span class="DecNumber">wOptimization</span><span class="Other">,</span> <span class="DecNumber">wHint</span><span class="Other">,</span> <span class="DecNumber">wWarning</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wFatal</span><span class="Other">,</span>
                <span class="DecNumber">wDefine</span><span class="Other">,</span> <span class="DecNumber">wUndef</span><span class="Other">,</span> <span class="DecNumber">wCompile</span><span class="Other">,</span> <span class="DecNumber">wLink</span><span class="Other">,</span> <span class="DecNumber">wPush</span><span class="Other">,</span> <span class="DecNumber">wPop</span><span class="Other">,</span> <span class="DecNumber">wPassl</span><span class="Other">,</span> <span class="DecNumber">wPassc</span><span class="Other">,</span>
-               <span class="DecNumber">wLocalPassc</span><span class="Other">,</span> <span class="DecNumber">wDeadCodeElimUnused</span><span class="Other">,</span> <span class="DecNumber">wDebugger</span><span class="Other">,</span> <span class="DecNumber">wProfiler</span><span class="Other">,</span>
-               <span class="DecNumber">wDeprecated</span><span class="Other">,</span> <span class="DecNumber">wFloatChecks</span><span class="Other">,</span> <span class="DecNumber">wInfChecks</span><span class="Other">,</span> <span class="DecNumber">wNanChecks</span><span class="Other">,</span> <span class="DecNumber">wPragma</span><span class="Other">,</span>
-               <span class="DecNumber">wEmit</span><span class="Other">,</span> <span class="DecNumber">wLinearScanEnd</span><span class="Other">,</span> <span class="DecNumber">wTrMacros</span><span class="Other">,</span> <span class="DecNumber">wEffects</span><span class="Other">,</span> <span class="DecNumber">wComputedGoto</span><span class="Other">,</span>
-               <span class="DecNumber">wExperimental</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wByRef</span><span class="Other">,</span> <span class="DecNumber">wCallconv</span><span class="Other">}</span></pre></dt>
+               <span class="DecNumber">wLocalPassc</span><span class="Other">,</span> <span class="DecNumber">wDebugger</span><span class="Other">,</span> <span class="DecNumber">wProfiler</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">,</span> <span class="DecNumber">wFloatChecks</span><span class="Other">,</span>
+               <span class="DecNumber">wInfChecks</span><span class="Other">,</span> <span class="DecNumber">wNanChecks</span><span class="Other">,</span> <span class="DecNumber">wPragma</span><span class="Other">,</span> <span class="DecNumber">wEmit</span><span class="Other">,</span> <span class="DecNumber">wTrMacros</span><span class="Other">,</span> <span class="DecNumber">wEffects</span><span class="Other">,</span>
+               <span class="DecNumber">wComputedGoto</span><span class="Other">,</span> <span class="DecNumber">wExperimental</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wByRef</span><span class="Other">,</span> <span class="DecNumber">wCallconv</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L93"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L94"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L93" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L94" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="templatePragmas">
-<dt><pre><a href="pragmas.html#templatePragmas"><span class="Identifier">templatePragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wDeprecated</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">,</span> <span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wDirty</span><span class="Other">,</span> <span class="DecNumber">wDelegator</span><span class="Other">,</span>
-                   <span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wPragma</span><span class="Other">}</span></pre></dt>
+<dt><pre><a href="pragmas.html#templatePragmas"><span class="Identifier">templatePragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wDeprecated</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">,</span> <span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wDirty</span><span class="Other">,</span> <span class="DecNumber">wExportNims</span><span class="Other">,</span>
+                   <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wPragma</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L82"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L83"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L83" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="typePragmas">
 <dt><pre><a href="pragmas.html#typePragmas"><span class="Identifier">typePragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">,</span> <span class="DecNumber">wFinal</span><span class="Other">,</span> <span class="DecNumber">wImportc</span><span class="Other">..</span><span class="DecNumber">wRequiresInit</span><span class="Other">,</span> <span class="DecNumber">wNodecl</span><span class="Other">..</span><span class="DecNumber">wPure</span><span class="Other">,</span> <span class="DecNumber">wHeader</span><span class="Other">,</span>
                <span class="DecNumber">wGcSafe</span><span class="Other">,</span> <span class="DecNumber">wCompilerProc</span><span class="Other">..</span><span class="DecNumber">wCore</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">,</span> <span class="DecNumber">wSize</span><span class="Other">,</span>
-               <span class="DecNumber">wPackage</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">,</span> <span class="DecNumber">wAcyclic</span><span class="Other">..</span><span class="DecNumber">wShallow</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span>
-               <span class="DecNumber">wInheritable</span><span class="Other">,</span> <span class="DecNumber">wExplain</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">,</span> <span class="DecNumber">wUnion</span><span class="Other">..</span><span class="DecNumber">wPacked</span><span class="Other">,</span> <span class="DecNumber">wByCopy</span><span class="Other">..</span><span class="DecNumber">wByRef</span><span class="Other">}</span></pre></dt>
+               <span class="DecNumber">wPackage</span><span class="Other">,</span> <span class="DecNumber">wBorrow</span><span class="Other">,</span> <span class="DecNumber">wAcyclic</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wInheritable</span><span class="Other">,</span>
+               <span class="DecNumber">wExplain</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">,</span> <span class="DecNumber">wUnion</span><span class="Other">..</span><span class="DecNumber">wPacked</span><span class="Other">,</span> <span class="DecNumber">wByCopy</span><span class="Other">..</span><span class="DecNumber">wByRef</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L111"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L111"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L111" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -595,14 +586,13 @@ class="link-seesrc" target="_blank">Source</a>
 <div id="varPragmas">
 <dt><pre><a href="pragmas.html#varPragmas"><span class="Identifier">varPragmas</span></a> <span class="Other">=</span> <span class="Other">{</span><span class="DecNumber">wMagic</span><span class="Other">,</span> <span class="DecNumber">wCursor</span><span class="Other">..</span><span class="DecNumber">wNoalias</span><span class="Other">,</span> <span class="DecNumber">wImportc</span><span class="Other">..</span><span class="DecNumber">wExportNims</span><span class="Other">,</span> <span class="DecNumber">wAlign</span><span class="Other">..</span><span class="DecNumber">wNodecl</span><span class="Other">,</span>
               <span class="DecNumber">wHeader</span><span class="Other">,</span> <span class="DecNumber">wDynlib</span><span class="Other">..</span><span class="DecNumber">wCore</span><span class="Other">,</span> <span class="DecNumber">wUsed</span><span class="Other">,</span> <span class="DecNumber">wError</span><span class="Other">,</span> <span class="DecNumber">wDeprecated</span><span class="Other">,</span>
-              <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wThreadVar</span><span class="Other">,</span>
-              <span class="DecNumber">wGlobal</span><span class="Other">..</span><span class="DecNumber">wCodegenDecl</span><span class="Other">,</span> <span class="DecNumber">wGuard</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">,</span> <span class="DecNumber">wGoto</span><span class="Other">,</span> <span class="DecNumber">wRegister</span><span class="Other">,</span>
-              <span class="DecNumber">wVolatile</span><span class="Other">}</span></pre></dt>
+              <span class="DecNumber">wCompileTime</span><span class="Other">..</span><span class="DecNumber">wNoInit</span><span class="Other">,</span> <span class="DecNumber">wGensym</span><span class="Other">..</span><span class="DecNumber">wInject</span><span class="Other">,</span> <span class="DecNumber">wThreadVar</span><span class="Other">,</span> <span class="DecNumber">wGlobal</span><span class="Other">,</span>
+              <span class="DecNumber">wGuard</span><span class="Other">,</span> <span class="DecNumber">wExtern</span><span class="Other">,</span> <span class="DecNumber">wGoto</span><span class="Other">,</span> <span class="DecNumber">wRegister</span><span class="Other">,</span> <span class="DecNumber">wVolatile</span><span class="Other">}</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L118"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L118"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L118" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -620,7 +610,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L138"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L138"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L138" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -632,9 +622,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 true if any of <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt>'s children are of <tt class="docutils literal"><span class="pre"><span class="Identifier">pragma</span></span></tt> special words
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1741"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1766"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1741" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1766" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -645,7 +635,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 create an error node (<tt class="docutils literal"><span class="pre"><span class="Identifier">nkError</span></span></tt>) for an illegal custom pragma error
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L156"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L156"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L156" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -655,14 +645,14 @@ class="link-seesrc" target="_blank">Source</a>
 <dt><pre><span class="Keyword">proc</span> <a href="#implicitPragmas%2CPContext%2CPSym%2CPNode%2CTSpecialWords"><span class="Identifier">implicitPragmas</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <a href="semdata.html#PContext"><span class="Identifier">PContext</span></a><span class="Other">;</span> <span class="Identifier">sym</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span>
                      <span class="Identifier">validPragmas</span><span class="Other">:</span> <a href="../ast/wordrecg.html#TSpecialWords"><span class="Identifier">TSpecialWords</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Adds implicit pragmas to the list <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> and applies them to <tt class="docutils literal"><span class="pre"><span class="Identifier">sym</span></span></tt> afterwards. Implicit pragmas that don't apply (because they're, for example, built-in pragmas not present in <tt class="docutils literal"><span class="pre"><span class="Identifier">validPragmas</span></span></tt>) are ignored.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1791"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1816"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1791" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1816" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -672,9 +662,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Apply the dynlib pragma from the top of the option stack to <tt class="docutils literal"><span class="pre"><span class="Identifier">sym</span></span></tt>, if applicable. The dynlib pragma can be applied if the symbol is marked as imported, but no header nor dynlib are specified.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1853"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1878"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1853" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1878" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -684,7 +674,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 create an error node (<tt class="docutils literal"><span class="pre"><span class="Identifier">nkError</span></span></tt>) for an invalid pragma error
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L152"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L152"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L152" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -697,23 +687,23 @@ class="link-seesrc" target="_blank">Source</a>
 
 Gets the marker out of an asm stmts pragma list Returns ` as the default marker if no other markers are found
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L162"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L172"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L162" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L172" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="pragmaDecl,PContext,PSym,PNode,TSpecialWords">
 <dt><pre><span class="Keyword">proc</span> <a href="#pragmaDecl%2CPContext%2CPSym%2CPNode%2CTSpecialWords"><span class="Identifier">pragmaDecl</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <a href="semdata.html#PContext"><span class="Identifier">PContext</span></a><span class="Other">;</span> <span class="Identifier">sym</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span> <span class="Identifier">validPragmas</span><span class="Other">:</span> <a href="../ast/wordrecg.html#TSpecialWords"><span class="Identifier">TSpecialWords</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Similar to <a class="reference external" href="#pragmaDeclNoImplicit">pragmaDeclNoImplicit</a>, but adds the implicit pragmas to the resulting list and applies.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1842"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1867"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1842" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1867" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -721,16 +711,16 @@ class="link-seesrc" target="_blank">Source</a>
 <dt><pre><span class="Keyword">proc</span> <a href="#pragmaDeclNoImplicit%2CPContext%2CPSym%2CPNode%2CTSpecialWords"><span class="Identifier">pragmaDeclNoImplicit</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <a href="semdata.html#PContext"><span class="Identifier">PContext</span></a><span class="Other">;</span> <span class="Identifier">sym</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span>
                           <span class="Identifier">validPragmas</span><span class="Other">:</span> <a href="../ast/wordrecg.html#TSpecialWords"><span class="Identifier">TSpecialWords</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 <p>Analyses the pragma list <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt>, making sure each pragma is semantically valid and applying the symbol operators to <tt class="docutils literal"><span class="pre"><span class="Identifier">sym</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">validPragmas</span></span></tt> is the list of built-in pragmas that are allowed -- usage of one not present in the set is an error.</p>
 <p>No implicit pragmas (i.e. pushed ones) are added to the list nor applied.</p>
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1771"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1796"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1771" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1796" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -742,24 +732,24 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pre-processes the pragma list <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt> for the purpose of further processing by sem in the context of applying pragmas to an expression.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1874"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1899"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1874" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1899" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="pragmaStmt,PContext,PNode,PSym">
 <dt><pre><span class="Keyword">proc</span> <a href="#pragmaStmt%2CPContext%2CPNode%2CPSym"><span class="Identifier">pragmaStmt</span></a><span class="Other">(</span><span class="Identifier">c</span><span class="Other">:</span> <a href="semdata.html#PContext"><span class="Identifier">PContext</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a><span class="Other">;</span> <span class="Identifier">owner</span><span class="Other">:</span> <a href="../ast/ast_types.html#PSym"><span class="Identifier">PSym</span></a><span class="Other">)</span><span class="Other">:</span> <a href="../ast/ast_types.html#PNode"><span class="Identifier">PNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span>
     <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ERecoverableError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">EOFError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span>
-    <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span>
-    <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span>
+    <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Analyses and evaluates for their side-effects the pragmas in list <tt class="docutils literal"><span class="pre"><span class="Identifier">n</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">owner</span></span></tt> is provided for addition context and is sometimes mutated.
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L1891"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L1916"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1891" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L1916" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -770,9 +760,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/sem/pragmas.nim#L760"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/sem/pragmas.nim#L773"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L760" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/sem/pragmas.nim#L773" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -786,7 +776,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

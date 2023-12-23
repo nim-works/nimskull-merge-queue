@@ -5,7 +5,6 @@ Command-line switches	nimc.html#compiler-usage-commandminusline-switches	  Comma
 List of warnings	nimc.html#compiler-usage-list-of-warnings	  List of warnings	
 List of hints	nimc.html#compiler-usage-list-of-hints	  List of hints	
 Verbosity levels	nimc.html#compiler-usage-verbosity-levels	  Verbosity levels	
-Compiler message formats	nimc.html#compiler-usage-compiler-message-formats	  Compiler message formats	
 Compile-time symbols	nimc.html#compiler-usage-compileminustime-symbols	  Compile-time symbols	
 Configuration files	nimc.html#compiler-usage-configuration-files	  Configuration files	
 debug build	nimc.html#debug-build_1	Configuration files	
@@ -43,5 +42,3 @@ Nim for realtime systems	nimc.html#nim-for-realtime-systems	 Nim for realtime sy
 Signal handling in Nim	nimc.html#signal-handling-in-nim	 Signal handling in Nim	
 Optimizing for Nim	nimc.html#optimizing-for-nim	 Optimizing for Nim	
 Optimizing string handling	nimc.html#optimizing-for-nim-optimizing-string-handling	  Optimizing string handling	
-shallow	nimc.html#shallow_1	Optimizing string handling	
-freeze	nimc.html#freeze_1	Optimizing string handling	

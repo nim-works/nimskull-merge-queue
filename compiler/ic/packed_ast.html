@@ -119,9 +119,8 @@ window.addEventListener('DOMContentLoaded', main);
   <li><a class="reference" href="#PackedLib"
     title="PackedLib = object
   kind*: TLibKind
-  generated*: bool
   isOverriden*: bool
-  name*: LitId
+  name*: PackedItemId
   path*: NodeId">PackedLib</a></li>
   <li><a class="reference" href="#PackedLineInfo"
     title="PackedLineInfo = object
@@ -152,8 +151,8 @@ window.addEventListener('DOMContentLoaded', main);
   position*: int
   offset*: int
   externalName*: LitId
-  locFlags*: TLocFlags
-  annex*: PackedLib
+  extFlags*: ExternalFlags
+  annex*: tuple[module: LitId, index: uint32]
   constraint*: NodeId">PackedSym</a></li>
   <li><a class="reference" href="#PackedTree"
     title="PackedTree = object
@@ -193,7 +192,7 @@ window.addEventListener('DOMContentLoaded', main);
   <li><a class="reference" href="#externUIntLit"
     title="externUIntLit = {nkUIntLit, nkUInt8Lit, nkUInt16Lit, nkUInt32Lit, nkUInt64Lit}">externUIntLit</a></li>
   <li><a class="reference" href="#nilItemId"
-    title="nilItemId = (module: 0'u, item: -1)">nilItemId</a></li>
+    title="nilItemId = (module: 0'u32, item: -1'i32)">nilItemId</a></li>
 
   </ul>
 </li>
@@ -282,6 +281,11 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">kind
       <li><a class="reference" href="#kind%2CPackedTree%2CNodePos"
     title="kind(tree: PackedTree; n: NodePos): TNodeKind">kind(tree: PackedTree; n: NodePos): TNodeKind</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">lastSon
+      <li><a class="reference" href="#lastSon%2CPackedTree%2CNodePos"
+    title="lastSon(tree: PackedTree; n: NodePos): NodePos">lastSon(tree: PackedTree; n: NodePos): NodePos</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">len
@@ -438,7 +442,7 @@ window.addEventListener('DOMContentLoaded', main);
 
   </div>
   &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L1"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L1"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -460,7 +464,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L21"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L21"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L21" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -472,7 +476,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L22"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L22"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L22" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -487,9 +491,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L98"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L97"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L98" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L97" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -502,7 +506,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L24"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L24"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L24" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -511,16 +515,15 @@ class="link-seesrc" target="_blank">Source</a>
 <div id="PackedLib">
 <dt><pre><a href="packed_ast.html#PackedLib"><span class="Identifier">PackedLib</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#TLibKind"><span class="Identifier">TLibKind</span></a>
-  <span class="Identifier">generated</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
   <span class="Identifier">isOverriden</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>
-  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <a href="bitabs.html#LitId"><span class="Identifier">LitId</span></a>
+  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <a href="packed_ast.html#PackedItemId"><span class="Identifier">PackedItemId</span></a>
   <span class="Identifier">path</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#NodeId"><span class="Identifier">NodeId</span></a>
 </pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L40"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L40"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L40" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -536,7 +539,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L35"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L35"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L35" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -554,9 +557,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L85"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L84"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L85" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L84" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -577,17 +580,17 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">position</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">offset</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
   <span class="Identifier">externalName</span><span class="Operator">*</span><span class="Other">:</span> <a href="bitabs.html#LitId"><span class="Identifier">LitId</span></a>
-  <span class="Identifier">locFlags</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#TLocFlags"><span class="Identifier">TLocFlags</span></a>
-  <span class="Identifier">annex</span><span class="Operator">*</span><span class="Other">:</span> <a href="packed_ast.html#PackedLib"><span class="Identifier">PackedLib</span></a>
+  <span class="Identifier">extFlags</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#ExternalFlags"><span class="Identifier">ExternalFlags</span></a>
+  <span class="Identifier">annex</span><span class="Operator">*</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">module</span><span class="Other">:</span> <a href="bitabs.html#LitId"><span class="Identifier">LitId</span></a><span class="Other">,</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">]</span>
   <span class="Identifier">constraint</span><span class="Operator">*</span><span class="Other">:</span> <a href="../ast/ast_types.html#NodeId"><span class="Identifier">NodeId</span></a>
 </pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L47"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L46"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L47" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L46" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -599,9 +602,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 usually represents a full Nim module
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L95"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L94"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L95" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L94" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -625,9 +628,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L67"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L66"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L67" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L66" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -637,7 +640,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L20"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L20"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L20" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -654,9 +657,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L359"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L366"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L359" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L366" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -666,7 +669,7 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L32"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L32"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L32" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -679,9 +682,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L346"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L353"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L346" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L353" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -691,9 +694,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L357"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L364"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L357" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L364" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -703,19 +706,19 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L358"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L365"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L358" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L365" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="nilItemId">
-<dt><pre><a href="packed_ast.html#nilItemId"><span class="Identifier">nilItemId</span></a> <span class="Other">=</span> <span class="Other">(</span><span class="Identifier">module</span><span class="Other">:</span> <span class="DecNumber">0'u</span><span class="Other">,</span> <span class="Identifier">item</span><span class="Other">:</span> <span class="DecNumber">-1</span><span class="Other">)</span></pre></dt>
+<dt><pre><a href="packed_ast.html#nilItemId"><span class="Identifier">nilItemId</span></a> <span class="Other">=</span> <span class="Other">(</span><span class="Identifier">module</span><span class="Other">:</span> <span class="DecNumber">0'u32</span><span class="Other">,</span> <span class="Identifier">item</span><span class="Other">:</span> <span class="DecNumber">-1'i32</span><span class="Other">)</span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L29"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L29"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L29" class="link-seesrc" target="_blank" >Edit</a>
 
@@ -732,9 +735,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L105"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L104"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L105" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L104" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -744,9 +747,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L102"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L101"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L101" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -757,9 +760,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L187"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L188"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L187" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L188" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -770,9 +773,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L131"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L130"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L130" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -783,9 +786,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L137"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L136"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L137" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L136" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -796,9 +799,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L134"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L133"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L134" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L133" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -809,9 +812,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L140"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L139"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L140" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L139" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -822,9 +825,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L145"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L146"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L145" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L146" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -834,9 +837,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L317"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L324"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L317" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L324" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -847,9 +850,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L266"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L267"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L266" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L267" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -859,9 +862,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L395"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L402"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L395" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L402" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -872,9 +875,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L258"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L259"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L258" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L259" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -884,9 +887,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L103"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L102"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L103" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -896,9 +899,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L252"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L253"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L252" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L253" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -909,9 +912,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L272"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L273"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L272" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L273" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -921,9 +924,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L143"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L142"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L143" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L142" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -934,9 +937,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L299"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L300"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L299" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L300" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -947,9 +950,21 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L268"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L269"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L268" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L269" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="lastSon,PackedTree,NodePos">
+<dt><pre><span class="Keyword">proc</span> <a href="#lastSon%2CPackedTree%2CNodePos"><span class="Identifier">lastSon</span></a><span class="Other">(</span><span class="Identifier">tree</span><span class="Other">:</span> <a href="packed_ast.html#PackedTree"><span class="Identifier">PackedTree</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="packed_ast.html#NodePos"><span class="Identifier">NodePos</span></a><span class="Other">)</span><span class="Other">:</span> <a href="packed_ast.html#NodePos"><span class="Identifier">NodePos</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L308"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L308" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -959,9 +974,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L185"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L186"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L185" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L186" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -971,9 +986,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L270"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L271"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L270" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L271" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -983,9 +998,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L108"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L107"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L108" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L107" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -995,9 +1010,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L179"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L180"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L179" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L180" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1008,9 +1023,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L175"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L176"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L175" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L176" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1022,9 +1037,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L170"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L171"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L170" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L171" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1035,9 +1050,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L286"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L287"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L286" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L287" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1048,9 +1063,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L292"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L293"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L292" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L293" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1060,9 +1075,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L283"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L284"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L283" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L284" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1072,9 +1087,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L128"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L127"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L128" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L127" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1084,9 +1099,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L411"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L418"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L411" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L418" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1101,9 +1116,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L404"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L411"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L404" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L411" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1114,9 +1129,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L211"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L212"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L211" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L212" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1127,9 +1142,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L206"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L207"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L206" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L207" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1139,9 +1154,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L218"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L219"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L218" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L219" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1152,9 +1167,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L197"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L198"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L197" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L198" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1165,9 +1180,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L229"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L230"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L229" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L230" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1182,9 +1197,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L372"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L379"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L372" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L379" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1194,9 +1209,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L377"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L384"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L377" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L384" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1206,9 +1221,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L277"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L278"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L277" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L278" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1218,9 +1233,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L312"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L319"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L312" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L319" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1230,9 +1245,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L311"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L318"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L311" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L318" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1242,9 +1257,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L313"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L320"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L313" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L320" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1254,9 +1269,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L280"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L281"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L280" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L281" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1266,9 +1281,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L250"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L251"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L250" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L251" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1278,9 +1293,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L315"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L322"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L315" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L322" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1290,9 +1305,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/nim-works/nimskull-merge-queue/tree/c458449d73db556af2c50d018aef595c56621a44/compiler/ic/packed_ast.nim#L275"
+href="https://github.com/nim-works/nimskull-merge-queue/tree/da3010328c4b2e730a50a95f5dba3aaa9c2e33df/compiler/ic/packed_ast.nim#L276"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L275" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/nim-works/nimskull-merge-queue/edit/devel/compiler/ic/packed_ast.nim#L276" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1306,7 +1321,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-04-22 00:00:00 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-12-22 00:00:00 UTC</small>
       </div>
     </div>
   </div>

@@ -37,8 +37,6 @@ opcLdStrIdxAddr	vm/vm_enums.html#opcLdStrIdxAddr	TOpcode.opcLdStrIdxAddr
 opcInitDisc	vm/vm_enums.html#opcInitDisc	TOpcode.opcInitDisc	
 opcSetDisc	vm/vm_enums.html#opcSetDisc	TOpcode.opcSetDisc	
 opcWrProc	vm/vm_enums.html#opcWrProc	TOpcode.opcWrProc	
-opcWrClosure	vm/vm_enums.html#opcWrClosure	TOpcode.opcWrClosure	
-opcAccessEnv	vm/vm_enums.html#opcAccessEnv	TOpcode.opcAccessEnv	
 opcAddInt	vm/vm_enums.html#opcAddInt	TOpcode.opcAddInt	
 opcAddImmInt	vm/vm_enums.html#opcAddImmInt	TOpcode.opcAddImmInt	
 opcSubInt	vm/vm_enums.html#opcSubInt	TOpcode.opcSubInt	
@@ -145,8 +143,6 @@ opcNctGet	vm/vm_enums.html#opcNctGet	TOpcode.opcNctGet
 opcNctHasNext	vm/vm_enums.html#opcNctHasNext	TOpcode.opcNctHasNext	
 opcNctNext	vm/vm_enums.html#opcNctNext	TOpcode.opcNctNext	
 opcNodeId	vm/vm_enums.html#opcNodeId	TOpcode.opcNodeId	
-opcSlurp	vm/vm_enums.html#opcSlurp	TOpcode.opcSlurp	
-opcGorge	vm/vm_enums.html#opcGorge	TOpcode.opcGorge	
 opcParseExprToAst	vm/vm_enums.html#opcParseExprToAst	TOpcode.opcParseExprToAst	
 opcParseStmtToAst	vm/vm_enums.html#opcParseStmtToAst	TOpcode.opcParseStmtToAst	
 opcNGetLineInfo	vm/vm_enums.html#opcNGetLineInfo	TOpcode.opcNGetLineInfo	

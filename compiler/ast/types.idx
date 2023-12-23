@@ -7,6 +7,10 @@ preferTypeName	ast/types.html#preferTypeName	TPreferedDesc.preferTypeName
 preferResolved	ast/types.html#preferResolved	TPreferedDesc.preferResolved	
 preferMixed	ast/types.html#preferMixed	TPreferedDesc.preferMixed	
 TPreferedDesc	ast/types.html#TPreferedDesc	types: TPreferedDesc	
+bvcNone	ast/types.html#bvcNone	BackendViewKind.bvcNone	
+bvcSingle	ast/types.html#bvcSingle	BackendViewKind.bvcSingle	
+bvcSequence	ast/types.html#bvcSequence	BackendViewKind.bvcSequence	
+BackendViewKind	ast/types.html#BackendViewKind	types: BackendViewKind	
 base	ast/types.html#base,PType	types: base(t: PType): PType	
 TTypeIter	ast/types.html#TTypeIter	types: TTypeIter	
 TTypeMutator	ast/types.html#TTypeMutator	types: TTypeMutator	
@@ -95,6 +99,7 @@ safeInheritanceDiff	ast/types.html#safeInheritanceDiff,PType,PType	types: safeIn
 compatibleEffects	ast/types.html#compatibleEffects,PType,PType	types: compatibleEffects(formal, actual: PType): EffectsCompat	
 isCompileTimeOnly	ast/types.html#isCompileTimeOnly,PType	types: isCompileTimeOnly(t: PType): bool	
 containsCompileTimeOnly	ast/types.html#containsCompileTimeOnly,PType	types: containsCompileTimeOnly(t: PType): bool	
+skipToObject	ast/types.html#skipToObject,PType,int	types: skipToObject(t: PType; numIndirectsAllowed = 1): PType	
 safeSkipTypes	ast/types.html#safeSkipTypes,PType,TTypeKinds	types: safeSkipTypes(t: PType; kinds: TTypeKinds): PType	
 NoneLike	ast/types.html#NoneLike	OrdinalType.NoneLike	
 IntLike	ast/types.html#IntLike	OrdinalType.IntLike	
@@ -106,8 +111,6 @@ mutableSkipConv	ast/types.html#mutableSkipConv,PNode	types: mutableSkipConv(n: v
 skipHidden	ast/types.html#skipHidden,PNode	types: skipHidden(n: PNode): PNode	
 skipConvTakeType	ast/types.html#skipConvTakeType,PNode	types: skipConvTakeType(n: PNode): PNode	
 isEmptyContainer	ast/types.html#isEmptyContainer,PType	types: isEmptyContainer(t: PType): bool	
-takeType	ast/types.html#takeType,PType,PType,ModuleGraph,IdGenerator	types: takeType(formal, arg: PType; g: ModuleGraph; idgen: IdGenerator): PType	
-skipHiddenSubConv	ast/types.html#skipHiddenSubConv,PNode,ModuleGraph,IdGenerator	types: skipHiddenSubConv(n: PNode; g: ModuleGraph; idgen: IdGenerator): PNode	
 getProcConvMismatch	ast/types.html#getProcConvMismatch,ConfigRef,PType,PType	types: getProcConvMismatch(c: ConfigRef; f, a: PType; rel = isNone): (\n    set[ProcConvMismatch], TTypeRelation)	
 typeMismatch	ast/types.html#typeMismatch,PType,PType	types: typeMismatch(formal, actual: PType): SemTypeMismatch	
 typeMismatch	ast/types.html#typeMismatch,set[TTypeKind],PType	types: typeMismatch(formal: set[TTypeKind]; actual: PType): SemTypeMismatch	
@@ -123,3 +126,4 @@ lacksMTypeField	ast/types.html#lacksMTypeField,PType	types: lacksMTypeField(typ:
 isObjLackingTypeField	ast/types.html#isObjLackingTypeField,PType	types: isObjLackingTypeField(typ: PType): bool	
 isImportedException	ast/types.html#isImportedException,PType,ConfigRef	types: isImportedException(t: PType; conf: ConfigRef): bool	
 isCyclePossible	ast/types.html#isCyclePossible,PType,ModuleGraph	types: isCyclePossible(typ: PType; g: ModuleGraph): bool	
+classifyBackendView	ast/types.html#classifyBackendView,PType	types: classifyBackendView(t: PType): BackendViewKind	
