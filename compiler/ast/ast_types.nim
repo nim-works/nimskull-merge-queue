@@ -1,4 +1,5 @@
 import compiler/ast/[lineinfos, numericbase]
+
 import std/[hashes]
 
 from compiler/ast/idents import PIdent, TIdent
